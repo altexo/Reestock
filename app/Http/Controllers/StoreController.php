@@ -22,6 +22,7 @@ class StoreController extends Controller
             ->join('departments', 'departments.id', '=', 'products.department_id')
             ->select('products.*', \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
             ->where('departments.department_name',request('department'))
+            ->Orwhere('departments.id',request('department'))
             ->groupBy('supplier_products.products_id')
             ->Paginate(15)
             ->appends('department', request('department'));
@@ -64,7 +65,7 @@ class StoreController extends Controller
         ->where('supplier_products.products_id', '=', $id)
         ->groupBy('supplier_products.products_id')->first();
 
-        cart::add($product->id, $product->product_name, 1, $product->sale_price, ['reestock' => $r->concurrence]);
+        cart::add($product->id, $product->product_name, $r->qty, $product->sale_price, ['reestock' => $r->concurrence])->associate('App\Products');
         return response()->json("success");
     }
 

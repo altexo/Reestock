@@ -77,13 +77,14 @@ li.hidden {
 div.hidden {
     display: none;
 }
+
 </style>
     @yield('estilos_unicos')
 
 @endsection
 
 @section('navbar') <!--Navbar-->
-        <nav class=" nav navbar fixed-top navbar-toggleable-md navbar-dark red scrolling-navbar" >
+        <nav class=" nav navbar  fixed-top navbar-toggleable-md navbar-dark red scrolling-navbar" >
             <div class="container">
                 
                 <a class="navbar-brand" href="{{url('/')}}">
@@ -151,8 +152,7 @@ div.hidden {
                 <!--Content-->
                 <div class="modal-content modal-container">
                     <!--Header-->
-                    <div class="modal-header">
-                        <p class="heading lead"><input type="text" class="white-text active-white " name="" value=" 'Mi Lista' "></p>
+                    <div class="modal-header">{{-- <p>Canasta</p> --}}
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true" class="white-text">×</span>
@@ -241,7 +241,7 @@ div.hidden {
 
                     <!--Footer-->
                     <div class="modal-footer justify-content-center">
-                        <a type="button" class="btn btn-primary-modal waves-effect waves-light" href="{{ route('show.list') }}">Ir a mi lista</a>
+                        <a type="button" class="btn btn-primary-modal waves-effect waves-light" href="{{ url('/checkout') }}">Chekout</a>
                        <!--  <a type="button" class="btn btn-outline-secondary-modal waves-effect" data-dismiss="modal">No, thanks</a> -->
                     </div>
                 </div>

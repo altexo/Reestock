@@ -24,14 +24,21 @@ class ListController extends Controller
      */
     public function index()
     {
-        // $items = Cart::count();
-        // if ($items < 10) {
-        //     return redirect()->back()->with('err', 'Debes de agregar al menos 10 productos a tu lista.');
+        
+        $listItems = Cart::content()->groupBy('options.reestock');
+        //return $listItems;
+        //  foreach($listItems[0] as $row) {
+        //     echo 'You have ' . $row->qty . ' items of ' . $row->model->product_name . ' with description: "' . $row->model->product_img . '" in your cart.';
+        // }
+   
+        // Now, when iterating over the content of the cart, you can access the model.
+        // foreach(Cart::content() as $row) {
+        //     echo 'You have ' . $row->qty . ' items of ' . $row->model->product_name . ' with description: "' . $row->model->product_img . '" in your cart.';
         // }
         $uid = \Auth::user()->id; 
         $shipping = Shipping::where('user_id', $uid)->get();
         //return $uid;
-        return view('clientes.list-form', ['shipping' => $shipping]);
+        return view('clientes.list-stepper', ['shipping' => $shipping, 'listItems' => $listItems]);
     }
 
 

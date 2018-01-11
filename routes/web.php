@@ -90,6 +90,11 @@ Route::get('/lista/{lista}', function ($id){
 	return view('clientes.listDetails', compact('lista'));
 });
 //End
+Route::get('/checkout', 'ListController@index');
+//test-route
+Route::get('/test/views/index2', function(){
+	return view('index2');
+});
 
 
 

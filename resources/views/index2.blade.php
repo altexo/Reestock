@@ -66,9 +66,9 @@ body, html {
             <!--First slide-->
             <div class="carousel-item">
                 <div class="view full-height">
-                    <img class="d-block h-100 w-lg-100 img-fluid" src="img/banner_1.jpg" alt="First slide">
+                    <img class="d-block h-100 w-lg-100 img-fluid" src="http://themes.dfd.name/ronneby/shortcodes/wp-content/uploads/2015/03/rocks-45.jpg" alt="First slide">
                     <div class="mask waves-effect waves-light">
-                        <!-- Caption --
+                        <!-- Caption -->
                         <div class="full-bg-img flex-center white-text ">
                             <ul class="animated fadeIn col-10">
                                 <li>
@@ -92,7 +92,7 @@ body, html {
             <!--Second slide-->
             <div class="carousel-item h-100 active">
                 <div class="view  full-height">
-                    <img class="d-block h-100 w-lg-100 img-fluid" src="img/sin_filas.jpg" alt="Second slide">
+                    <img class="d-block h-100 w-lg-100 img-fluid" src="{{asset('img/sin_filas.jpg')}}" alt="Second slide">
                     <div class="mask waves-effect waves-light">
                         <!-- Caption -->
                        {{--  <div class="full-bg-img flex-center white-text">
@@ -118,9 +118,22 @@ body, html {
             <!--Third slide-->
             <div class="carousel-item">
                 <div class="view full-height">
-                    <img class="d-block h-100 w-lg-100 img-fluid" src="img/Productos2.jpg" alt="Third slide">
+                    <img class="d-block h-100 w-lg-100 img-fluid" src="https://mdbootstrap.com/img/Photos/Others/ecommerce3.jpg" alt="Third slide">
                     <div class="mask waves-effect waves-light">
-                      
+                        <!-- Caption -->
+                        <div class="full-bg-img flex-center white-text">
+                            <ul class="animated fadeIn col-md-10 align-items-right">
+                                <li>
+                                    <p class="h1 blue-text text-right mr-5 mb-4 mt-5 pr-lg-5">
+                                        <strong>Sale off 20% on every headphones!</strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <h5 class="h5-responsive dark-grey-text font-bold text-right mr-5 mb-5  pr-lg-5">Tempora incidunt ut labore et dolore veritatis et quasi</h5>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.Caption -->
                     </div>
                 </div>
             </div>
