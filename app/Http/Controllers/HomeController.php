@@ -39,6 +39,7 @@ class HomeController extends Controller
         $lists = List_products::select(DB::raw('DISTINCT DATE(reestock_date) as fecha, MONTHNAME(reestock_date) AS mes, DAY(reestock_date) as dia, DAYNAME(reestock_date) as nombre_dia, active'))
         ->where('users_id', $uid)
         ->where('active', '!=', 3)
+        ->orderBy('reestock_date', 'asc')
         ->get();
         
        $list_prod = array();
@@ -48,7 +49,7 @@ class HomeController extends Controller
 
                    $list_prod['listas'][] = List_products::join('products', 'products.id', '=', 'list_products.products_id')
                     ->join('supplier_products', 'products.id', '=', 'supplier_products.products_id')
-                    ->select('list_products.*','products.product_name', 'products.unity', \DB::raw("MIN(supplier_products.sale_price) AS sale_price "), \DB::raw("TRUNCATE(MIN(supplier_products.sale_price) * list_products.quantity,2) as amount"))
+                    ->select('list_products.*','products.product_name', 'products.product_img', 'products.unity', \DB::raw("MIN(supplier_products.sale_price) AS sale_price "), \DB::raw("TRUNCATE(MIN(supplier_products.sale_price) * list_products.quantity,2) as amount"))
                     ->groupBy('list_products.id')
                     ->where(DB::raw('MONTHNAME(reestock_date) = ? and day(reestock_date) = ? and users_id'), [$reestock_date->mes, $reestock_date->dia, $uid])->get();
 
@@ -57,6 +58,7 @@ class HomeController extends Controller
                 
             }
             
+
             // $user = 'alejandro.riosyb@gmail.com';
             //     \Mail::to($user)->send(new scheduleNotify);
 
@@ -163,6 +165,35 @@ class HomeController extends Controller
         }
 
       
+    }
+
+    public function confirm_list(Request $request)
+    {
+        $current_date =  new \DateTime();
+        $uid = \Auth::user()->id;
+        $listIDs = $request->listID; 
+        try {
+               foreach ($listIDs as $id) {
+                    $list_prod = List_products::find($id);
+                    $list_prod->active = 4;
+                    $list_prod->save();
+                    $product_name = Products::find($list_prod->products_id);
+                    $record = new Reestock_records;
+                    $record->user_id = $uid;
+                    $record->department_id = $product_name->department_id;
+                    $record->brand = $product_name->brand;
+                    $record->product_name = $product_name->product_name;
+                    $record->quantity = $list_prod->quantity;
+                    $record->reestocked_date = $current_date;
+                    $record->status = 4;
+                    $record->save();
+                }
+
+        } catch (Exception $e) {
+            return back()->with('err', 'Lo sentimos por el momento no a sido posible cancelar su lista. Por favor intentalo de nuevo si el problema persiste comunicate con nustro equipo de soporte.');
+        }
+       
+        return back()->with('success','Su lista ha sido confirmada!');
     }
 
 }

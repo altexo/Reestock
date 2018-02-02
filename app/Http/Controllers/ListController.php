@@ -9,6 +9,7 @@ use App\Products;
 use App\Lists;
 Use App\List_products;
 use DB;
+use DateTime;
 
 use App\Shipping;
 class ListController extends Controller
@@ -24,21 +25,19 @@ class ListController extends Controller
      */
     public function index()
     {
-        
+        if (Cart::count() < 1) {
+               return redirect()->route('store');
+           }   
         $listItems = Cart::content()->groupBy('options.reestock');
-        //return $listItems;
-        //  foreach($listItems[0] as $row) {
-        //     echo 'You have ' . $row->qty . ' items of ' . $row->model->product_name . ' with description: "' . $row->model->product_img . '" in your cart.';
-        // }
-   
-        // Now, when iterating over the content of the cart, you can access the model.
-        // foreach(Cart::content() as $row) {
-        //     echo 'You have ' . $row->qty . ' items of ' . $row->model->product_name . ' with description: "' . $row->model->product_img . '" in your cart.';
-        // }
+
         $uid = \Auth::user()->id; 
         $shipping = Shipping::where('user_id', $uid)->get();
         //return $uid;
-        return view('clientes.list-stepper', ['shipping' => $shipping, 'listItems' => $listItems]);
+        $total = Cart::subtotal();
+        $newStr = str_replace(',', '', $total)+60;
+
+        //return $newStr+60;
+        return view('clientes.list-stepper', ['shipping' => $shipping, 'listItems' => $listItems, 'total' => $newStr]);
     }
 
 
@@ -49,10 +48,14 @@ class ListController extends Controller
      */
 
     public function create(Request $r)
-    {
+    {   
+        $date = $r->first_date_submit;
+        $tdate = DateTime::createFromFormat('Y-m-d', $date);  
+
+       
         $reestock_date = '';
         $uid = \Auth::user()->id; 
-
+        
         if ($r) {
             try {
                     $products = Cart::content();
@@ -64,14 +67,15 @@ class ListController extends Controller
                         $list->reestock_concurrence = $p->options->reestock;
                         $current_date =  new \DateTime();
                         //fecha de reestock
-                        $reestock_date = $current_date->modify('+'.$p->options->reestock.' day'); 
-                        }if($reestock_date->format("N") == '7') {
+                        $reestock_date = $tdate;
+                        if ($reestock_date->format("N") == '7') {
                             $reestock_date->modify('+1 day');
                         } 
                         $list->reestock_date = $reestock_date;
                         $list->active = 1;
                         //End fecha de reestock
                         $list->save();  
+                        }
                     $uid = \Auth::user()->id; 
                     $shipping = Shipping::where('user_id', $uid)->first();
                     $shipping->user_id = $uid;
@@ -98,6 +102,10 @@ class ListController extends Controller
 
 
     public function createNew(Request $r){
+        $date = $r->first_date_submit;
+        $tdate = DateTime::createFromFormat('Y-m-d', $date);  
+
+        
         $reestock_date = '';
         $uid = \Auth::user()->id; 
 
@@ -112,10 +120,9 @@ class ListController extends Controller
                         $list->reestock_concurrence = $p->options->reestock;
                         $current_date =  new \DateTime();
                         //fecha de reestock
-                        $reestock_date = $current_date->modify('+'.$p->options->reestock.' day'); 
-                        if($reestock_date->format("N") == '6') { 
-                            $reestock_date->modify('+2 day');
-                        }elseif($reestock_date->format("N") == '7') {
+                        $reestock_date = $tdate;
+                        // $reestock_date = $current_date->modify('+'.$p->options->reestock.' day'); 
+                        if($reestock_date->format("N") == '7') {
                             $reestock_date->modify('+1 day');
                         } 
                         $list->reestock_date = $reestock_date;

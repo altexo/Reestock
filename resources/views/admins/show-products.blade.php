@@ -120,9 +120,14 @@
 
     </div>
 </div>
-<nav>
-     {{ $products->links() }}
- </nav>
+  <hr class="my-0">
+
+        <!--Bottom Table UI-->
+    <div class="d-flex justify-content-between">
+        <nav class="my-3">
+            {{ $products->links() }}
+        </nav>
+    </div>
 </div>
 
                 

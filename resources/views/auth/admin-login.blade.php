@@ -27,7 +27,7 @@
             <div class="row justify-content-md-center">
                 
                 <div class="col-12 col-md-auto">
-                    <img class="rounded-circle z-depth-1-half" src="{{ asset('img/favicon.png') }}">
+                    <img class=" z-depth-1-half" src="{{-- {{ asset('img/favicon.png') }} --}}">
                 </div>
                
             </div>
@@ -62,7 +62,7 @@
     		    <label for="checkbox1">Recuerdame</label>
     		</div>
     	    <div class="text-center">
-    	        <button class="btn btn-default ">INICIAR SEIÓN</button>
+    	        <button class="btn btn-default ">INICIAR SESIÓN</button>
     	    </div>
     	</form>
     	<!-- Form login -->

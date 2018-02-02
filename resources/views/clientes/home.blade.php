@@ -1,6 +1,9 @@
 @extends('layouts.clients')
 @section('estilos_unicos')
 <style type="text/css">
+.special-use{
+    display: none;
+}
 .margin8{
         margin-top: 8%;
     }
@@ -46,7 +49,7 @@
                 <div class="card-up indigo lighten-1">
                 </div>
 
-                <div class="avatar">@if($list->active == 4 || $list->active == 5) <img src="{{asset('img/confirmado.jpg')}}" class="rounded-circle"> @else<img src="{{asset('img/REESTOCK.jpeg')}}" class="rounded-circle">@endif {{-- <i class="fa-shopping-basket fa-5x"></i> --}}
+                <div class="avatar">@if($list->active == 4) <img src="{{asset('img/confirmado.jpg')}}" class="rounded-circle"> @else<img src="{{asset('img/REESTOCK.jpeg')}}" class="rounded-circle">@endif {{-- <i class="fa-shopping-basket fa-5x"></i> --}}
                 </div>
 
                 <div class="card-body">
@@ -71,7 +74,7 @@
                 <div class="modal-content">
                     <!--Header-->
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Tu lista</h4>
+                        <h4 class="modal-title" id="myModalLabel"><button class="btn btn-primary btn-sm confirm-list<?php echo $n; ?>">Confirmar esta lista YA!</button></h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">×</span>
                                     </button>
@@ -92,13 +95,15 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th></th>
                                     <th>Producto</th>
                                     <th>Unidad</th>
                                     <th>Cantidad</th>
                                     <th>Precio</th>
                                    {{--  <th>Frecuencia</th> --}}
+                                   
                                     <th>Eliminar</th>
+                      
                                 </tr>
                             </thead>
 
@@ -108,10 +113,17 @@
                                     <?php $total = $total+ $value->amount; ?>
                                      <tr>
                                         <input type="hidden" name="list_id" value="{{$value->id}}">
-                                        <th scope="row" class="align-middle">{{$value->products_id}}</th>
+                                        <td width="80" class="align-middle"><img src="{{$value->product_img}}" class="img-fluid"></td>
                                         <td class="align-middle">{{$value->product_name}}</td>
                                         <td class="align-middle"><label>{{$value->unity}}</label></td>
-                                        <td class="align-middle"><input type="number" min="1" name="" id="qtyList" value="{{$value->quantity}}"><input type="hidden" name="listID[]" value="{{$value->id}}"></td>
+                                        <td class="align-middle">
+                                            @if($value->active == 4)
+                                                <label>{{$value->quantity}}</label>   
+                                            @else
+                                                 <input type="number" @if($value->unity == 'KG') class="KG" @endif min="1" name="" id="qtyList" value="{{$value->quantity}}"><input type="hidden" name="listID[]" value="{{$value->id}}">
+                                            @endif    
+
+                                        </td>
                                         <td class="align-middle"><label>{{$value->amount}}</label>
                                                <div class="preloader-wrapper active hidden">
                                                     <div class="spinner-layer spinner-red-only">
@@ -137,7 +149,10 @@
                                             </select>
                                             
                                         </td> --}}
+                                         @if($value->active == 4)
+                                         @else
                                         <td class="align-middle"><a><i class="fa fa-remove" id="delete-item"></i><input type="hidden" name="" value="{{$value->id}}"></a></td>
+                                        @endif
                                     </tr>
                                      @endforeach
                                  
@@ -152,7 +167,7 @@
                     <div class="modal-footer d-inline-flex p-2" >
                       {{--   <button type="button" class="btn btn-outline-primary waves-effect waves-light" data-dismiss="modal">Close</button> --}}
                       {{--   <button class="btn btn-primary waves-effect waves-light">Checkout</button> --}}
-                      <div class="float-left d-inline-flex p-2"><button class="btn btn-success btn-md">Confirmar esta lista YA!</button></div>
+                      <div class="float-left d-inline-flex p-2">{{-- <button class="btn btn-success btn-md">Confirmar esta lista YA!</button> --}}</div>
                       
                       <ul>
                         <li>
@@ -184,10 +199,11 @@
     <script type="text/javascript">
          $(document).ready(function() {
        //Posponer
-        @if($list->active == 5)  
+        @if($list->active == 4)  
             $(".postpone<?php echo $n; ?>").attr('disabled', true);
             $(".cancel<?php echo $n; ?>").attr('disabled', true);
             $(".add<?php echo $n; ?>").attr('disabled', true);
+            $(".confirm-list<?php echo $n; ?>").attr('disabled', true);
         @else
         $(document).on("click", ".postpone<?php echo $n; ?>", function(e){
 
@@ -240,6 +256,31 @@
                     
                 }
         });
+        $(".confirm-list<?php echo $n; ?>").click(function(e){
+            e.preventDefault();
+            $.confirm({
+                title: 'Confirmar',
+                content: 'Una vez confirmada la lista no podras realizar mas cambios.',
+                type: 'blue',
+                buttons:{
+                    confirmar: {
+                        text: '¡Confirmar lista!',
+                        btnClass: 'btn-blue',
+                        action: function(){
+                            $('#postpone<?php echo $n; ?>').attr('action', "{{route('confirm.list')}}").submit();
+                            //$.alert('Ok :)');
+                        }
+                    },
+                    cancelar: {
+                        btnClass: 'btn-dark',
+                        action: function () {
+
+                        }
+
+                    },
+                }
+            });
+        });
         @endif
     });
         //Agregar productos
@@ -249,6 +290,8 @@
 @endforelse
 <script type="text/javascript">
  $(document).ready(function() {
+   
+ 
     $('body').on('click', '#delete-item', function(){
         var itemToDel = $(this).closest('tr');
         var id = $(this).next('input').val();
@@ -308,7 +351,18 @@
 
 
     $('body').on('keyup mouseup', '#qtyList', function(){
+
+        var qty_element = $(this);
         var qty = $(this).val();
+          if($(qty_element).attr('class') == 'KG'){
+                     
+            }else{
+                    $(qty_element).val(Math.ceil(qty));
+                    qty = Math.ceil(qty);
+
+            }
+
+    
         var id = $(this).next('input').val();
 
         var data = {id: id, qty: qty}
@@ -317,7 +371,7 @@
         var loader = $(this).closest('td').next('td').find('div').show();
         var total = $(this).closest('table').closest('div').next('div').find('label').attr('id');
          var Fulltotal = $(this).closest('table').closest('div').next('div').find('li').next('li').next('li').find('label').attr('id');
-         console.log('Full total id is: '+Fulltotal);
+         //console.log('Full total id is: '+Fulltotal);
             $.ajaxSetup({
                 headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

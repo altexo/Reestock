@@ -1,7 +1,7 @@
 <tr>
     <td class="header text-white">
         <a href="{{ $url }}">
-            {{ $slot }}
+            <img src="{{asset('/img/rsz_reestock.png')}}">
         </a>
     </td>
 </tr>

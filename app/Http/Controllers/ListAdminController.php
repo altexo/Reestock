@@ -15,15 +15,22 @@ class ListAdminController extends Controller
  		 DB::statement("SET lc_time_names = 'es_MX'");
  		$users = List_products::select(DB::raw('DISTINCT users_id, users.name'))->join('users', 'users.id', '=', 'list_products.users_id')->get();
 
- 		$lists = array();
+ 		$listsArray = array();
  		foreach ($users as $u) 
  		{
- 			$lists[] = List_products::select(DB::raw('DISTINCT users_id, users.name, day(reestock_date) as dia, DAYNAME(reestock_date) as nom_dia, MONTHNAME(reestock_date) as mes, year(reestock_date)'))
+ 			$query[] = List_products::select(DB::raw('DISTINCT users_id, users.name, day(reestock_date) as dia, DAYNAME(reestock_date) as nom_dia, MONTHNAME(reestock_date) as mes, year(reestock_date)'))
  			->join('users', 'users.id', '=', 'list_products.users_id')
- 			->orderBy('reestock_date', 'asc')->where('users_id', $u->users_id)->where('active', 1)->first();
+ 			->orderBy('reestock_date', 'desc')->where('users_id', $u->users_id)->where('active', 4)->first();
+ 			if ($query) {
+ 				$listsArray[] = $query;
+ 			}
+ 			
+
  		}
- 		//return ['lists' => $lists, 'users' => $users];
- 		return view('admins.show-all-lists', ['lists' => $lists]);
+ 		
+		$lists = collect($listsArray);
+		return ['lists' => $lists, 'users'=> $users];
+ 		return view('admins.show-all-lists', ['lists' => $lists, 'users' => $users]);
  	}
 
  	public function orderList(){

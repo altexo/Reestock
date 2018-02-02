@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //Registred
-        'App\Console\Commands\cronEmail'
+        'App\Console\Commands\cronEmail',
+        'App\Console\Commands\cronTest'
     ];
 
     /**
@@ -29,6 +30,8 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         $schedule->command('notify:email')
         ->dailyAt('6:00');
+        $schedule->command('notify:test')
+        ->dailyAt('11:00');
     }
 
     /**

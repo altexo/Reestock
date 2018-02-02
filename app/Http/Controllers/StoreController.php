@@ -26,6 +26,8 @@ class StoreController extends Controller
             ->groupBy('supplier_products.products_id')
             ->Paginate(15)
             ->appends('department', request('department'));
+
+
            
         }else{
         	   $products = supplier_products::join('products', 'products.id', '=', 'supplier_products.products_id')
@@ -38,7 +40,11 @@ class StoreController extends Controller
                 
             }        
             $lists = $this->getLists();
-    
+
+       
+
+
+       
     	return view('storev1', ['products' => $products, 'listItems' => $listItems, 'lists' => $lists]);
         //return $products;
     }
@@ -71,9 +77,15 @@ class StoreController extends Controller
 
     public function updateCart(Request $r)
     {
+
         if ($r) {
-            Cart::update($r->rowId, $r->qty);
-            return response()->json("success");
+            if($r->qty >= 0.20)
+            {
+                Cart::update($r->rowId, $r->qty);
+                return response()->json(['success' => 0]);
+            }else{
+                return response()->json(['empty' => 1]); 
+            }
         }
         return response()->json("err");
        

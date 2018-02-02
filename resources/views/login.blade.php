@@ -64,7 +64,7 @@
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
-		                <p class="font-small blue-text d-flex justify-content-end">Olvidaste tu <a href="#" class="blue-text ml-1"> Contraseña?</a></p>
+		                <p class="font-small blue-text d-flex justify-content-end">Olvidaste tu <a href="{{ route('password.request') }}" class="blue-text ml-1"> Contraseña?</a></p>
             		</div>
 
 		            <div class="text-center mb-3">
@@ -76,7 +76,7 @@
 
         		<!--Footer-->
 		        <div class="modal-footer mx-5 pt-3 mb-1">
-		            <p class="font-small grey-text d-flex justify-content-end">No estas registrado? <a href="#" class="blue-text ml-1"> Registrarme</a></p>
+		            <p class="font-small grey-text d-flex justify-content-end">No estas registrado? <a href="{{url('registrar')}}" class="blue-text ml-1"> Registrarme</a></p>
 		        </div>
 
     		</div>

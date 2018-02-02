@@ -3,7 +3,7 @@
 <style type="text/css">
 	.margin10
 	{
-		margin-top: 0;
+		margin-top: 0 !important;
 		padding: 0px;
 	}
 	.no-shadow {
@@ -44,11 +44,11 @@
         <!--Slides-->
         <div class="carousel-inner" role="listbox">
             <!--First slide-->
-            <div class="carousel-item">
+           {{--  <div class="carousel-item">
                 <div class="view h-100">
-                    <img class="d-block h-100 w-lg-100" src="https://mdbootstrap.com/img/Photos/Others/ecommerce4.jpg" alt="First slide">
+                    <img class="d-block h-100 w-lg-100" src="http://www.delimera.com.vn/media/stef/home/offer.jpg" alt="First slide">
                     <div class="mask waves-effect waves-light">
-                        <!-- Caption -->
+                         Caption 
                         <div class="full-bg-img flex-center white-text">
                             <ul class="animated fadeIn col-10">
                                 <li>
@@ -64,15 +64,15 @@
                                 </li>
                             </ul>
                         </div>
-                        <!-- /.Caption -->
+                         /.Caption
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!--/First slide-->
             <!--Second slide-->
             <div class="carousel-item h-100 active">
                 <div class="view h-100">
-                    <img class="d-block h-100 w-lg-100" src="https://mdbootstrap.com/img/Photos/Others/ecommerce2.jpg" alt="Second slide">
+                    <img class="d-block h-100 w-lg-100" src="http://www.delimera.com.vn/media/stef/home/offer.jpg" alt="Second slide">
                     <div class="mask waves-effect waves-light">
                       
                     </div>
@@ -80,7 +80,7 @@
             </div>
             <!--/Second slide-->
             <!--Third slide-->
-            <div class="carousel-item">
+          {{--   <div class="carousel-item">
                 <div class="view h-100">
                     <img class="d-block h-100 w-lg-100" src="https://mdbootstrap.com/img/Photos/Others/ecommerce3.jpg" alt="Third slide">
                     <div class="mask waves-effect waves-light">
@@ -101,7 +101,7 @@
                     </div>
                 </div>
             </div>
-            <!--/Third slide-->
+            <!--/Third slide--> --}}
         </div>
         <!--/.Slides-->
         <!--Controls-->
@@ -116,7 +116,6 @@
         <!--/.Controls-->
     </div>
     <div class="container-fluid mx-0 px-0">
-
         <!--Navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark primary-color mb-5 navbar-toggleable-md " id="search-nav">
             <div class="container">
@@ -275,7 +274,11 @@
                                             <div class="modal-body">
                                                 <div class="row mt-1">
                                                     <div class="col-md-4">
-                                                        <img src="{{url('')}}/{{$product->product_img}}" class="img-fluid no-shadow"  alt="">
+                                                        @if($product->product_img)
+                                                            <img src="{{url($product->product_img)}}" class="img-fluid no-shadow"  alt="">
+                                                        @else
+                                                            <img src="{{url('img/no-img.jpg')}}" class="img-fluid no-shadow"  alt="">
+                                                        @endif
                                                     </div>
                                                     <div class="col-md-8 d-flex verticalcenter">
                                                         
@@ -288,7 +291,11 @@
                                                            <input type="hidden" id="fecha-ree" class="ReestockDate{{$product->id}}" value="">
                                                                 <div class="col-md-6 mt-1"> 
                                                                     <div class="md-form">
+                                                                         @if($product->unity == "KG" || $product->unity == "KILO")
+                                                                            <input style="padding: 7px;" class="KG" type="number" name="qty" id="addListQty-{{$product->id}}" value="1.00" min="0.20" max="99999.99" step="0.20" pattern="^\d+(?:\.\d{1,2})?$">
+                                                                            @else
                                                                         <input data-toggle="tooltip" title="Debes especificar una cantidad." role="tooltip" style="padding: 7px;" type="number" name="qty" id="addListQty-{{$product->id}}">
+                                                                        @endif
                                                                         <label class="addListQty-{{$product->id}}" for="addListQty-{{$product->id}}">Cantidad</label>
                                                                     </div>
                                                                 </div>
@@ -339,7 +346,11 @@
                                             <div class="modal-body">
                                                 <div class="row mt-1">
                                                     <div class="col-md-4">
-                                                        <img src="{{url('')}}/{{$product->product_img}}" class="img-fluid no-shadow"  alt="">
+                                                        @if($product->product_img)
+                                                            <img src="{{url($product->product_img)}}" class="img-fluid no-shadow"  alt="">
+                                                        @else
+                                                            <img src="{{url('img/no-img.jpg')}}" class="img-fluid no-shadow"  alt="">
+                                                        @endif
                                                     </div>
                                                     <div class="col-md-8 d-flex verticalcenter">
                                                         
@@ -349,12 +360,21 @@
                                                                 <label class="grey-text">{{$product->brand}}</label><br>
                                                                 <label>$ {{$product->sale_price }} </label> <label class="grey-text">  {{$product->unity}}</label>
                                                             </div>
-                                                            @if($product->unity == "KG")
-                                                            @else
+                                                            
+                                                           
+                                                                     
+    
+                                                            
                                                                 <div class="col-md-6 mt-1"> 
                                                                     <div class="md-form">
-                                                                        <input data-toggle="tooltip" title="Debes especificar una cantidad." role="tooltip" style="padding: 7px;" type="number" name="qty" id="addBasketQty-{{$product->id}}" value="1" min="1" max="999">
+                                                                        @if($product->unity == "KG" || $product->unity == "KILO")
+                                                                            <input style="padding: 7px;" type="number" class="KG" name="qty" id="addBasketQty-{{$product->id}}" value="1.00" min="0.20" max="99999.99" step="0.20" pattern="^\d+(?:\.\d{1,2})?$">
+                                                                        <label class="addBasketQty-{{$product->id}}" for="addBasketQty-{{$product->id}}">KG</label>
+                                                                        @else
+                                                                         <input data-toggle="tooltip" title="Debes especificar una cantidad." role="tooltip" style="padding: 7px;" type="number" name="qty" id="addBasketQty-{{$product->id}}" value="1" min="1" max="999">
                                                                         <label class="addBasketQty-{{$product->id}}" for="addBasketQty-{{$product->id}}">Cantidad</label>
+                                                                        @endif
+                                                                       
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6 mt-1"> 
@@ -363,7 +383,7 @@
                                                                                         <option  value="0">Unica vez</option>
                                                                                         <option selected value="7">Cada 7 días</option>
                                                                                         <option value="15">Cada 15 días</option>
-                                                                                        <option value="30">Cada 30 dīas</option>
+                                                                                        <option value="30">Cada 30 días</option>
                                                                                         <option value="45">Cada 6 semanas</option>
                                                                                         <option value="60">Cada 2 meses</option>
                                                                                         <option value="180">Cada 6 meses</option>
@@ -372,15 +392,15 @@
                                                                             <label>Reestock Cada: </label>
                                                                         </div>
                                                                 </div>
-                                                            @endif
+                                                          
                                                         </div>
                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="CancelToBasketModal-{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">Cancelar</button>
-                                                <button type="button" class="btn btn-default btn-sm" id="addToBasketProduct-{{$product->id}}">Añadir a mi canasta
+                                                <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal" id="CancelToBasketModal-{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">Cancelar</button>
+                                                <button type="button" class="btn btn-default btn-md" id="addToBasketProduct-{{$product->id}}">Añadir a mi canasta
                                                         
                                                 </button>
                                             </div>
@@ -394,7 +414,11 @@
 					        <div class="col-lg-4 col-md-6 mb-r">
 					            <div class="card no-shadow"><a href=""></a>
 					                <div class="view overlay hm-white-slight no-shadow">
-					                   <a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>"> <img src="{{url('')}}/{{$product->product_img}}" class="img-fluid"  alt=""></a>
+					                   <a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>"> @if($product->product_img)
+                                                            <img src="{{url($product->product_img)}}" class="img-fluid no-shadow"  alt="">
+                                                        @else
+                                                            <img src="{{url('img/no-img.jpg')}}" class="img-fluid no-shadow"  alt="">
+                                                        @endif</a>
 					                    <a data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>" >
 					                        <div class="mask"></div>
 					                    </a>
@@ -446,22 +470,14 @@
 <script type="text/javascript">
     $(document).ready(function() {
     $('.mdb-select').material_select();
+//  $("[type='number']").keypress(function (evt) {
+//     evt.preventDefault();
+// });
 
-    // $('body').on('change', '.addToList', function(){
-    //     var date = $(this).val();//.colsest('option').val();
-    //     var attr = $('option:selected', this).attr('id'); 
-    //   //  console.log(attr);
-    //     if (attr == 'date') {
-    //          console.log(date);
-
-    //     } else {
-    //         //console.log('not is');
-    //     }
-       
-    // });
 
 
 });
+    
     
 </script>
     @forelse($products as $product)
@@ -493,6 +509,19 @@
                                     //console.log('not is');
                                 }
                         });   
+                         $("body").on('keyup mouseup', '#addListQty-{{$product->id}}', function(){
+                            var qty_element = $("#addListQty-{{$product->id}}");
+                            
+                            var qty = $("#addListQty-{{$product->id}}").val();
+                            if($(qty_element).attr('class') == 'KG'){
+                               
+                            }else{
+                                    $(qty_element).val(Math.ceil(qty));
+                                }
+                            
+                            
+                        });
+
 
                         $('#addNewProduct-{{$product->id}}').click(function(){
                             var concurrence = $('#addToListFrec-{{$product->id}}').val();
@@ -519,8 +548,9 @@
                                                 var loading = ("<div class='preloader-wrapper small active addNewProduct-{{$product->id}}'><div class='spinner-layer spinner-red-only'><div class='circle-clipper left'><div class='circle'></div></div><div class='gap-patch'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div>")
                                                 $('#addNewProduct-{{$product->id}}').append(loading);
                                             },
-                                            success:  function (response) {
-
+                                            success:  function (response) 
+                                            {
+                                                console.log(response)
                                                     if(response == 'success'){
                                                         $("#addNewProduct-{{$product->id}}").html("Producto agregado <i class='fa fa-check'></i>");
                                                         $("#addNewProduct-{{$product->id}}").attr("disabled", true);
@@ -539,18 +569,36 @@
                             $("#AddToBasketModal-{{$product->id}}").modal();
                         });
 
-                        $("#addToBasketProduct-{{$product->id}}").click(function () {
-
-                            var concurrence = $("#frecuency-{{$product->id}}").val();
+                        $("body").on('keyup mouseup', '#addBasketQty-{{$product->id}}', function(){
+                            var qty_element = $("#addBasketQty-{{$product->id}}");
+                            
                             var qty = $("#addBasketQty-{{$product->id}}").val();
+                            if($(qty_element).attr('class') == 'KG'){
+                               
+                            }else{
+                                    $(qty_element).val(Math.ceil(qty));
+                                }
+                            
+                            
+                        });
+                        $("#addToBasketProduct-{{$product->id}}").click(function () {
+                            var qty_element = $("#addBasketQty-{{$product->id}}");
+                            if($(qty_element).attr('class') == 'KG'){
+                                var val = parseFloat($(qty_element).val()).toFixed(2);
+                                $(qty_element).val(val);
+                            }
+                           
+                            var concurrence = $("#frecuency-{{$product->id}}").val();
+                            
+                            var qty = $("#addBasketQty-{{$product->id}}").val();
+                            
                             var parametros = { "product_id" : {{$product->id}}, "concurrence" : concurrence, "qty": qty };
-                            //var attr = $('#frecuency-{{$product->id}}', this).children(":selected").attr('id'); 
-                          console.log(parametros);
+                           
+                          
                             if (concurrence == null) {
-                                // $("#frecuency-{{$product->id}}").addClass("error");
-                                // $('#frecuency-{{$product->id}}').tooltip('show');
-                                // console.log("Empty concurrence");
-                                //   console.log(attr);
+                             
+                            }else if (qty == ''){
+                                $('.addBasketQty-{{$product->id}}').css( "color", "red" );
                             }else {
                                 console.log('No exceptions apply. Go on normally.');
                                 $.ajaxSetup({
@@ -569,28 +617,31 @@
                                                     console.log(concurrence);
                                             },
                                             success:  function (response) {
-                                                $( "#list" ).load(window.location.href + " #list" );
+                                                $( "#list" ).load(window.location.href + " #list", redo );
+                                               
+                                               
+
+                                                 $( "#total" ).load(window.location.href + " #total" );
                                                 $( "#badge" ).load(window.location.href + " #badge" );
 
+                                                function redo(){
+                                                    $('.b-number').niceNumber();
+                                                }
                                                 $("#CancelToBasketModal-{{$product->id}}").text("Seguir comprando");
-                                               
-                                                 $("#addToBasketProduct-{{$product->id}}").html("Se añadio a la canasta <i class='fa fa-check'></i>");
-                                                //        $("#addToBasketProduct-{{$product->id}}").attr("disabled", true);
+                                                 $("#addToBasketProduct-{{$product->id}}").html("Se añadio a la canasta <i class='fa fa-check'></i>")    
                                                         $("#addToBasketProduct-{{$product->id}}").addClass("btn-success");
                                                          var modal = $("#AddToBasketModal-{{$product->id}}").find('div'); 
                                                         $(modal).removeClass("modal-danger");
                                                         $(modal).addClass("modal-success");
-
-                                                // $("#product-{{$product->id}}").text("");
-                                                // $("#product-{{$product->id}}").html("<i class='fa fa-shopping-basket'></i>");
-                                                // $("#product-{{$product->id}}").removeClass("btn-danger").addClass("green");
-                                                    //$("#resultado").html(response);
+                                                        
+                                             
                                                     console.log(response);
                                             }
                                     });
                             }
 
                         });
+                    
 
         </script>
     @empty

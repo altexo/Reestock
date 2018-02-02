@@ -127,12 +127,13 @@
 
                 <!--Table body-->
                 <tbody>
-                	@forelse($lists as $list)
-                		{{-- @foreach($lists as $list) --}}
 
+                	@forelse($lists as $list)
+                
+                    @if(!$list->null)
 	                    <tr>
 	                        <th scope="row">
-	                           {{--  <input type="checkbox" id="checkbox1"> --}}
+	                        
 	                            {{$list->user_id}}
 	                        </th>
 	                        <td>{{$list->name}}</td>
@@ -141,7 +142,9 @@
 	                        
 	                        
 	                    </tr>
-	                   {{--  @endforeach --}}
+                        @else
+                        @endif
+	             
                   @empty
                   	 	<tr>
                         <th scope="row">
@@ -155,6 +158,7 @@
                         
                     </tr>
                   @endforelse
+                
                 </tbody>
                 <!--Table body-->
             </table>

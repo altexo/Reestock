@@ -355,11 +355,11 @@ $(document).ready(function() {
 ];
 var supplier = ['WALMART', 'LEY', 'COSTCO', 'SAMS', 'SORIANA', 'FRUTERIA OLIVAS', 'FRUTERIA LOS COMPADRES','FRUTERIA EL CANARIO', 'LA MERA', 'FARMACIO MODERNA', 'TRAUB', 'CHATA','LA CUARTA','VINOTECA','TODO ORGANIKO'];
 $.each(marcas, function(val, text) {
-            $('#brand').append( $('<option></option>').val(val).html(text) )
+            $('#brand').append( $('<option></option>').val(text).html(text) )
             }); 
 
 $.each(supplier, function(val, text) {
-            $('#supplier').append( $('<option></option>').val(val).html(text) )
+            $('#supplier').append( $('<option></option>').val(val+1).html(text) )
             }); 
 
 
@@ -469,6 +469,8 @@ $.each(supplier, function(val, text) {
 </script>
 <script type="text/javascript">
 	  $(document).ready(function(){
+
+	  });
 
 
 </script>

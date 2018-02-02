@@ -38,6 +38,7 @@ class ProductsController extends Controller
 
     public function create(Request $r){
         $file_name = '';
+       // return dd($r);
          if ($r) 
          {
             if($r->hasFile('file')){
@@ -124,7 +125,7 @@ class ProductsController extends Controller
                 $length = 16;
                 $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $rand_name = substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
-                $file_name = $file->move('images' , $file->getClientOriginalName());
+                $file_name = $file->move('images' , $file_name.$file->getClientOriginalName());
                 $prod_id = $img->route('id');
                 $product = Products::find($prod_id);
                 $product->product_img = $file_name;
@@ -207,8 +208,8 @@ class ProductsController extends Controller
                 //Comienza transaccion
             DB::transaction(function () use($id) {
                 $p_id = $id->route('id');
-            $delete = DB::delete('delete from supplier_products where products_id = :id', ['id' => $p_id]);
-            $delete = DB::delete('delete from products where id = :id', ['id' => $p_id]);
+                    $delete = DB::delete('delete from supplier_products where products_id = :id', ['id' => $p_id]);
+                    $delete = DB::delete('delete from products where id = :id', ['id' => $p_id]);
 
             });
         
@@ -222,6 +223,7 @@ class ProductsController extends Controller
 
 //Funcion para importar productos desde un CSV
     public function importProducts(Request $request){
+
         $validator = \Validator::make($request->all(), [
             'file' => 'required',
         ]);
@@ -236,20 +238,22 @@ class ProductsController extends Controller
         //dd($csvData);
         $rows = array_map("str_getcsv", explode("\n", $csvData));
         $header = array_shift($rows);
-        //dd($header);
-       // dd($header);
+        //return dd($header);
+       //dd($header);
+
         foreach ($rows as $row) {
             $row = array_combine($header, $row);
-            //print_r($row);
+            
 
         
         // dd($row);
     
 
             $product = new Products;
-            echo "line";
-                $product->bar_code = $row['CODIGO'];
+            echo "start<br>";
+                //$product->bar_code = $row['CODIGO'];
                     $product->product_name = $row['ARTICULO'];
+                   // echo $product->product_name.'<br>';
                     $product->brand = $row['MARCA'];
                     if ($row['DEPARTAMENTO'] == 'ABARROTES') {
                         $product->department_id = 1;
@@ -275,7 +279,7 @@ class ProductsController extends Controller
                     $product_id = $product->id;
                     //Supplier price
                         
-                        if (($row['COSTCO'] != '') && ($row['COSTCO']!= '  ')) 
+                        if (isset($row['COSTCO']) && ($row['COSTCO'] != '') && ($row['COSTCO']!= '  ')) 
                         {    $supplier_products = new supplier_products;
                             $purchase_price = $row['COSTCO'];
                             $sale_price = $purchase_price * 1.07; 
@@ -286,8 +290,8 @@ class ProductsController extends Controller
                             $supplier_products->save();
                             echo "Costo Yes";
                         }else
-                        {echo "no Costco";}
-                        if (($row['SAMS'] != '') && ($row['SAMS'] != '  ')) 
+                        {}
+                        if (isset($row['SAMS']) && ($row['SAMS'] != '') && ($row['SAMS'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['SAMS'];
@@ -298,19 +302,25 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }else
-                        {echo "no Sams";}
-                        if (($row['WALMART'] != '') && ($row['WALMART'] != '  ')) 
+                        {}
+                        if (isset($row['WALMART']) && ($row['WALMART'] != '') && ($row['WALMART'] != '  ')) 
                         {
-                            $supplier_products = new supplier_products;
+                        
+                                   $supplier_products = new supplier_products;
                             $purchase_price = $row['WALMART'];
                             $sale_price = $purchase_price * 1.07; 
                             $supplier_products->products_id = $product_id;
                             $supplier_products->supplier_id = 1; 
                             $supplier_products->purchase_price = $purchase_price;
                             $supplier_products->sale_price = $sale_price;
+                            //print_r($supplier_products);
                             $supplier_products->save();
+                            // if(!$saved){
+                            //     App::abort(500, 'Error');
+                            // }  
+                         
                         }
-                        if (($row['LEY'] != '') && ($row['LEY'] != '  ')) 
+                        if (isset($row['LEY']) && ($row['LEY'] != '') && ($row['LEY'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['LEY'];
@@ -321,8 +331,8 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }else
-                        {echo "no ley";}
-                        if (($row['SORIANA'] != '') && ($row['SORIANA'] != '  ')) 
+                        {}
+                        if (isset($row['SORIANA']) && ($row['SORIANA'] != '') && ($row['SORIANA'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['SORIANA'];
@@ -333,8 +343,8 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }else
-                        {echo "no soriana";}
-                        if (($row['FRUT OLIVAS'] != '' ) && ($row['FRUT OLIVAS'] != '  ')) 
+                        {}
+                        if (isset($row['FRUT OLIVAS']) && ($row['FRUT OLIVAS'] != '' ) && ($row['FRUT OLIVAS'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['FRUT OLIVAS'];
@@ -345,8 +355,8 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }else
-                        {echo "no olivas";}
-                        if (($row['FRUT LOS COMPADR.'] != '') && ($row['FRUT LOS COMPADR.'] != '  ')) 
+                        {}
+                        if (isset($row['FRUT LOS COMPADR.']) && ($row['FRUT LOS COMPADR.'] != '') && ($row['FRUT LOS COMPADR.'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['FRUT LOS COMPADR.'];
@@ -357,7 +367,7 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }
-                        if (($row['FRUT EL CANARIO'] != '') && ($row['FRUT EL CANARIO'] != '  ')) 
+                        if (isset($row['FRUT EL CANARIO']) && ($row['FRUT EL CANARIO'] != '') && ($row['FRUT EL CANARIO'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['FRUT EL CANARIO'];
@@ -368,7 +378,7 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }
-                         if (($row['FRUT LA TAPATIA'] != '') && ($row['FRUT LA TAPATIA'] != '  ')) 
+                         if (isset($row['FRUT LA TAPATIA']) && ($row['FRUT LA TAPATIA'] != '') && ($row['FRUT LA TAPATIA'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['FRUT LA TAPATIA'];
@@ -379,7 +389,7 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }
-                         if (($row['SANTA CLARA'] != '') && ($row['SANTA CLARA'] != '  ')) 
+                         if (isset($row['SANTA CLARA']) && ($row['SANTA CLARA'] != '') && ($row['SANTA CLARA'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['SANTA CLARA'];
@@ -390,7 +400,7 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }
-                          if (($row['LA VAQUITA'] != '') && ($row['LA VAQUITA'] != '  ')) 
+                          if (isset($row['LA VAQUITA']) && ($row['LA VAQUITA'] != '') && ($row['LA VAQUITA'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['LA VAQUITA'];
@@ -424,7 +434,7 @@ class ProductsController extends Controller
                         //     $supplier_products->sale_price = $sale_price;
                         //     $supplier_products->save();
                         // }
-                        if (($row['TRAUB'] != '') && ($row['TRAUB'] != '  '))
+                        if (isset($row['TRAUB']) && ($row['TRAUB'] != '') && ($row['TRAUB'] != '  '))
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['TRAUB'];
@@ -435,7 +445,7 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }
-                        if (($row['CHATA'] != '') && ($row['CHATA'] != '  ')) 
+                        if (isset($row['CHATA']) && ($row['CHATA'] != '') && ($row['CHATA'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['CHATA'];
@@ -457,7 +467,7 @@ class ProductsController extends Controller
                         //     $supplier_products->sale_price = $sale_price;
                         //     $supplier_products->save();
                         // }
-                        if (($row['VINOTECA'] != '') && ($row['VINOTECA'] != '  ')) 
+                        if (isset($row['VINOTECA']) && ($row['VINOTECA'] != '') && ($row['VINOTECA'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['VINOTECA'];
@@ -468,7 +478,7 @@ class ProductsController extends Controller
                             $supplier_products->sale_price = $sale_price;
                             $supplier_products->save();
                         }
-                        if (($row['TODO ORGANIKO'] != '') && ($row['TODO ORGANIKO'] != '  ')) 
+                        if (isset($row['TODO ORGANIKO']) && ($row['TODO ORGANIKO'] != '') && ($row['TODO ORGANIKO'] != '  ')) 
                         {
                             $supplier_products = new supplier_products;
                             $purchase_price = $row['TODO ORGANIKO'];

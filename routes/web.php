@@ -66,6 +66,7 @@ Route::post('list/cancel', 'HomeController@cancelList')->name('cancel.list');
 Route::post('list/updateProduct', 'HomeController@updateList')->name('update.list');
 Route::post('list/deleteItem', 'HomeController@deleteItem')->name('delete.item');
 Route::post('list/addNewProduct', 'ListController@addNewProduct')->name('add.product');
+Route::post('list/condirmList', 'HomeController@confirm_list')->name('confirm.list');
 });
 
 Route::get('/tienda', 'StoreController@index')->name('store');
@@ -83,6 +84,10 @@ Route::get('/lista', 'StoreController@showList')->name('show.list');
 //Users Routes
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/reset',function(){
+	return view('auth.login-def');
+});
+
 Route::get('/lista/{lista}', function ($id){
 	
 	$lista = List_products::where('list_ID', $id)->get();
@@ -93,7 +98,20 @@ Route::get('/lista/{lista}', function ($id){
 Route::get('/checkout', 'ListController@index');
 //test-route
 Route::get('/test/views/index2', function(){
-	return view('index2');
+		$current_date =  new \DateTime();
+
+        $reestock_lock_date = $current_date->modify('+2 days')->format('Y-m-d');
+        $list = App\List_products::select(DB::raw('DISTINCT list_products.products_id, SUM(list_products.quantity) as cantidad'))
+        	->groupBy('list_products.products_id')
+        	->where(DB::raw('date(reestock_date)'), $reestock_lock_date)
+        	->where('active', 4)
+        	->get();
+        //$list = App\list_products::where(DB::raw('date(reestock_date)'), $reestock_lock_date)
+        //->join('products','list_products.products_id','=','products.id')
+        //->get();
+
+       
+	return ['order' => $list];
 });
 
 

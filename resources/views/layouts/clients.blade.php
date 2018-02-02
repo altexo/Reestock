@@ -2,9 +2,127 @@
 
 @section('estilos')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<link href="{{url('css/jquery.nice-number.css')}}" rel="stylesheet" type="text/css">
 @section('contenedor_class','margin10')
 
 <style type="text/css">
+.checkout
+{
+    height: 0%;
+    padding: 5px;
+     cursor: pointer;
+}
+.total{
+    border-radius: 5%;
+}
+.icon-img{
+        margin-bottom: 3px;
+    height: 15px;
+    width: 15px;
+}
+.del-product-container{
+    height: 0px;
+}
+.del-product{
+    transform: translate(1200%,-105%);
+}
+.product-basket{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: white;
+        padding-bottom: 0.1rem!important;
+}
+.modal-products{
+    /*background-color: #f7f7f7;*/
+    background-color: white;
+    /*padding-right: 0px !important;*/
+}
+
+.basket-button
+{
+    border: none;
+    cursor: pointer;
+}
+    .number-button 
+    { 
+        background-color:#34BC9D; 
+        color: black; 
+        border:3px solid #34BC9D;
+    }
+    .basket-p-name{
+        margin-bottom: -10px;
+    }
+                                   
+    /* Extra small devices (portrait phones, less than 576px)*/
+    @media (max-width: 575px) { 
+           .modal .modal-full-height.modal-lg {
+              max-width: 100%;
+            width: 100%;
+        }
+        .del-product{
+            transform: translate(780%,-90%);
+        }
+        .mobile{
+            display: block;
+        }
+          .mobile-logo{
+            max-width: 75%;
+        }
+        .margin10 {
+        margin-top: 30% !important;
+    }
+        .mobile-img{
+            max-width: 30%
+        }
+     }
+
+    /*// Small devices (landscape phones, less than 768px)*/
+    @media (min-width: 767px) { 
+        .modal .modal-full-height.modal-lg {
+            max-width: 530px;
+            width: 100%;
+        }
+        .mobile{
+            display: block;
+        }
+ /*       .margin10 {
+    margin-top: 30% !important;
+}*/
+     }
+    /*// Medium devices (tablets, less than 992px)*/
+    @media (min-width: 991px) { 
+        .modal .modal-full-height.modal-lg {
+            max-width: 520px
+        }
+        .mobile{
+            display: none;
+        }
+        
+     }
+    /*// Large devices (desktops, less than 1200px)*/
+    @media (min-width: 1199px) { 
+        .modal .modal-full-height.modal-lg {
+            max-width: 520px
+        }
+        .mobile{
+            display: none;
+        }
+        .mobile-logo{
+            max-width: 75%;
+        }
+        
+     }
+     @media (min-width: 1200px) { 
+        .modal .modal-full-height.modal-lg {
+            max-width: 520px
+        }
+        .mobile{
+            display: none;
+        }
+        
+     }
+
+
 /*.pagination{
     font-size: 20px;
 }*/body, body *:not(html):not(style):not(br):not(tr):not(code) {
@@ -88,8 +206,9 @@ div.hidden {
             <div class="container">
                 
                 <a class="navbar-brand" href="{{url('/')}}">
-                    <img src="{{asset('img/rsz_reestock.png')}}" class="img-fluid flex-center">
+                    <img src="{{asset('img/rsz_reestock.png')}}" class="img-fluid flex-center mobile-logo">
                 </a>
+
                 
                 <div class="collapse navbar-collapse" id="navbarNav1">
             		<ul class="navbar-nav ml-auto">
@@ -102,8 +221,10 @@ div.hidden {
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('home')}}"><span>Mis listas</span></a>
                         </li>
-                		<li class="nav-item">
-                    		<a class="nav-link" href="#" data-toggle="modal"  data-target="#fluidModalRightSuccessDemo"><span id="badge" class="badge primary-color">{{Cart::count()}}</span><span><i class="fa fa-shopping-basket" aria-hidden="true"></i></span></a>
+                		<li class="nav-item special-use">
+                    		<a class="nav-link" href="#" data-toggle="modal"  data-target="#fluidModalRightSuccessDemo">
+                            <span id="badge" class="badge primary-color">{{Cart::content()->count()}}</span>
+                            <span><i class="fa fa-shopping-basket" aria-hidden="true"></i></span></a>
                     	<!-- 	<button type="button" data-toggle="modal" data-target="#fluidModalRightSuccessDemo"><i></i></button> -->
                 		</li>
                      
@@ -134,6 +255,8 @@ div.hidden {
             		</ul>
            
         		</div>
+                <div class="mt-2 fixed-top float-right mobile">   <a class="nav-link float-right" href="#" data-toggle="modal"  data-target="#fluidModalRightSuccessDemo">{{-- <span id="mobile-badge" class="badge primary-color">{{Cart::content()->count()}}</span> --}}<span><i class="fa fa-shopping-basket fa-2x" aria-hidden="true"></i></span></a>
+                </div>
             </div>
         </nav>
         <!--/.Navbar-->
@@ -147,8 +270,52 @@ div.hidden {
 
 @endsection
 @section('sideCart')
+<!--Reestock modal-->
+<div class="modal fade" id="reestockModalView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+                <!--Content-->
+                <div class="modal-content">
+
+                    <!--Header-->
+                    <div class="modal-header">
+                        <img src="" class="rounded-circle img-responsive" alt="Avatar photo">
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body text-center mb-1">
+
+                        <h6 class="mt-1 mb-3">-----</h6>
+                        <input type="hidden" id="p-rowID" class="form-control ml-0">
+                        <div class="md-form ml-0 mr-0">
+                            <div class="md-form">
+                                <select class="mdb-select colorful-select dropdown-primary" id="newReestock">
+
+                                    <option  value="0">Unica vez</option>
+                                    <option  value="7">Cada 7 días</option>
+                                    <option value="15">Cada 15 días</option> 
+                                    <option value="30">Cada 30 dīas</option>
+                                    <option value="45">Cada 6 semanas</option>
+                                    <option value="60">Cada 2 meses</option>
+                                    <option value="180">Cada 6 meses</option>
+                                </select>
+                                <label>Reestock Cada: </label>
+                            </div>
+                                                               
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-cyan mt-1 waves-effect waves-light" id="SaveNewReestock">Cambiar
+                               
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <!--/.Content-->
+            </div>
+        </div>
+<!--Reestock modal-->
 <div class="modal fade right modal-md" id="fluidModalRightSuccessDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="true" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-full-height modal-right modal-md  modal-notify modal-success modal-container" role="document">
+            <div class="modal-dialog modal-full-height modal-right modal-lg  modal-notify modal-danger modal-container modal-custom-responsive" role="document">
                 <!--Content-->
                 <div class="modal-content modal-container">
                     <!--Header-->
@@ -160,89 +327,96 @@ div.hidden {
                     </div>
 
                     <!--Body-->
-                    <div class="modal-body">
+                    <div class="modal-body modal-products">
                         <div class="text-center">
                             <i class="fa fa-shopping-basket fa-4x mb-3 animated rotateIn"></i>
                            
                         </div>
                          <!-- Shopping Cart table -->
-                <div class="table-responsive" id="list">
+                <div class="row" id="list">
+                    @forelse(Cart::content() as $item)
+                        <div class="col-md-12 row pr-0 mb-2 product-basket">
+                            <div class="col-md-12 del-product-container">
+                                <a class="btn-floating btn-sm red del-product" id="n-remove-button"><i style="color: white" class="fa fa-trash"></i></a>
+                                 <input type="hidden" id="rowID" value="{{$item->rowId}}" name="">
+                            </div>
+                            
 
-                    <table class="table product-table w-auto">
-                        <thead>
-                            <tr>
-                                <th class="font-bold">
-                                    <strong>Producto</strong>
-                                </th>
-                             
-                              
-                                <th class="font-bold">
-                                    <strong>Precio</strong>
-                                <th>Cantidad</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                       @forelse(Cart::content() as $item)
-                       	  <tr>
-                                <td>
-                                   
-                                     {{ $item->name}}
+                            <div class="col-md-2 p-0 py-1">
+                                @if($item->model->product_img) <img src="{{url($item->model->product_img)}}" class="img-fluid mobile-img">
+                                @else
+                                    <img src="{{url('img/no-img.jpg')}}" class="img-fluid no-shadow mobile-img"  alt="">                               
+                                @endif    
+                            </div>
+                            <div class="col-md-6 p-0 row py-0">
+                                <div class="col-md-12">
+                                    <label class="basket-p-name">  {{ $item->name}}</label><br>
+                                    <label class="font-weight-bold pb-0">{{$item->model->brand}}</label> <label class="pb-0">{{$item->model->unity}}</label><br>
+                                    <button class="basket-button pl-0"><i class="fa fa-edit fa-lg"></i> Instrucciones</button><br>
+                                    <input type="hidden" id="rowID" value="{{$item->rowId}}" name="" >
+
+                                    <a href="#"><button class="basket-button pl-0" 
+                                        data-dismiss="modal" 
+                                        id="reesotckModal" 
+                                        data-rid="{{$item->rowId}}" 
+                                        data-name="{{$item->name}}" 
+                                        data-img="  @if($item->model->product_img){{url($item->model->product_img)}} 
+                                                    @else 
+                                                    {{url('img/no-img.jpg')}}
+                                                    @endif
+                                                "
+                                      >
+                                      <img src="{{url('icons/ree-bag.png')}}" class="icon-img"> Reestock cada: 
+                                        @if($item->options->reestock == 0)
+                                            Única vez
+                                        @elseif($item->options->reestock <= 30)
+                                            {{$item->options->reestock}} días 
+                                        @elseif($item->options->reestock == 45)
+                                            6 Semanas
+                                        @elseif($item->options->reestock == 60)
+                                            2 Meses 
+                                        @elseif($item->options->reestock == 180)
+                                            6 Meses                                     
+                                      @endif
+                                    </button></a>
+                                     
+                                </div>
+                           </div>
+                            <div class="col-md-3 p-0 py-1 pl-1">
+                                 @if($item->model->unity == "KG" || $item->model->unity == "KILO" )
+                                    <label>KG</label><br>
+                                     <input class="col-md-6 input-alternate number-button" type="number" id="qty" value="{{$item->qty}}"  min="0.20" max="99999.99" step="0.20" pattern="^\d+(?:\.\d{1,2})?$">
                                  
-                                   <p class="text-muted"></p>
-                                </td>
-                              
-                          
-                                <td>{{ $item->price }}</td>
-                                <td class="center-on-small-only">
-                                  
-                                	<input type="number" min="1" max="999" name="qty" class="qty" id="qty" value="{{$item->qty}}">	
-                                      <input type="hidden" id="rowID" value="{{$item->rowId}}" name="">
-                                    </div>
-                                </td>
-                          
-                                <td>
-                                    <input type="hidden" id="rowID" value="{{$item->rowId}}" name="">
-                                    <button type="button" id="remove-button" class="btn btn-sm btn-primary waves-effect waves-light remove-button" data-toggle="tooltip" data-placement="top" title="" data-original-title="Remove item">X
-                                    </button>
-                                </td>
-                            </tr>
+                                 @else
+                                    <input class="input-alternate number-button b-number" type="number" id="qty" value="{{$item->qty}}" disabled min="1" max="999">
+                                @endif
+                                 <input type="hidden" id="rowID" value="{{$item->rowId}}" name="">
+                            </div>
+                            <div class="col-md-1 p-0 py-1">
+
+                                    <label id="amount">${{ $item->price * $item->qty}}</label>
+
+                            </div>
                            
-                       @empty
+                        </div>
+                        @empty
                        @endforelse
            
-                       
-                            <tr>
-                                    <td class="text-right">
-                                    <h4 class="mt-2">
-                                        <strong>Total: </strong>
-                                    </h4>
-                                </td>
-                                <td colspan="2" class="text-right">
-                                    <h4 class="mt-2">
-                                        <strong style="font-size: 14px" id="total">{{Cart::subtotal() }} $</strong>
-                                        </h4>
-                                </td>
-                              <!--   <td colspan="3" class="text-right">
-                                    <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light">Guardar lista
-                                        <i class="fa fa-angle-right right"></i>
-                                    </button>
-                                </td> -->
-                            </tr>
-                            <!-- Fourth row -->
-
-                        </tbody>
-                        <!-- /.Table body -->
-
-                    </table>
 
                 </div>
                 <!-- Shopping Cart table -->
                     </div>
 
                     <!--Footer-->
-                    <div class="modal-footer justify-content-center">
-                        <a type="button" class="btn btn-primary-modal waves-effect waves-light" href="{{ url('/checkout') }}">Chekout</a>
-                       <!--  <a type="button" class="btn btn-outline-secondary-modal waves-effect" data-dismiss="modal">No, thanks</a> -->
+                    <div class="d-flex justify-content-center white py-3 pt-1 " style="  bottom: 0; position: sticky; z-index:100;">
+                        <div onclick="location.href='{{ url('/checkout') }}';" class="col-md-11 d-flex justify-content-end bd-highlight  color-block danger-color-dark checkout">
+                           
+                                <div class="p-2 col-md-6 bd-highlight"><strong class="white-text" style="font-size: 15px;"">Checkout</strong></div>
+                          
+
+                            <div class="p-2 bd-highlight  color-block danger-color total"><strong class="float-right white-text" id="total">${{Cart::subtotal()}}</strong></div>
+                        </div>                        
+                        {{-- <a type="button" class="btn btn-primary-modal waves-effect waves-light col-md-12" href="{{ url('/checkout') }}">Chekout</a> --}}
                     </div>
                 </div>
                 <!--/.Content-->
@@ -303,13 +477,25 @@ div.hidden {
 
 
 @section('scripts')   
+
+<script src="{{url('js/jquery.nice-number.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+  
+    $('.b-number').niceNumber();
+
     //$(":input[type='number']").bind('keyup mouseup', function () {
-        $('body').on('keyup mouseup', '#qty', function() {
-        var qty = $(this).val();
-        var rowID = $(this).next('input').val();   
+  
+        $('body').on('click', '#qty', function() {
+
+        var qty = $(this).parent('div').find('input').val();
+        var rowID = $(this).parent('div').next('input').val();
+        var KgRowId = $(this).next('input').val();
+        if (typeof rowID  === "undefined") {
+            rowID = KgRowId;
+        }
         var data = { "rowId" : rowID, "qty" : qty };
+        console.log(data);
 
         $.ajaxSetup({
                 headers: {
@@ -327,11 +513,39 @@ $(document).ready(function() {
                                                 $( "#total" ).load(window.location.href + " #total" );
                                                     $( "#badge" ).load(window.location.href + " #badge" );
 
+                                                    // $( "#amount" ).load(window.location.href + " #amount" ); 
+
                                                     console.log(response);
                                             }
                                     });      
 });
 
+$('body').on('click', '#n-remove-button', function () {
+    var rowID = $(this).next('input').val();   
+    var divDel = $(this).parent('div').parent('div');
+    var data = {"rowId": rowID};
+  
+      $.ajaxSetup({
+                headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          }
+                });
+
+        $.ajax({
+                    data:  data,
+                    url:   '{{url("/lista/removeFromCart")}}',
+                    type:  'post',
+                    beforeSend: function () {
+                        console.log(rowID);
+                    },
+                    success:  function (response) {
+                          $(divDel).fadeOut('normal');
+                        $( "#total2" ).load(window.location.href + " #total2" );
+                        $( "#total" ).load(window.location.href + " #total" );
+                        $( "#badge" ).load(window.location.href + " #badge" );          
+                    }
+                });   
+});
 $('body').on('click', '#remove-button', function () {
     $(this).closest('tr').fadeOut();
      var rowID = $(this).prev('input').val();   
@@ -352,11 +566,54 @@ $('body').on('click', '#remove-button', function () {
                     success:  function (response) {
                         $( "#total2" ).load(window.location.href + " #total2" );
                         $( "#total" ).load(window.location.href + " #total" );
-                        $( "#badge" ).load(window.location.href + " #badge" );                                            console.log(response);
+                        $( "#badge" ).load(window.location.href + " #badge" ); 
+
                     }
                 });   
 });
 });
+
+    var rid = '';
+
+$("body").on('click', '#reesotckModal', function(){
+   
+    var name = $(this).data('name') 
+    var img = $(this).data('img') 
+    var rid = $(this).data('rid')
+
+    var m = $('#reestockModalView').modal();
+    m.find('.modal-body h6').text(name)
+    m.find('.modal-header img').attr('src', img)
+    m.find('.modal-body #p-rowID').val(rid)
+    
+});
+$("#SaveNewReestock").click(function(){
+            var rowID = $("#p-rowID").val();
+            var concurrence = $("#newReestock").val();  
+            var data = { "rowId" : rowID, "concurrence" : concurrence }; 
+            $.ajaxSetup({
+                headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          }
+                });
+
+            $.ajax({
+                        data:  data,
+                        url:   '{{url("/lista/updateConcurrence")}}',
+                        type:  'post',
+                        beforeSend: function () {
+                           
+                        },
+                        success:  function (response) {   
+
+                        $( "#list" ).load(window.location.href + " #list", redo );     
+                            function redo(){
+                                $('.b-number').niceNumber();
+                            }
+                             $('#reestockModalView').modal('hide')
+                        }
+});
+        });
 </script>
 	    @yield('scripts_unicos') 
 

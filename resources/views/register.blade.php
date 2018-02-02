@@ -127,7 +127,7 @@
 
                 <!--Grid column-->
                 <div class="col-md-6">
-                    <p class="font-small grey-text d-flex justify-content-end">Ya tienes cuenta? <a href="#" class="blue-text ml-1"> Inicia sesión</a></p>
+                    <p class="font-small grey-text d-flex justify-content-end">Ya tienes cuenta? <a href="{{url('login')}}" class="blue-text ml-1"> Inicia sesión</a></p>
                 </div>
                 <!--Grid column-->
 
