@@ -49,10 +49,17 @@ Route::prefix('admin')->group( function() {
 	Route::post('/edit/product/{id}/IMGupdate', 'ProductsController@updateProductImg')->name('product.img');
 	Route::post('/delete/product/{id}', 'ProductsController@deleteByid')->name('product.delete');
 	
-	route::get('/lists', 'ListAdminController@index')->name('Listas / Todas');
+	
 	//Test
 	Route::get('/livesearch','ProductsController@liveSearch');
 
+	//ListAdmin routes
+	Route::get('order/{date}/{id}/{status}', 'ListAdminController@show');
+	//filtros para listas
+	route::get('/lists/all', 'ListAdminController@index')->name('Listas / Todas');
+	Route::get('/lists/confirmed/', 'ListAdminController@confirmed')->name('Listas / Confirmadas');
+	Route::get('/lists/postponed', 'ListAdminController@postponed')->name('Listas / Pospuestas');
+	Route::get('/lists/calceled', 'ListAdminController@canceled')->name('Listas / Canceladas');
 	
 });
 //End
@@ -78,7 +85,7 @@ Route::post('/lista/removeFromCart', 'StoreController@removeFromCart');
 Route::post('/lista/updateConcurrence', 'StoreController@updateConcurrence');
 
 Route::get('/lista', 'StoreController@showList')->name('show.list');
-
+Route::post('/tienda/producto/solicitud','StoreController@requestProduct')->name('product.request');
 //Route::resource('/lista/create/{id}', 'ListController@create')->name('addlist');
 
 //Users Routes
@@ -100,6 +107,10 @@ Route::get('/checkout', 'ListController@index');
 Route::get('/test/views/index2', function(){
 		$current_date =  new \DateTime();
 
+        $n = $current_date->format('Y-m-d');
+          //$day = date("d", $n);
+         $ne = date('N', strtotime($n));
+        return $ne;
         $reestock_lock_date = $current_date->modify('+2 days')->format('Y-m-d');
         $list = App\List_products::select(DB::raw('DISTINCT list_products.products_id, SUM(list_products.quantity) as cantidad'))
         	->groupBy('list_products.products_id')

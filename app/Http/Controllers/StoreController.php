@@ -8,6 +8,8 @@ use Auth;
 use DB;
 use App\List_products;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use App\StandbyProducts;
+use Illuminate\Support\Facades\Input;
 
 class StoreController extends Controller
 {
@@ -156,7 +158,38 @@ class StoreController extends Controller
         }
     }
 
+    //Request product by custumer
+    public function requestProduct(Request $r){
+        $file_name = '';
 
+        try {
+                if($r->hasFile('p_image')){
+                        $file=Input::file('p_image');
+                        $length = 16;
+                        $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                        $rand_name = substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
+                        $file_name = $file->move('images/products' , $rand_name.$file->getClientOriginalName());
+    
+                }
+
+              $standby = new StandbyProducts;
+                $standby->name = $r->name;
+                $standby->description = $r->description;
+                $standby->department = $r->department;
+                $standby->brand = $r->brand;
+                $standby->unity = $r->unity;
+                $standby->store = $r->store;
+                $standby->email = $r->email;
+                $standby->email = $r->email;
+                $standby->image = $file_name;
+                $standby->save();
+
+        } catch (Exception $e) {
+            return redirect()->back()->with('err', 'Woops. Ocurrio algo inesperado.');
+        }
+      
+        return redirect()->back()->with('success', '¡Gracias! Nosotros te avisamos cuando el producto este disponible en la tienda.');
+    }
     //Chek User Lists Method--> Internal Method.
     public function getLists(){
         if (Auth::check()) {

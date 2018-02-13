@@ -27,6 +27,13 @@
     .white-i  {
         color: white !important;
     }
+    .file-field .btn-floating {
+  float: left; }
+.file-field.big .file-path-wrapper {
+  height: 3.2rem; }
+  .file-field.big .file-path-wrapper .file-path {
+    height: 3rem; }
+                
 
 </style>
 @endsection
@@ -256,6 +263,17 @@
                 <!-- Products Grid -->
                 <section class="section pt-4"> 
                     <div class="row">
+                        <div class="col-xl-12">
+                            @if(session('success'))
+                                    <div class="alert alert-success" role="alert">
+                                        {{session('success')}}
+                                    </div>
+                            @elseif(session('err'))   
+                                <div class="alert alert-danger" role="alert">
+                                        {{session('err')}}
+                                </div>     
+                            @endif
+                        </div>
                         <?php $count = 0; ?>
                     	@forelse($products as $product)
                         <?php $count++; ?>
@@ -451,6 +469,107 @@
 					            </div>
 					        </div>
                    		@empty
+                        <div class="col-md-12 alert alert-warning" role="alert">
+                            No se encontraron resultados.
+                        </div>
+                        <div class="col-md-12">
+                            <p>¿No encuentras los productos que buscas? <a href="#" data-toggle="modal" data-target="#modalContactForm">Solicita que el producto este disponible aqui.</a></p>
+                        </div>
+                        <div class="modal fade" id="modalContactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <form action="{{route('product.request')}}"  method="post" enctype="multipart/form-data">
+                                    {{ csrf_field() }}
+                                    <div class="modal-header text-center">
+                                        <h4 class="modal-title w-100 font-bold"><img class="float-left no-shadow" src="{{url('icons/groceries.png')}}" >Ingresa los datos del producto</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body mx-3">
+                                        
+                                        <div class="md-form">
+                                          
+                                            <input type="text" id="form3" class="form-control validate" required name="name">
+                                            <label data-error="No es valido" data-success="bien" for="form3">Nombre del producto</label>
+                                        </div>
+                                         <div class="md-form form-sm">
+                                          
+                                            <textarea type="text" id="description" class="md-textarea mb-0" name="description"></textarea>
+                                            <label for="description">Descripción</label>
+                                        </div>
+
+                                        <div class="md-form">
+                                        
+                                            {{-- <input type="text" id="form2" class="form-control validate" required name="department">
+                                            <label data-error="No es valido" data-success="bien" for="form2">Departamento</label> --}}
+                                            <select class="mdb-select colorful-select dropdown-danger" name="department" required>
+                                                <option value="1">Abarrotes</option>
+                                                <option value="3">Frutas y verduras</option>
+                                                <option value="4">Refrigerados</option>
+                                                <option value="2">Cárnicos</option>
+                                                <option value="5">Higiene Personal</option>
+                                                <option value="6">Limpieza</option>
+                                                <option value="7">Desechables</option>
+                                                 <option value="8">Otro..</option>
+                                            </select>
+                                            <label>Departamento</label>
+                                        </div>
+
+                                        <div class="md-form">
+                                        
+                                            <input type="text" id="form32" class="form-control validate" required name="brand">
+                                            <label data-error="No es valido" data-success="bien" for="form34">Marca</label>
+                                        </div>
+
+                                        <div class="md-form">
+                                          <select class="mdb-select colorful-select dropdown-danger" name="unity" required>
+                                                <option value="PIEZA">Pieza</option>
+                                                <option value="BOTE">Bote</option>
+                                                <option value="PAQUETE">Paquete</option>
+                                                <option value="GRAMOS">Gramos</option>
+                                                <option value="KILO">Kilo</option>
+                                                 <option value="OTRO">Otro..</option>
+                                            </select>
+                                            <label>Unidad</label>
+                                        </div>
+
+                                        <div class="md-form">
+                                        
+                                            <input type="text" id="name-store" class="form-control validate" required name="store">
+                                            <label data-error="No es valido" data-success="bien" for="name-store">Tienda</label>
+                                        </div>
+
+                                        <div class="file-field big">
+                                            <a class="btn-floating btn-lg pink lighten-1 mt-0">
+                                                <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                                <input type="file" name="p_image" id="p_upload" accept="image/x-png,image/gif,image/jpeg" >
+                                            </a>
+                                            <div class="file-path-wrapper">
+                                               <input class="file-path validate" type="text" placeholder="¿Quiers añadir una imagen? (opcional)">
+                                            </div>
+                                        </div>
+                                        <div class="md-form mt-2">   
+                                        @auth    
+                                             <input type="email" id="email" class="form-control validate" required name="email" value="{{Auth::user()->email}}">
+                                        @endauth
+
+                                            @guest
+                                                <input type="email" id="name-store" class="form-control validate" required name="email" >
+                                            @endguest
+                                        <label data-error="No es valido" data-success="bien" for="email" >email</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button class="btn btn-unique">Enviar <i class="fa fa-paper-plane-o ml-1"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                
 				        @endforelse
                     </div>
                   
@@ -645,7 +764,8 @@
 
         </script>
     @empty
-    <div class="col-md-12 d-flex justify-content-center"><div class="col-md-8"><p>No se encontro el producto.</p></div></div>
+    
+    </div></div>
     
     @endforelse﻿
 @endsection

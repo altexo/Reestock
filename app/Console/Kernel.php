@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //Registred
         'App\Console\Commands\cronEmail',
-        'App\Console\Commands\cronTest'
+        'App\Console\Commands\cronTest',
+        'App\Console\Commands\ReScheduleList'
     ];
 
     /**
@@ -32,6 +33,8 @@ class Kernel extends ConsoleKernel
         ->dailyAt('6:00');
         $schedule->command('notify:test')
         ->dailyAt('11:00');
+        $schedule->command('lists:reSchedule')
+        ->dailyAt('22:00');
     }
 
     /**

@@ -11,62 +11,39 @@
 @endsection
 @section('navbar')
 @section('contenido')
-	<!--Top Table UI-->
+
 <div class="card p-2 mb-5">
 
-    <!--Grid row-->
+ 
     <div class="row">
 
-        <!--Grid column-->
+       
         <div class="col-lg-3 col-md-12">
 
-            <!--Name-->
-            <select class="mdb-select colorful-select dropdown-primary mx-2">
+            <select class="mdb-select colorful-select dropdown-primary mx-2" onchange="location = this.value;">
                 <option value="" disabled selected>Mostrar..</option>
-                <option value="4">Cofirmadas</option>
-                <option value="2">Pospuestas</option>
-                <option value="3">Canceladas</option>
-                <option value="1">Completadas (Entregadas)</option>
+                <option value="{{route('Listas / Todas', ['status' => 0])}}">Todas</option>
+                <option value="{{route('Listas / Confirmadas',['status' => 4])}}">Cofirmadas</option>
+                <option value="{{route('Listas / Pospuestas')}}" disabled>Pospuestas</option>
+                <option value="{{route('Listas / Confirmadas')}}" disabled>Canceladas</option>
+                <option value="{{route('Listas / Confirmadas')}}" disabled>Completadas (Entregadas)</option>
                
             </select>
 
         </div>
-        <!--Grid column-->
 
-        <!--Grid column-->
+        <div class="col-lg-3 col-md-6">
+            <form action="">
+  
+                <input type="date" name="bday">
+            </form>
+        </div>
+
         <div class="col-lg-3 col-md-6">
 
-            <!--Blue select-->
-          {{--   <select class="mdb-select colorful-select dropdown-primary mx-2">
-                <option value="" disabled selected>Show only</option>
-                <option value="1">All <span> (2000)</span></option>
-                <option value="2">Never opened <span> (200)</span></option>
-                <option value="3">Opened but unanswered <span> (1800)</span></option>
-                <option value="4">Answered <span> (200)</span></option>
-                <option value="5">Unsunscribed <span> (50)</span></option>
-            </select> --}}
-            <!--/Blue select-->
 
         </div>
-        <!--Grid column-->
 
-        <!--Grid column-->
-        <div class="col-lg-3 col-md-6">
-
-            <!--Blue select-->
-          {{--   <select class="mdb-select colorful-select dropdown-primary mx-2">
-                <option value="" disabled selected>Filter segments</option>
-                <option value="1">Contacts in no segments <span> (100)</span></option>
-                <option value="1">Segment 1 <span> (2000)</span></option>
-                <option value="2">Segment 2 <span> (1000)</span></option>
-                <option value="3">Segment 3 <span> (4000)</span></option>
-            </select> --}}
-            <!--/Blue select-->
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
         <div class="col-lg-3 col-md-6">
 
             <form class="form-inline mt-2 ml-2">
@@ -75,25 +52,25 @@
             </form>
 
         </div>
-        <!--Grid column-->
+
 
     </div>
-    <!--Grid row-->
+
 
 </div>
-<!--Top Table UI-->
+
 
 <div class="card card-cascade narrower col-md-12">
 
-    <!--Card image-->
-    <div class="view gradient-card-header blue-gradient narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
+
+    <div class="view gradient-card-header blue darken-3 narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
 
         <div>
            {{--  <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i class="fa fa-th-large mt-0"></i></button>
             <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i class="fa fa-columns mt-0"></i></button> --}}
         </div>
 
-        <a href="" class="white-text mx-3">Listas Confirmadas</a>
+        <a href="" class="white-text mx-3">Listas</a>
 
         <div>
           {{--   <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i class="fa fa-pencil mt-0"></i></button>
@@ -134,11 +111,11 @@
 	                    <tr>
 	                        <th scope="row">
 	                        
-	                            {{$list->user_id}}
+	                            {{$list->users_id}}
 	                        </th>
 	                        <td>{{$list->name}}</td>
 	                        <td>{{$list->nom_dia}} {{ $list->dia }} de {{ $list->mes }}</td>
-	                        <td></td>
+	                        <td><a href="{{url('admin/order/'.$list->rdate.'/'.$list->users_id.'/'.$status) }}"><i class="fa fa-eye"></i></a></td>
 	                        
 	                        
 	                    </tr>
@@ -158,6 +135,23 @@
                         
                     </tr>
                   @endforelse
+                {{--   @forelse($lists as $list => $item)
+                    @forelse($item as $i)
+                         <tr>
+                            <th scope="row">
+                            
+                                {{$i->user_id}}
+                            </th>
+                            <td>{{$i->name}}</td>
+                            <td>{{$i->nom_dia}} {{ $i->dia }} de {{ $i->mes }}</td>
+                            <td></td>
+                            
+                            
+                        </tr>
+                    @empty
+                    @endforelse
+                  @empty
+                  @endforelse --}}
                 
                 </tbody>
                 <!--Table body-->

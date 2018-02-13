@@ -125,7 +125,7 @@ class ProductsController extends Controller
                 $length = 16;
                 $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $rand_name = substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
-                $file_name = $file->move('images' , $file_name.$file->getClientOriginalName());
+                $file_name = $file->move('images' , $rand_name.$file->getClientOriginalName());
                 $prod_id = $img->route('id');
                 $product = Products::find($prod_id);
                 $product->product_img = $file_name;

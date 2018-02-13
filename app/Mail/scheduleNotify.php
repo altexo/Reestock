@@ -28,6 +28,6 @@ class scheduleNotify extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.scheduleNotify', ['url' => 'http://127.0.0.1:8000/home']);
+        return $this->from('info@reestock.com.mx')->subject('Confirme sus listas')->cc('info@reestock.com.mx')->markdown('emails.scheduleNotify', ['url' => 'http://reestock.com.mx/home']);
     }
 }
