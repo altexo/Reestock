@@ -11,7 +11,7 @@
 @endsection
 @section('navbar')
 @section('contenido')
-
+@include('admins.msj-component')
 <div class="card p-2 mb-5">
 
  
@@ -35,7 +35,7 @@
         <div class="col-lg-3 col-md-6">
             <form action="">
   
-                <input type="date" name="bday">
+               {{--  <input type="date" name="bday"> --}}
             </form>
         </div>
 
@@ -70,7 +70,7 @@
             <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i class="fa fa-columns mt-0"></i></button> --}}
         </div>
 
-        <a href="" class="white-text mx-3">Listas</a>
+        <a href="" class="white-text mx-3"> {{ Route::currentRouteName() }}</a>
 
         <div>
           {{--   <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i class="fa fa-pencil mt-0"></i></button>
@@ -115,7 +115,7 @@
 	                        </th>
 	                        <td>{{$list->name}}</td>
 	                        <td>{{$list->nom_dia}} {{ $list->dia }} de {{ $list->mes }}</td>
-	                        <td><a href="{{url('admin/order/'.$list->rdate.'/'.$list->users_id.'/'.$status) }}"><i class="fa fa-eye"></i></a></td>
+	                        <td><a href="{{url('admin/order/'.$list->rdate.'/'.$list->users_id.'/'.$list->active) }}"><i class="fa fa-eye"></i></a></td>
 	                        
 	                        
 	                    </tr>
@@ -128,7 +128,7 @@
                             <input type="checkbox" id="checkbox1">
                             <label for="checkbox1" class="label-table"></label>
                         </th>
-                        <td>Mark</td>
+                        <td>No hay</td>
                         <td>Otto</td>
                         <td></td>
                         

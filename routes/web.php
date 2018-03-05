@@ -37,7 +37,7 @@ Route::prefix('admin')->group( function() {
 	Route::get('/create/product', 'ProductsController@showCreateProduct')->name('Crear Producto');
 	Route::get('/employees', 'AdminController@showEmployeesList')->name('Empleados');
 	Route::get('/clients', 'AdminController@showClientsList')->name('Clientes');
-	Route::get('/order/list', 'ListAdminController@orderList')->name('Lista de compra');
+	
 	Route::get('/', 'AdminController@index')->name('admin.dashboard');
 
 	//ProductController
@@ -55,11 +55,18 @@ Route::prefix('admin')->group( function() {
 
 	//ListAdmin routes
 	Route::get('order/{date}/{id}/{status}', 'ListAdminController@show');
+	//Orden de compra
+	Route::get('/order/list', 'ListAdminController@orderList')->name('Lista de compra');
+		//Filtros
+		Route::get('/byDate/{date}', 'ListAdminController@orderByDate')->name('ordenada');
 	//filtros para listas
 	route::get('/lists/all', 'ListAdminController@index')->name('Listas / Todas');
 	Route::get('/lists/confirmed/', 'ListAdminController@confirmed')->name('Listas / Confirmadas');
 	Route::get('/lists/postponed', 'ListAdminController@postponed')->name('Listas / Pospuestas');
 	Route::get('/lists/calceled', 'ListAdminController@canceled')->name('Listas / Canceladas');
+
+	//Status de Get Lists
+	Route::post('status/changue/done','ListAdminController@deliveredDone')->name('delivered.done');
 	
 });
 //End
@@ -105,24 +112,32 @@ Route::get('/lista/{lista}', function ($id){
 Route::get('/checkout', 'ListController@index');
 //test-route
 Route::get('/test/views/index2', function(){
-		$current_date =  new \DateTime();
+	return view('components.search-store');
+	//        $current_date =  new \DateTime();
+  //       $n = $current_date->modify('+ 2 day')->format('Y-m-d');
+  //       $lists = List_products::where(DB::RAW('date(reestock_date)'), $n)->where('active', 1)->orWhere('active', 5)->get();
 
-        $n = $current_date->format('Y-m-d');
-          //$day = date("d", $n);
-         $ne = date('N', strtotime($n));
-        return $ne;
-        $reestock_lock_date = $current_date->modify('+2 days')->format('Y-m-d');
-        $list = App\List_products::select(DB::raw('DISTINCT list_products.products_id, SUM(list_products.quantity) as cantidad'))
-        	->groupBy('list_products.products_id')
-        	->where(DB::raw('date(reestock_date)'), $reestock_lock_date)
-        	->where('active', 4)
-        	->get();
-        //$list = App\list_products::where(DB::raw('date(reestock_date)'), $reestock_lock_date)
-        //->join('products','list_products.products_id','=','products.id')
-        //->get();
+  //       $out_of_time_lists = List_products::where(DB::raw('date(reestock_date)'), $n)
+  //           ->where('active',1)
+  //           ->update(['active' => 5]);
+		// $current_date =  new \DateTime();
+
+  //       $n = $current_date->format('Y-m-d');
+  //         //$day = date("d", $n);
+  //        $ne = date('N', strtotime($n));
+  //       return $ne;
+  //       $reestock_lock_date = $current_date->modify('+2 days')->format('Y-m-d');
+  //       $list = App\List_products::select(DB::raw('DISTINCT list_products.products_id, SUM(list_products.quantity) as cantidad'))
+  //       	->groupBy('list_products.products_id')
+  //       	->where(DB::raw('date(reestock_date)'), $reestock_lock_date)
+  //       	->where('active', 4)
+  //       	->get();
+  //       //$list = App\list_products::where(DB::raw('date(reestock_date)'), $reestock_lock_date)
+  //       //->join('products','list_products.products_id','=','products.id')
+  //       //->get();
 
        
-	return ['order' => $list];
+	//	return ['lists' => $lists, 'date' => $n];
 });
 
 

@@ -195,7 +195,9 @@ li.hidden {
 div.hidden {
     display: none;
 }
-
+.menu-resp{
+    z-index: 0;
+}
 </style>
     @yield('estilos_unicos')
 
@@ -203,9 +205,13 @@ div.hidden {
 
 @section('navbar') <!--Navbar-->
         <nav class=" nav navbar  fixed-top navbar-toggleable-md navbar-dark red scrolling-navbar" >
+                <button class="navbar-toggler collapsed red menu-resp" type="button" data-toggle="collapse" data-target="#navbarNav1" aria-controls="navbarNav1" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
             <div class="container">
                 
-                <a class="navbar-brand" href="{{url('/')}}">
+                <a class="navbar-brand " href="{{url('/')}}">
                     <img src="{{asset('img/rsz_reestock.png')}}" class="img-fluid flex-center mobile-logo">
                 </a>
 
@@ -255,7 +261,7 @@ div.hidden {
             		</ul>
            
         		</div>
-                <div class="mt-2 fixed-top float-right mobile">   <a class="nav-link float-right" href="#" data-toggle="modal"  data-target="#fluidModalRightSuccessDemo">{{-- <span id="mobile-badge" class="badge primary-color">{{Cart::content()->count()}}</span> --}}<span><i class="fa fa-shopping-basket fa-2x" aria-hidden="true"></i></span></a>
+                <div class="mt-2  float-right mobile">   <a class="nav-link float-right" href="#" data-toggle="modal"  data-target="#fluidModalRightSuccessDemo">{{-- <span id="mobile-badge" class="badge primary-color">{{Cart::content()->count()}}</span> --}}<span><i class="fa fa-shopping-basket fa-2x" aria-hidden="true"></i></span></a>
                 </div>
             </div>
         </nav>
@@ -291,11 +297,11 @@ div.hidden {
 
                                     <option  value="0">Unica vez</option>
                                     <option  value="7">Cada 7 días</option>
-                                    <option value="15">Cada 15 días</option> 
-                                    <option value="30">Cada 30 dīas</option>
-                                    <option value="45">Cada 6 semanas</option>
-                                    <option value="60">Cada 2 meses</option>
-                                    <option value="180">Cada 6 meses</option>
+                                    <option value="14">Quincenal</option> 
+                                    <option value="28">Mensual</option>
+                                    <option value="42">Cada 6 semanas</option>
+                                    <option value="56">Cada 2 meses</option>
+                                    <option value="182">Cada 6 meses</option>
                                 </select>
                                 <label>Reestock Cada: </label>
                             </div>

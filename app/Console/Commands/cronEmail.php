@@ -53,6 +53,10 @@ class cronEmail extends Command
             ->where('auto_reestock', 1)
             ->update(['active' => 4]);
 
+            $out_of_time_lists = List_products::where(DB::raw('date(reestock_date)'), $reestock_lock_date)
+            ->where('active',1)
+            ->update(['active' => 5]);
+
         //Obtener orden de compra diaria de las listas confirmadas
         $list = List_products::select(DB::raw('DISTINCT list_products.products_id, SUM(list_products.quantity) as cantidad'))
             ->groupBy('list_products.products_id')
@@ -66,7 +70,7 @@ class cronEmail extends Command
                 $order_list->products_id = $l->products_id;
                 $order_list->quantity = $l->cantidad;
                 $order_list->save();
-          }
+           }
           
 
         //Se obtienen los usuarios que deben ser notificados

@@ -62,6 +62,7 @@ class HomeController extends Controller
             // $user = 'alejandro.riosyb@gmail.com';
             //     \Mail::to($user)->send(new scheduleNotify);
 
+            //return ['lists' => $list_prod];
        return view('clientes.home', ['list_prod' => $list_prod, 'lists' => $lists]); 
 
     }

@@ -1,4 +1,5 @@
 @extends('layouts.clients')
+@section('titulo', 'tienda')
 @section('estilos_unicos')
 <style type="text/css">
 	.margin10

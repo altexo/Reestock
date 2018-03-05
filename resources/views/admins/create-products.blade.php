@@ -49,7 +49,7 @@
 <h3 class="mt-0">Crear Producto:</h3>
 
 	<div class="col-xl-12">
-		<form class="row col-xl-12" action="{{route('product.create')}}" method="POST" enctype="multipart/form-data">
+		<form class="row col-xl-12" action="{{route('product.create')}}" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}" />
 			<div class="col-md-6 mt-1">
 				<div class="md-form">

@@ -12,16 +12,7 @@
 </div>
 	                     
 <div class="col-xl-12">
-	@if(session('success'))
-			<div class="alert alert-success" role="alert">
-  				{{session('success')}}
-			</div>
-		@endif
-		@if(session('err'))
-			<div class="alert alert-danger" role="alert">
-  				{{session('err')}}
-			</div>
-		@endif
+@include('admins.msj-component')
 </div>
 <a class="btn-floating btn-lg blue" href="{{ route('Ver Productos') }}"><i class="fa fa-arrow-left" aria-hidden="true"> <span class="black-text">Volver</span></i></a>
 <h3 class="mt-0">Editar Producto:</h3>
@@ -30,6 +21,7 @@
 
 	<form class="mt-2" method="post" enctype="multipart/form-data" action="{{ route('product.img', ['id' => $p->id] ) }}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+		<input type="hidden" name="url" value="{{ URL::previous() }}">
 		<div class="row card col-md-6">
 	<div class="col-md-12">
 			<div class="col-md-12 mt-1 file-field">
@@ -60,6 +52,7 @@
 
 	<div class="col-xl-12 card mt-4 mb-4">
 		<form class="row col-xl-12 mt-2 " action="{{ route('product.update', ['id' => $p->id]) }}" method="POST" enctype="multipart/form-data">
+			<input type="hidden" name="url" value="{{ URL::previous() }}">
 				 <!-- Ventana modal de confirmacion de actualizar -->
 		    <div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		        <div class="modal-dialog modal-notify modal-warning" role="document">
@@ -380,12 +373,13 @@
 ];
 var supplier = ['WALMART', 'LEY', 'COSTCO', 'SAMS', 'SORIANA', 'FRUTERIA OLIVAS', 'FRUTERIA LOS COMPADRES','FRUTERIA EL CANARIO', 'LA MERA', 'FARMACIO MODERNA', 'TRAUB', 'CHATA','LA CUARTA','VINOTECA','TODO ORGANIKO'];
 $.each(marcas, function(val, text) {
-            $('#brand').append( $('<option></option>').val(val).html(text) )
+            $('#brand').append( $('<option></option>').val(text).html(text) )
             }); 
 
 $.each(supplier, function(val, text) {
-            $('#supplier').append( $('<option></option>').val(val).html(text) )
+            $('#supplier').append( $('<option></option>').val(val+1).html(text) )
             }); 
+
 
 	// 	$(function(){
 	// 	setTimeout(function() {

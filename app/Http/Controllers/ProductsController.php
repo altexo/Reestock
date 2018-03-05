@@ -21,7 +21,12 @@ class ProductsController extends Controller
          $products = supplier_products::join('products', 'products.id', '=', 'supplier_products.products_id')
             ->join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
             ->join('departments', 'departments.id', '=', 'products.department_id')
-            ->select('products.*', \DB::raw("MIN(supplier_products.purchase_price) AS purchase_price"), \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
+            ->select('products.*', 
+                        \DB::raw("case when departments.id = '3' THEN MAX(supplier_products.purchase_price) END AS purchase_price, 
+                                    case when departments.id != '3' then MIN(supplier_products.purchase_price) END AS purchase_price"), 
+                        \DB::raw("case when departments.id = '3' THEN MAX(supplier_products.purchase_price) END AS sale_price, 
+                                    case when departments.id != '3' then MIN(supplier_products.sale_price) END AS purchase_price"), 
+                        'departments.department_name')
             ->groupBy('supplier_products.products_id')
             ->Paginate(15);
 
@@ -49,7 +54,7 @@ class ProductsController extends Controller
                 $rand_name = substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
                 $file_name = $file->move('images' , $rand_name.$file->getClientOriginalName());
             }else{
-                 return redirect()->back()->with('err', 'Hay un problema con la imagen que intentas subir.');
+                //return redirect()->back()->with('err', 'Hay un problema con la imagen que intentas subir.');
     
             }
             try {
@@ -148,6 +153,7 @@ class ProductsController extends Controller
     {
         /*$prod_id = $r->route('id');
         $product = Products::find($prod_id);*/
+        //return $r->url;
      
         if ($r) 
          {
@@ -194,7 +200,8 @@ class ProductsController extends Controller
                 //return dd($r);
             }
             //session()->flash('message', '')
-            return redirect('/admin/products')->with('success', 'El producto ha sido actualizado exitosamente!');
+
+            return redirect($r->url)->with('success', 'El producto ha sido actualizado exitosamente!');
 
         }
        
@@ -238,7 +245,7 @@ class ProductsController extends Controller
         //dd($csvData);
         $rows = array_map("str_getcsv", explode("\n", $csvData));
         $header = array_shift($rows);
-        //return dd($header);
+        return dd($header);
        //dd($header);
 
         foreach ($rows as $row) {
@@ -246,18 +253,19 @@ class ProductsController extends Controller
             
 
         
-        // dd($row);
+       // return dd($row);
     
 
             $product = new Products;
             echo "start<br>";
                 //$product->bar_code = $row['CODIGO'];
                     $product->product_name = $row['ARTICULO'];
-                   // echo $product->product_name.'<br>';
+                    echo $product->product_name.'<br>';
+                    echo $row['DEPARTAMENTO'].'<br>';
                     $product->brand = $row['MARCA'];
                     if ($row['DEPARTAMENTO'] == 'ABARROTES') {
                         $product->department_id = 1;
-                    }elseif ($row['DEPARTAMENTO'] == 'CÁRNICOS') {
+                    }elseif ($row['DEPARTAMENTO'] == 'CARNICOS') {
                         $product->department_id = 2;
                     }elseif ($row['DEPARTAMENTO'] == 'FRUTA Y VERDURA') {
                         $product->department_id = 3;
@@ -274,6 +282,7 @@ class ProductsController extends Controller
                         $product->department_id = 8;
                     }
                     $product->unity = $row['UNIDAD'];
+                    echo $product->row['UNIDAD'].'<br>';
                     $product->save();
 
                     $product_id = $product->id;
@@ -314,10 +323,10 @@ class ProductsController extends Controller
                             $supplier_products->purchase_price = $purchase_price;
                             $supplier_products->sale_price = $sale_price;
                             //print_r($supplier_products);
-                            $supplier_products->save();
-                            // if(!$saved){
-                            //     App::abort(500, 'Error');
-                            // }  
+                            $saved = $supplier_products->save();
+                             if(!$saved){
+                                 App::abort(500, 'Error');
+                             }  
                          
                         }
                         if (isset($row['LEY']) && ($row['LEY'] != '') && ($row['LEY'] != '  ')) 
@@ -496,7 +505,7 @@ class ProductsController extends Controller
                
         }
             
-        return back();
+        //return back();
     }
 
 

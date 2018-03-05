@@ -49,7 +49,9 @@
                 <div class="card-up indigo lighten-1">
                 </div>
 
-                <div class="avatar">@if($list->active == 4) <img src="{{asset('img/confirmado.jpg')}}" class="rounded-circle"> @else<img src="{{asset('img/REESTOCK.jpeg')}}" class="rounded-circle">@endif {{-- <i class="fa-shopping-basket fa-5x"></i> --}}
+                <div class="avatar">@if($list->active == 4) <img src="{{asset('img/REESTOCK_confirmed.jpg')}}" class="rounded-circle"> @else
+
+                    <img src="{{asset('img/REESTOCK.jpeg')}}" class="rounded-circle">@endif {{-- <i class="fa-shopping-basket fa-5x"></i> --}}
                 </div>
 
                 <div class="card-body">
@@ -82,7 +84,7 @@
                     <!--Body-->
 
                     <div class="modal-body">
-                        <p><a  href="" class="" ><button  class="btn btn-warning btn-sm postpone<?php echo $n; ?>">Posponer lista</button></a><a  href="{{route('store')}}"><button  class="btn btn-success btn-sm add<?php echo $n; ?>">agregar productos</button></a><a  id="cancel<?php echo $n; ?>" ><button class="btn btn-danger btn-sm cancel<?php echo $n; ?>">Cancelar lista</button></a></p>
+                        <p><a  href="" class="" ><button  class="btn btn-warning btn-sm postpone<?php echo $n; ?>">Cambiar entrega</button></a><a  href="{{route('store')}}"><button  class="btn btn-success btn-sm add<?php echo $n; ?>">agregar productos</button></a><a  id="cancel<?php echo $n; ?>" ><button class="btn btn-danger btn-sm cancel<?php echo $n; ?>">Cancelar lista</button></a></p>
                          <form method="post" id="postpone<?php echo $n; ?>" >
                             <div id="datepicker<?php echo $n; ?>" class="mt-3 md-form hidden" data-toggle="tooltip" title="Debes especificar la fecha a la que deseas posponer." role="tooltip">
                                 <input placeholder="Escoger fecha" type="text" id="date-picker-example" name="postpone_date" class="form-control datepicker  datepicker<?php echo $n; ?>" readonly="readonly" required>
@@ -117,7 +119,7 @@
                                         <td class="align-middle">{{$value->product_name}}</td>
                                         <td class="align-middle"><label>{{$value->unity}}</label></td>
                                         <td class="align-middle">
-                                            @if($value->active == 4)
+                                            @if($value->active == 4 || $list->active == 5)
                                                 <label>{{$value->quantity}}</label>   
                                             @else
                                                  <input type="number" @if($value->unity == 'KG') class="KG" @endif min="1" name="" id="qtyList" value="{{$value->quantity}}"><input type="hidden" name="listID[]" value="{{$value->id}}">
@@ -149,7 +151,7 @@
                                             </select>
                                             
                                         </td> --}}
-                                         @if($value->active == 4)
+                                         @if($value->active == 4 || $value->active == 5)
                                          @else
                                         <td class="align-middle"><a><i class="fa fa-remove" id="delete-item"></i><input type="hidden" name="" value="{{$value->id}}"></a></td>
                                         @endif
@@ -199,7 +201,7 @@
     <script type="text/javascript">
          $(document).ready(function() {
        //Posponer
-        @if($list->active == 4)  
+        @if($list->active == 4 || $list->active == 5)  
             $(".postpone<?php echo $n; ?>").attr('disabled', true);
             $(".cancel<?php echo $n; ?>").attr('disabled', true);
             $(".add<?php echo $n; ?>").attr('disabled', true);
@@ -411,7 +413,7 @@
 
 
     var currentMonth = dateToPick.getMonth();
-    dateToPick.setMonth(currentMonth, currentDay+ 3);
+    dateToPick.setMonth(currentMonth, currentDay+ 2);
     console.log(dateToPick);
     $('.datepicker').pickadate({
          min: dateToPick,
