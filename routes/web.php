@@ -82,7 +82,21 @@ Route::post('list/deleteItem', 'HomeController@deleteItem')->name('delete.item')
 Route::post('list/addNewProduct', 'ListController@addNewProduct')->name('add.product');
 Route::post('list/condirmList', 'HomeController@confirm_list')->name('confirm.list');
 });
+Route::get('/tienda2','store2Controller@index');
+//pruebas con busquedas dinamicas
+// Route::get('/tienda2/{department}','store2Controller@findByDepartment')->name('find.department');
+// Route::get('/tienda2/{department}/{categorie}', 'store2Controller@findByDepartmentCategorie')->name('find.DepCat');
+// Route::get('/tienda2/{department}/{categorie}/{sub_cateogire}', 'store2Controller@findByDepartmentCategorieSubC')->name('find.DepCatSubC');
+//End
 
+//pruebas de busqueda seccionada
+Route::get('/tienda2/searchby/{department}', 'store2Controller@findByDepartment')->name('search.categorie');
+Route::get('/tienda2/searchby/{department}/{category}', 'store2Controller@findByDepartmentCat')->name('search.subCat');
+Route::get('/tienda2/searchby/{department}/{category}/{sub_category}', 'store2Controller@findBySubCategory')->name('search.results');
+
+// Route::get('tienda2/{department}/','store2Controller@findByDepartment')->name('dep');
+// Route::get('tienda2/{department}/{subcat}','store2Controller@findByDepartment')->name('dep');
+// Route::get('tienda2/{department}/{}','store2Controller@findByDepartment')->name('dep');
 Route::get('/tienda', 'StoreController@index')->name('store');
 Route::get('/search','StoreController@search')->name('search');
 Route::resource('/lista', 'StoreController');
@@ -112,6 +126,10 @@ Route::get('/lista/{lista}', function ($id){
 Route::get('/checkout', 'ListController@index');
 //test-route
 Route::get('/test/views/index2', function(){
+	// if(DB::connection()->getDatabaseName())
+ //   {
+ //     echo "connected successfully to database ".DB::connection()->getDatabaseName();
+  // }
 	return view('components.search-store');
 	//        $current_date =  new \DateTime();
   //       $n = $current_date->modify('+ 2 day')->format('Y-m-d');

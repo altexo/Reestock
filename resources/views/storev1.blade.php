@@ -125,7 +125,7 @@
     </div>
     <div class="container-fluid mx-0 px-0">
         <!--Navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark primary-color mb-5 navbar-toggleable-md " id="search-nav">
+      {{--   <nav class="navbar navbar-expand-lg navbar-dark primary-color mb-5 navbar-toggleable-md " id="search-nav">
             <div class="container">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -135,8 +135,10 @@
                         <input class="form-control mr-sm-2 col-md-12" type="text" name="search" placeholder="Buscar.." aria-label="Search"  value="{{ app('request')->input('search') }}">
                     </form>
                 </div>
+
             </div>
-        </nav>
+        </nav> --}}
+          @include('components.search-store')
     </div>
 	<div class="container mt-5 pt-1">
 
@@ -146,16 +148,13 @@
             <div class="col-lg-3">
                 <div class="">
                     <div class="row">
+
                         <div class="col-md-6 col-lg-12 mb-5">
-                           {{--  <h5 class="font-bold dark-grey-text"><strong>Ordenar por</strong></h5>
-                                <div class="divider"></div>
-                                <p class="blue-text"><a>Ninguno</a></p>
-                                <p class="dark-grey-text"><a>Menor precio</a></p>
-                                <p class="dark-grey-text"><a>Mayor precio</a></p> --}}
+
                         </div>
 
                         <div class="col-md-6 col-lg-12 mb-5">
-                            <h5 class="font-bold dark-grey-text"><strong>Departamento</strong></h5>
+                            <h5 class="font-bold dark-grey-text"><strong>Marcas</strong></h5>
                                 <div class="divider"></div>
 
                            
@@ -227,13 +226,11 @@
                                         @endif>
                                     <label for="radio108" class="dark-grey-text">Otro</label>
                                 </div>
-                                <!--Radio group-->
-                        </div>
-                        <!-- /Filter by category-->
-                    </div>
-                    <!-- /Grid row -->
 
-                    <!-- Grid row -->
+                        </div>
+             
+                    </div>
+
                     <div class="row">
 
                      
@@ -587,8 +584,14 @@
 @endsection
 @section('footer')
 @section('scripts_unicos')
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
+        $('.dropdown-submenu .dropdown-toggle').on("click", function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    $(this).next('.dropdown-menu').toggle();
+});
     $('.mdb-select').material_select();
 //  $("[type='number']").keypress(function (evt) {
 //     evt.preventDefault();

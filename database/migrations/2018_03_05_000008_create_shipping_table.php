@@ -24,10 +24,24 @@ class CreateShippingTable extends Migration
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('user_id')->unsigne();
-            $table->string('address', 60)->nullable();
-            $table->string('colony', 60)->nullable();
+            $table->integer('users_id');
+            $table->string('name', 191)->nullable();
+            $table->string('last_name', 191)->nullable();
+            $table->string('address', 191)->nullable();
+            $table->string('colony', 191)->nullable();
+            $table->string('state', 191)->nullable();
+            $table->string('city', 191)->nullable();
+            $table->string('country', 191)->nullable();
             $table->integer('zip_code')->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->timestamps();
+            $table->index(["users_id"], 'fk_shipping_users1_idx');
+
+
+            $table->foreign('users_id', 'fk_shipping_users1_idx')
+                ->references('id')->on('users')
+                ->onDelete('no action')
+                ->onUpdate('no action');
         });
     }
 

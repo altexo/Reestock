@@ -23,4 +23,8 @@ class Products extends Model
     public function supplier(){
         return $this->hasMany(App\supplier_products::class);
     } 
+
+    public function departments(){
+        return $this->belongsTo('App\Departments', 'departments_id', 'categories_id');
+    }
 }

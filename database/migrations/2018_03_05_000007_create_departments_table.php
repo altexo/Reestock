@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateListProductsTable extends Migration
+class CreateDepartmentsTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $set_schema_table = 'list_products';
+    public $set_schema_table = 'departments';
 
     /**
      * Run the migrations.
-     * @table list_products
+     * @table departments
      *
      * @return void
      */
@@ -24,17 +24,16 @@ class CreateListProductsTable extends Migration
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('lists_id')->unsigned();
-            $table->integer('products_id')->unsigned();
-            $table->decimal('quantity', 5, 2)->nullable();
+            $table->string('department_name', 45)->nullable();
+            $table->integer('categories_id');
+            $table->timestamps();
+            $table->index(["categories_id"], 'fk_departments_categories1_idx');
 
-          /*  $table->index(["products_ID"], 'fk_list_products_Products1_idx');
 
-
-            $table->foreign('products_ID', 'fk_list_products_Products1_idx')
-                ->references('products_ID')->on('Products')
+            $table->foreign('categories_id', 'fk_departments_categories1_idx')
+                ->references('id')->on('categories')
                 ->onDelete('no action')
-                ->onUpdate('no action');*/
+                ->onUpdate('no action');
         });
     }
 

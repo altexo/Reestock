@@ -21,7 +21,7 @@ class StoreController extends Controller
         if (request()->has('department')) {
             $products = supplier_products::join('products', 'products.id', '=', 'supplier_products.products_id')
             ->join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
-            ->join('departments', 'departments.id', '=', 'products.department_id')
+            ->join('departments', 'departments.id', '=', 'products.departments_id')
             ->select('products.*', \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
             ->where('departments.department_name',request('department'))
             ->Orwhere('departments.id',request('department'))
@@ -34,7 +34,7 @@ class StoreController extends Controller
         }else{
         	   $products = supplier_products::join('products', 'products.id', '=', 'supplier_products.products_id')
                 ->join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
-                ->join('departments', 'departments.id', '=', 'products.department_id')
+                ->join('departments', 'departments.id', '=', 'products.departments_id')
                 ->select('products.*', \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
                 ->groupBy('supplier_products.products_id')
                 ->Paginate(15);
@@ -46,7 +46,7 @@ class StoreController extends Controller
        
 
 
-       
+     //  return $products;
     	return view('storev1', ['products' => $products, 'listItems' => $listItems, 'lists' => $lists]);
         //return $products;
     }
@@ -55,7 +55,7 @@ class StoreController extends Controller
          //$id = $request->route('id');
          $product = supplier_products::join('products', 'products.id', '=', 'supplier_products.products_id')
         ->join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
-        ->join('departments', 'departments.id', '=', 'products.department_id')
+        ->join('departments', 'departments.id', '=', 'products.departments_id')
         ->select('products.*', \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
         ->where('supplier_products.products_id', '=', $id)
         ->groupBy('supplier_products.products_id')->first();
@@ -68,7 +68,7 @@ class StoreController extends Controller
          $id = $r->product_id;
          $product = supplier_products::join('products', 'products.id', '=', 'supplier_products.products_id')
         ->join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
-        ->join('departments', 'departments.id', '=', 'products.department_id')
+        ->join('departments', 'departments.id', '=', 'products.departments_id')
         ->select('products.*', \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
         ->where('supplier_products.products_id', '=', $id)
         ->groupBy('supplier_products.products_id')->first();
@@ -138,7 +138,7 @@ class StoreController extends Controller
             $listItems = cart::content();
             $products = supplier_products::join('products', 'products.id', '=', 'supplier_products.products_id')
             ->join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
-            ->join('departments', 'departments.id', '=', 'products.department_id')
+            ->join('departments', 'departments.id', '=', 'products.departments_id')
             ->select('products.*', \DB::raw("MIN(supplier_products.purchase_price) AS purchase_price"), \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
             ->where('products.product_name','LIKE',"%{$search}%")
             ->orWhere('products.brand', 'LIKE', "%{$search}%")

@@ -1,5 +1,5 @@
-@extends('layouts.clients')
-@section('estilos_unicos')
+{{-- @extends('layouts.clients')
+@section('estilos_unicos') --}}
 	<style type="text/css">
 		.navbar .mega-dropdown {
   position: static !important; }
@@ -66,8 +66,8 @@
     background: url({{url('icons/menu-sprites.svg')}}) 0 0;
 }
 	</style>
-@endsection
-@section('contenido')
+{{-- @endsection
+@section('contenido') --}}
 
 	   <nav class="navbar navbar-toggleable-md navbar-dark red lighten-1">
            
@@ -88,7 +88,7 @@
        
         <div class="dropdown-submenu">
          {{--    <a class="dropdown-item dropdown-toggle" type="button" data-toggle="dropdown" href="#">Something else here</a> --}}
-             <a class="dropdown-item dropdown-toggle" type="button" data-toggle="dropdown" href="#"><img id="icons" src="{{url('icons/008-milk.png')}}"> <b>ABARROTES</b></a>
+             <a class="dropdown-item {{-- dropdown-toggle --}}" {{-- type="button" data-toggle="dropdown" --}} href="{{route('search.categorie',['department' =>1])}}"><img id="icons" src="{{url('icons/008-milk.png')}}"> <b>ABARROTES</b></a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="#">Action</a>
                 <a class="dropdown-item" href="#">Another action</a>
@@ -323,30 +323,26 @@
 </nav> --}}
 <!--/.Navbar-->                
                     
-@endsection
+{{-- @endsection
 	
-@section('scripts_unicos')
- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-    	$("#abarrotes").hover(function(){
-        	$("#abarrotes-cat").css("display", "block");
-        //, function(){
-        // 	$("#abarrotes-cat").css("display", "none");
-        });	
+@section('scripts_unicos') --}}
 
-        $("#carnicos").hover(function(){
-        	$("#abarrotes-cat").css("display", "none");
-        });
-	});
-$('.dropdown-submenu .dropdown-toggle').on("click", function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    $(this).next('.dropdown-menu').toggle();
-});
+	<script type="text/javascript">
+	// 	$(document).ready(function(){
+ //    	$("#abarrotes").hover(function(){
+ //        	$("#abarrotes-cat").css("display", "block");
+ //        //, function(){
+ //        // 	$("#abarrotes-cat").css("display", "none");
+ //        });	
+
+ //        $("#carnicos").hover(function(){
+ //        	$("#abarrotes-cat").css("display", "none");
+ //        });
+	// });
+
 	</script>
 	
 
     <!-- Bootstrap Dropdown Hover JS -->
    
-@endsection
+{{-- @endsection --}}
