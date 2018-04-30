@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Products;
 use App\supplier_products;
 use DB;
+use App\Departments;
+use App\Categories;
 use Illuminate\Contracts\Validation\ValidationException;
 use Illuminate\Support\Facades\Input;
 
@@ -20,7 +22,7 @@ class ProductsController extends Controller
         
          $products = supplier_products::join('products', 'products.id', '=', 'supplier_products.products_id')
             ->join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
-            ->join('departments', 'departments.id', '=', 'products.department_id')
+            ->join('departments', 'departments.id', '=', 'products.departments_id')
             ->select('products.*', 
                         \DB::raw("case when departments.id = '3' THEN MAX(supplier_products.purchase_price) END AS purchase_price, 
                                     case when departments.id != '3' then MIN(supplier_products.purchase_price) END AS purchase_price"), 
@@ -66,7 +68,7 @@ class ProductsController extends Controller
                     $product->product_name = $r->product_name;
                     $product->bar_code = $r->bar_code;
                     $product->brand = $r->brand;
-                    $product->department_id = $r->department;
+                    $product->departments_id = $r->department;
                     $product->unity = $r->unity;
                     $product->product_img = $file_name;
                     $product->save();
@@ -108,16 +110,27 @@ class ProductsController extends Controller
 
     
     public function getEditProduct($id)
-    {
-        $product = DB::table('products')
-        ->join('departments', 'departments.id', '=', 'products.department_id')
-         ->select('products.*', 'departments.department_name')->where('products.id','=',$id)->get();
-         
-         $product_suppliers = supplier_products::join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
-         ->select('suppliers.*', 'supplier_products.*')
-         ->where('products_id', $id)->get();
+    {   
+        $departaments =  Departments::all();
 
-        return view('admins.edit-product', ['product' => $product, 'product_suppliers' => $product_suppliers]);
+        $product = DB::table('products')
+            ->join('departments', 'departments.id', '=', 'products.departments_id')
+            ->select('products.*', 'departments.department_name')->where('products.id','=',$id)->get();
+         
+        $product_suppliers = supplier_products::join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
+            ->select('suppliers.*', 'supplier_products.*')
+            ->where('products_id', $id)->get();
+
+        //return $categories = Categories::with('sub_categories')->select('id','name')->get();
+
+        $suppliers = DB::table('suppliers')
+            ->select('name')->get(); 
+
+        $brands = DB::table('products')
+            ->select('brand')
+            ->distinct()->get();
+
+        return view('admins.edit-product', ['product' => $product, 'product_suppliers' => $product_suppliers, 'departments' => $departaments, 'brands' => $brands, 'suppliers' => $suppliers]);
         //return ['product' => $product, 'product_suppliers' => $product_suppliers];
     }
     public function updateProductImg(Request $img)
@@ -170,7 +183,7 @@ class ProductsController extends Controller
                     $product->product_name = $r->product_name;
                     $product->bar_code = $r->bar_code;
                     $product->brand = $r->brand;
-                    $product->department_id = $r->department;
+                    $product->departments_id = $r->department;
                     $product->unity = $r->unity;
                     $product->save();
                     
@@ -227,7 +240,62 @@ class ProductsController extends Controller
    
         return redirect('/admin/products')->with('success', 'El producto ha sido eliminado exitosamente!');
     }
+//
+    public function importProductsWalmart(Request $r){
+         $validator = \Validator::make($r->all(), [
+            'file' => 'required',
+        ]);
 
+        if ($validator->fails()) {
+            echo "Fail :(";
+            //return redirect()->back()->withErrors($validator);
+        }
+        
+        $file = $r->file;
+        $csvData = file_get_contents($file);
+        //dd($csvData);
+        $rows = array_map("str_getcsv", explode("\r1", $csvData));
+        $header = array_shift($rows);
+       return dd($header);
+       //dd($header);
+
+        foreach ($rows as $row) {
+            $row = array_combine($header, $row);   
+           // print_r($row);
+           // echo $row['Producto'].'<br>';
+            $product = new Products;
+            $product->product_name = $row['Producto'];
+            $product->departments_id = $row['ID_Departamento'];
+            $product->sub_categories_id = $row['ID_Subcategoria'];
+            //$product->categories_id = $row['Category_ID'];
+            $barcode = str_replace("'", "", $row['Barcode']);
+            $product->barcode = $barcode;
+            $product->brand = $row['Marca'];
+            $product->unity = $row['Unidad'];
+            $product->product_img = 'images/products/'.$row['Img'];
+            $p_saved = $product->save();
+            $product_id = $product->id;
+            if(!$p_saved){
+                    App::abort(500, 'Error');
+                 } else {
+                    echo $row['Producto'].'OK!<br>';
+                 } 
+            
+            $supplier_products = new supplier_products;
+            $purchase_price = $row['Precio'];
+            $sale_price = $purchase_price * 1.07; 
+            $supplier_products->products_id = $product_id;
+            $supplier_products->supplier_id = 1; 
+            $supplier_products->purchase_price = $purchase_price;
+            $supplier_products->sale_price = $sale_price;
+           $saved = $supplier_products->save();
+                if(!$saved){
+                    App::abort(500, 'Error');
+                 }  
+         //echo utf8_decode($row['Producto']);
+        }
+        echo "<a href='http://reestock.com.mx/admin/create/product'>Volver</a>";
+    }
 //Funcion para importar productos desde un CSV
     public function importProducts(Request $request){
 
@@ -243,9 +311,9 @@ class ProductsController extends Controller
         $file = $request->file;
         $csvData = file_get_contents($file);
         //dd($csvData);
-        $rows = array_map("str_getcsv", explode("\n", $csvData));
+        $rows = array_map("str_getcsv", explode("\r\n", $csvData));
         $header = array_shift($rows);
-        return dd($header);
+        //return dd($header);
        //dd($header);
 
         foreach ($rows as $row) {
@@ -264,22 +332,22 @@ class ProductsController extends Controller
                     echo $row['DEPARTAMENTO'].'<br>';
                     $product->brand = $row['MARCA'];
                     if ($row['DEPARTAMENTO'] == 'ABARROTES') {
-                        $product->department_id = 1;
+                        $product->departments_id = 1;
                     }elseif ($row['DEPARTAMENTO'] == 'CARNICOS') {
-                        $product->department_id = 2;
+                        $product->departments_id = 2;
                     }elseif ($row['DEPARTAMENTO'] == 'FRUTA Y VERDURA') {
-                        $product->department_id = 3;
+                        $product->departments_id = 3;
                     }elseif ($row['DEPARTAMENTO'] == 'REFRIGERADO') {
-                        $product->department_id = 4;
+                        $product->departments_id = 4;
                     }elseif ($row['DEPARTAMENTO'] == 'HIGIENE PERSONAL') {
-                        $product->department_id = 5;
+                        $product->departments_id = 5;
                     }elseif ($row['DEPARTAMENTO'] == 'LIMPIEZA') {
-                        $product->department_id = 6;
+                        $product->departments_id = 6;
                     }elseif ($row['DEPARTAMENTO'] == 'DESECHABLES') {
-                        $product->department_id = 7;
+                        $product->departments_id = 7;
                     }else
                     {
-                        $product->department_id = 8;
+                        $product->departments_id = 8;
                     }
                     $product->unity = $row['UNIDAD'];
                     echo $product->row['UNIDAD'].'<br>';
@@ -523,7 +591,7 @@ class ProductsController extends Controller
 
           $products = supplier_products::join('products', 'products.id', '=', 'supplier_products.products_id')
             ->join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
-            ->join('departments', 'departments.id', '=', 'products.department_id')
+            ->join('departments', 'departments.id', '=', 'products.departments_id')
             ->select('products.*', \DB::raw("MIN(supplier_products.purchase_price) AS purchase_price"), \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
              ->where('products.product_name','LIKE',"%{$search}%")
             ->groupBy('supplier_products.products_id')->get();

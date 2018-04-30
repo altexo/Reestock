@@ -71,10 +71,11 @@ class StoreController extends Controller
         ->join('departments', 'departments.id', '=', 'products.departments_id')
         ->select('products.*', \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
         ->where('supplier_products.products_id', '=', $id)
-        ->groupBy('supplier_products.products_id')->first();
-
-        cart::add($product->id, $product->product_name, $r->qty, $product->sale_price, ['reestock' => $r->concurrence])->associate('App\Products');
-        return response()->json("success");
+        ->groupBy('supplier_products.products_id')
+        ->first();
+        
+        cart::add($product->id, $product->product_name, $r->qty, $product->sale_price, ['reestock' => $r->concurrence, 'instructions' => $r->instructions])->associate('App\Products');
+        return response()->json($r);
     }
 
     public function updateCart(Request $r)
@@ -98,7 +99,7 @@ class StoreController extends Controller
     {
         try {
              if ($r) {
-            Cart::update($r->rowId, ['options' => ['reestock' => $r->concurrence]]);
+            Cart::update($r->rowId, ['options' => ['reestock' => $r->concurrence, 'instructions' => $r->instructions]]);
             return response()->json("success");
             }
         } catch (Exception $e) {

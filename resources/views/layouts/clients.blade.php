@@ -6,6 +6,9 @@
 @section('contenedor_class','margin10')
 
 <style type="text/css">
+.logo-rs{
+    width: 50%;
+}
 .checkout
 {
     height: 0%;
@@ -40,6 +43,7 @@
 
 .basket-button
 {
+    color: grey;
     border: none;
     cursor: pointer;
 }
@@ -53,8 +57,8 @@
         margin-bottom: -10px;
     }
                                    
-    /* Extra small devices (portrait phones, less than 576px)*/
-    @media (max-width: 575px) { 
+
+ {{--  @media (max-width: 575px) { 
            .modal .modal-full-height.modal-lg {
               max-width: 100%;
             width: 100%;
@@ -62,65 +66,38 @@
         .del-product{
             transform: translate(780%,-90%);
         }
-        .mobile{
-            display: block;
-        }
-          .mobile-logo{
-            max-width: 75%;
-        }
-        .margin10 {
-        margin-top: 30% !important;
-    }
-        .mobile-img{
-            max-width: 30%
-        }
+
      }
 
-    /*// Small devices (landscape phones, less than 768px)*/
+
     @media (min-width: 767px) { 
         .modal .modal-full-height.modal-lg {
             max-width: 530px;
             width: 100%;
         }
-        .mobile{
-            display: block;
-        }
- /*       .margin10 {
-    margin-top: 30% !important;
-}*/
+
      }
-    /*// Medium devices (tablets, less than 992px)*/
+
     @media (min-width: 991px) { 
         .modal .modal-full-height.modal-lg {
             max-width: 520px
         }
-        .mobile{
-            display: none;
-        }
-        
+
      }
-    /*// Large devices (desktops, less than 1200px)*/
+
     @media (min-width: 1199px) { 
         .modal .modal-full-height.modal-lg {
             max-width: 520px
         }
-        .mobile{
-            display: none;
-        }
-        .mobile-logo{
-            max-width: 75%;
-        }
+
         
      }
      @media (min-width: 1200px) { 
         .modal .modal-full-height.modal-lg {
             max-width: 520px
         }
-        .mobile{
-            display: none;
-        }
-        
-     }
+
+     }--}}
 
 
 /*.pagination{
@@ -140,9 +117,9 @@
     border-bottom: 1px solid #fff;
     box-shadow: 0 1px 0 0 #fff;
 }
-.modal{
+/*.modal{
 	font-size: 12px !important;
-}
+}*/
 .remove-button
 {
 	padding: 10px !important;
@@ -183,12 +160,15 @@
     display: flex;
     flex:1 0 auto;
 }
-.modal-container
+.modal .modal-full-height {
+   width: 100%;
+}
+/*.modal-content
 {
 
       height: 100%;
        overflow: auto; 
-}
+}*/
 li.hidden {
     display: none;
 }
@@ -198,29 +178,34 @@ div.hidden {
 .menu-resp{
     z-index: 0;
 }
+                
+.shadow-textarea textarea.form-control::placeholder {
+    font-weight: 300;
+}
+.shadow-textarea textarea.form-control {
+    padding-left: 0.8rem;
+}
+.product-instructions{
+    margin-top: 3.1875px; margin-bottom: 16px; height: 141px;
+}
+
 </style>
     @yield('estilos_unicos')
 
 @endsection
 
-@section('navbar') <!--Navbar-->
-        <nav class=" nav navbar  fixed-top navbar-toggleable-md navbar-dark red scrolling-navbar" >
-                <button class="navbar-toggler collapsed red menu-resp" type="button" data-toggle="collapse" data-target="#navbarNav1" aria-controls="navbarNav1" aria-expanded="false" aria-label="Toggle navigation">
+@section('navbar') 
+        <nav class=" nav navbar  navbar-toggleable-md navbar-dark red scrolling-navbar" id="myHeader">
+            <a class="navbar-brand " href="{{url('/')}}">
+                    <img src="{{asset('img/rsz_reestock.png')}}" class="logo-rs img-fluid flex-center mobile-logo">
+            </a>
+            <button class="navbar-toggler collapsed red menu-resp" type="button" data-toggle="collapse" data-target="#navbarNav1" aria-controls="navbarNav1" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
             <div class="container">
-                
-                <a class="navbar-brand " href="{{url('/')}}">
-                    <img src="{{asset('img/rsz_reestock.png')}}" class="img-fluid flex-center mobile-logo">
-                </a>
-
-                
                 <div class="collapse navbar-collapse" id="navbarNav1">
             		<ul class="navbar-nav ml-auto">
-            			<!-- <li class="nav-item">
-                    		<a class="nav-link"><span>Ayuda</span></a>
-                		</li> -->
                 		<li class="nav-item">
                     		<a class="nav-link" href="{{ url('/tienda') }}"><span>Tienda</span></a>
                 		</li>
@@ -228,21 +213,20 @@ div.hidden {
                             <a class="nav-link" href="{{route('home')}}"><span>Mis listas</span></a>
                         </li>
                 		<li class="nav-item special-use">
-                    		<a class="nav-link" href="#" data-toggle="modal"  data-target="#fluidModalRightSuccessDemo">
+                    		<a class="nav-link" href="#" data-toggle="modal"  data-target="#sideCart">
                             <span id="badge" class="badge primary-color">{{Cart::content()->count()}}</span>
-                            <span><i class="fa fa-shopping-basket" aria-hidden="true"></i></span></a>
-                    	<!-- 	<button type="button" data-toggle="modal" data-target="#fluidModalRightSuccessDemo"><i></i></button> -->
+                            <span><i class="fa fa-shopping-cart" aria-hidden="true"></i></span></a>
                 		</li>
                      
                 		@if (Auth::guest())
-                		<li class="nav-item">
-                    		<a class="nav-link" href="{{ url('/registrar') }}"><span>Regístrate</span></a>
-                		</li>
-                 		<li class="nav-item">
-                    		<a class="nav-link" href="{{ url('/iniciar-sesion') }}"><span>Iniciar sesión </span></a>
-                		</li>
+                    		<li class="nav-item">
+                        		<a class="nav-link" href="{{ url('/registrar') }}"><span>Regístrate</span></a>
+                    		</li>
+                     		<li class="nav-item">
+                        		<a class="nav-link" href="{{ url('/iniciar-sesion') }}"><span>Iniciar sesión </span></a>
+                    		</li>
                 		@else
-                		 <!-- Dropdown -->
+                		
 			            <li class="nav-item dropdown">
 			                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>
                                                     {{ Auth::user()->name }}</a>
@@ -254,15 +238,14 @@ div.hidden {
                                 </a>
 			                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
-                                        </form>
+                                </form>
+                            </div>
 			            </li>
-                           
                         @endif
             		</ul>
            
         		</div>
-                <div class="mt-2  float-right mobile">   <a class="nav-link float-right" href="#" data-toggle="modal"  data-target="#fluidModalRightSuccessDemo">{{-- <span id="mobile-badge" class="badge primary-color">{{Cart::content()->count()}}</span> --}}<span><i class="fa fa-shopping-basket fa-2x" aria-hidden="true"></i></span></a>
-                </div>
+             
             </div>
         </nav>
         <!--/.Navbar-->
@@ -276,6 +259,7 @@ div.hidden {
 
 @endsection
 @section('sideCart')
+<!--Reestock modal-->
 <!--Reestock modal-->
 <div class="modal fade" id="reestockModalView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
             <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
@@ -305,6 +289,51 @@ div.hidden {
                                 </select>
                                 <label>Reestock Cada: </label>
                             </div>
+                           <div class="form-group shadow-textarea">
+                                <textarea class="form-control z-depth-1 product-instructions"  id="product-instructions"  rows="5" placeholder="Instrucciones o preferencias"></textarea>
+                            </div>
+                                          
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-cyan mt-1 waves-effect waves-light" id="SaveNewReestock">Guardar
+                               
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <!--/.Content-->
+            </div>
+        </div>
+<!--Reestock modal-->
+<div class="modal fade right" id="fluidModalRightSuccessDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+             
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <img src="" class="rounded-circle img-responsive" alt="Avatar photo">
+                    </div>
+
+                    <div class="modal-body text-center mb-1">
+
+                        <h6 class="mt-1 mb-3">-----</h6>
+                        <input type="hidden" id="p-rowID" class="form-control ml-0">
+                        <div class="md-form ml-0 mr-0">
+                            <div class="md-form">
+                                <select class="mdb-select colorful-select dropdown-primary" id="newReestock">
+
+                                    <option  value="0">Unica vez</option>
+                                    <option  value="7">Cada 7 días</option>
+                                    <option value="14">Quincenal</option> 
+                                    <option value="28">Mensual</option>
+                                    <option value="42">Cada 6 semanas</option>
+                                    <option value="56">Cada 2 meses</option>
+                                    <option value="182">Cada 6 meses</option>
+                                </select>
+                                <label>Reestock Cada: </label>
+                            </div>
                                                                
                         </div>
 
@@ -316,29 +345,86 @@ div.hidden {
                     </div>
 
                 </div>
-                <!--/.Content-->
+
             </div>
         </div>
-<!--Reestock modal-->
-<div class="modal fade right modal-md" id="fluidModalRightSuccessDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="true" style="display: none;" aria-hidden="true">
+{{-- 
+<div class="modal fade right show" id="fluidModalRightDanger" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: block;">
+                <div class="modal-dialog modal-full-height modal-right modal-notify modal-danger" role="document">
+            
+                    <div class="modal-content">
+            
+                        <div class="modal-header">
+                            <p class="heading lead">Modal Danger</p>
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="white-text">×</span>
+                            </button>
+                        </div>
+
+             
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit iusto nulla aperiam blanditiis
+                                    ad consequatur in dolores culpa, dignissimos, eius non possimus fugiat. Esse ratione
+                                    fuga, enim, ab officiis totam.</p>
+                            </div>
+                            <ul class="list-group z-depth-0">
+                                <li class="list-group-item justify-content-between">
+                                    Cras justo odio
+                                    <span class="badge badge-danger badge-pill">14</span>
+                                </li>
+                                <li class="list-group-item justify-content-between">
+                                    Dapibus ac facilisis in
+                                    <span class="badge badge-danger badge-pill">2</span>
+                                </li>
+                                <li class="list-group-item justify-content-between">
+                                    Morbi leo risus
+                                    <span class="badge badge-danger badge-pill">1</span>
+                                </li>
+                                <li class="list-group-item justify-content-between">
+                                    Cras justo odio
+                                    <span class="badge badge-danger badge-pill">14</span>
+                                </li>
+                                <li class="list-group-item justify-content-between">
+                                    Dapibus ac facilisis in
+                                    <span class="badge badge-danger badge-pill">2</span>
+                                </li>
+                                <li class="list-group-item justify-content-between">
+                                    Morbi leo risus
+                                    <span class="badge badge-danger badge-pill">1</span>
+                                </li>
+                            </ul>
+                        </div>
+
+             
+                        <div class="modal-footer justify-content-center">
+                            <a type="button" class="btn btn-danger waves-effect waves-light">Get it now
+                                <i class="fa fa-diamond ml-1"></i>
+                            </a>
+                            <a type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal">No, thanks</a>
+                        </div>
+                    </div>
+                
+                </div>
+            </div> --}}
+{{-- <div class="modal fade right modal-md" id="sideCart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="true" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-full-height modal-right modal-lg  modal-notify modal-danger modal-container modal-custom-responsive" role="document">
-                <!--Content-->
+
                 <div class="modal-content modal-container">
-                    <!--Header-->
-                    <div class="modal-header">{{-- <p>Canasta</p> --}}
+
+                    <div class="modal-header">
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true" class="white-text">×</span>
                                                             </button>
                     </div>
-
-                    <!--Body-->
                     <div class="modal-body modal-products">
                         <div class="text-center">
-                            <i class="fa fa-shopping-basket fa-4x mb-3 animated rotateIn"></i>
+                            <i class="fa fa-shopping-cart fa-4x mb-3 animated rotateIn"></i>
                            
                         </div>
-                         <!-- Shopping Cart table -->
                 <div class="row" id="list">
                     @forelse(Cart::content() as $item)
                         <div class="col-md-12 row pr-0 mb-2 product-basket">
@@ -375,15 +461,19 @@ div.hidden {
                                       <img src="{{url('icons/ree-bag.png')}}" class="icon-img"> Reestock cada: 
                                         @if($item->options->reestock == 0)
                                             Única vez
-                                        @elseif($item->options->reestock <= 30)
-                                            {{$item->options->reestock}} días 
-                                        @elseif($item->options->reestock == 45)
+                                        @elseif($item->options->reestock == 7)
+                                           Semanal 
+                                        @elseif($item->options->reestock == 14)
+                                           Quincenal 
+                                        @elseif($item->options->reestock == 28)
+                                           Mensual 
+                                        @elseif($item->options->reestock == 42)
                                             6 Semanas
-                                        @elseif($item->options->reestock == 60)
+                                        @elseif($item->options->reestock == 56)
                                             2 Meses 
-                                        @elseif($item->options->reestock == 180)
+                                        @elseif($item->options->reestock == 182)
                                             6 Meses                                     
-                                      @endif
+                                        @endif
                                     </button></a>
                                      
                                 </div>
@@ -410,24 +500,109 @@ div.hidden {
            
 
                 </div>
-                <!-- Shopping Cart table -->
-                    </div>
 
-                    <!--Footer-->
+                    </div>
                     <div class="d-flex justify-content-center white py-3 pt-1 " style="  bottom: 0; position: sticky; z-index:100;">
                         <div onclick="location.href='{{ url('/checkout') }}';" class="col-md-11 d-flex justify-content-end bd-highlight  color-block danger-color-dark checkout">
                            
-                                <div class="p-2 col-md-6 bd-highlight"><strong class="white-text" style="font-size: 15px;"">Checkout</strong></div>
+                                <div class="p-2 col-md-6 bd-highlight"><strong class="white-text" style="font-size: 15px;"">CONTINUAR</strong></div>
                           
 
                             <div class="p-2 bd-highlight  color-block danger-color total"><strong class="float-right white-text" id="total">${{Cart::subtotal()}}</strong></div>
                         </div>                        
-                        {{-- <a type="button" class="btn btn-primary-modal waves-effect waves-light col-md-12" href="{{ url('/checkout') }}">Chekout</a> --}}
                     </div>
                 </div>
-                <!--/.Content-->
+
             </div>
-        </div>
+        </div> --}}
+            <div class="modal fade right" id="sideCart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-full-height modal-right" role="document">
+                    <div class="modal-content side-cart-modal">
+                        <div class="modal-header">
+                            <h4 class="modal-title w-100" id="myModalLabel">Carrito</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="side-cart" id="side-cart">
+
+                                @forelse(Cart::content() as $item)
+
+                                    <div class="item-row">
+                                        <div class="item-details">
+                                            <div class="product-name">
+                                                {{ $item->name}}
+                                            </div>
+                                            <div class="product-details">
+                                                {{$item->model->brand}} {{$item->model->unity}}
+                                            </div>
+
+                                            <div class="item-actions">
+                                                @if($item->options->instructions == '')
+                                                @else
+                                                    <div class="pb-0 mb-0 item-instructions">
+                                                        <label class="red-text mb-0">Instrucciones: </label> {{$item->options->instructions}}
+                                                    </div>
+                                                @endif
+                                                <button class="basket-button pl-0" id="sideCart-remove-button"><i class="fa fa-trash fa-lg" style="color: #ff4427;"></i> Remover </button>
+                                                <input type="hidden" id="rowID" value="{{$item->rowId}}" name="" >
+                                                <button class="basket-button pl-0" 
+                                            data-dismiss="modal" 
+                                            id="reesotckModal" 
+                                            data-rid="{{$item->rowId}}" 
+                                            data-name="{{$item->name}}" 
+                                            @if($item->options->instructions == '')
+                                                data-inst=""
+                                            @else 
+                                                data-inst="{{$item->options->instructions}}"
+                                            @endif
+                                            data-img="  @if($item->model->product_img){{url($item->model->product_img)}} 
+                                                        @else 
+                                                        {{url('img/no-img.jpg')}}
+                                                        @endif
+                                                    "
+                                          >
+                                          <img src="{{url('icons/ree-bag.png')}}" class="icon-img"> Reestock e instrucciones 
+                                           {{--  @if($item->options->reestock == 0)
+                                                Única vez
+                                            @elseif($item->options->reestock == 7)
+                                               Semanal 
+                                            @elseif($item->options->reestock == 14)
+                                               Quincenal 
+                                            @elseif($item->options->reestock == 28)
+                                               Mensual 
+                                            @elseif($item->options->reestock == 42)
+                                                6 Semanas
+                                            @elseif($item->options->reestock == 56)
+                                                2 Meses 
+                                            @elseif($item->options->reestock == 182)
+                                                6 Meses                                     
+                                            @endif --}}
+                                        </button>
+                                     
+                                            </div>
+                                        </div>
+                                        <div class="item-qty">
+                                            <input class="input-alternate number-button b-number" type="number" id="qty" value="{{$item->qty}}" disabled min="1" max="999">
+                                            <input type="hidden" id="rowID" value="{{$item->rowId}}" name="" >
+                                        </div>
+                                        <div class="item-total-price ml-2">
+                                             <label id="amount">${{ $item->price * $item->qty}}</label>
+                                        </div>
+                                    </div>
+                                @empty
+                                @endforelse
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center side-cart-checkout"  style="padding:  30px;  bottom: 0; position: sticky; z-index:100;">
+
+                            <button type="button" class="btn btn-danger waves-effect waves-light" onclick="location.href='{{ url('/checkout') }}';" style="width: 100%; background-color: #f4452c;">Continuar <label style="float: right;" id="total">${{Cart::subtotal()}}</label></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 @endsection
 @section('footer')
                 
@@ -485,15 +660,54 @@ div.hidden {
 @section('scripts')   
 
 <script src="{{url('js/jquery.nice-number.js')}}"></script>
+<!--Start of Zendesk Chat Script-->
 <script type="text/javascript">
+window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+$.src="https://v2.zopim.com/?5ebqR4Eslh9R5kuvwseznyo8WxngAjTI";z.t=+new Date;$.
+type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+</script>
+<!--End of Zendesk Chat Script-->
+<script type="text/javascript">
+   
 $(document).ready(function() {
+         // Define the menu we are working with
+    var menu = $('#myHeader');
+
+    var origOffsetY = menu.offset().top;
+
+        function scroll() {
+
+            // Check the menus offset. 
+            if ($(window).scrollTop() >= 10) {
+
+                //If it is indeed beyond the offset, affix it to the top.
+                $(menu).addClass('fixed-top');
+
+            } else {
+
+                // Otherwise, un affix it.
+                $(menu).removeClass('fixed-top');
+
+            }
+        }
+
+        // Anytime the document is scrolled act on it
+        document.onscroll = scroll;
+       // SideNav Button Initialization
+        $(".button-collapse").sideNav();
+        // SideNav Scrollbar Initialization
+        // var sideNavScrollbar = document.querySelector('.custom-scrollbar');
+        // Ps.initialize(sideNavScrollbar);
   
     $('.b-number').niceNumber();
 
     //$(":input[type='number']").bind('keyup mouseup', function () {
   
         $('body').on('click', '#qty', function() {
-
+        // var amount = $(this).parent('div').parent('div').next('div').find('label');
+       
         var qty = $(this).parent('div').find('input').val();
         var rowID = $(this).parent('div').next('input').val();
         var KgRowId = $(this).next('input').val();
@@ -501,7 +715,6 @@ $(document).ready(function() {
             rowID = KgRowId;
         }
         var data = { "rowId" : rowID, "qty" : qty };
-        console.log(data);
 
         $.ajaxSetup({
                 headers: {
@@ -519,16 +732,16 @@ $(document).ready(function() {
                                                 $( "#total" ).load(window.location.href + " #total" );
                                                     $( "#badge" ).load(window.location.href + " #badge" );
 
-                                                    // $( "#amount" ).load(window.location.href + " #amount" ); 
+                                                     // $( amount ).load(window.location.href + amount); 
 
                                                     console.log(response);
                                             }
                                     });      
 });
 
-$('body').on('click', '#n-remove-button', function () {
+$('body').on('click', '#sideCart-remove-button', function () {
     var rowID = $(this).next('input').val();   
-    var divDel = $(this).parent('div').parent('div');
+    var divDel = $(this).parent('div').parent('div').parent('div');
     var data = {"rowId": rowID};
   
       $.ajaxSetup({
@@ -542,7 +755,7 @@ $('body').on('click', '#n-remove-button', function () {
                     url:   '{{url("/lista/removeFromCart")}}',
                     type:  'post',
                     beforeSend: function () {
-                        console.log(rowID);
+                        
                     },
                     success:  function (response) {
                           $(divDel).fadeOut('normal');
@@ -567,7 +780,7 @@ $('body').on('click', '#remove-button', function () {
                     url:   '{{url("/lista/removeFromCart")}}',
                     type:  'post',
                     beforeSend: function () {
-                        console.log(rowID);
+                        
                     },
                     success:  function (response) {
                         $( "#total2" ).load(window.location.href + " #total2" );
@@ -582,21 +795,25 @@ $('body').on('click', '#remove-button', function () {
     var rid = '';
 
 $("body").on('click', '#reesotckModal', function(){
-   
+ 
     var name = $(this).data('name') 
     var img = $(this).data('img') 
     var rid = $(this).data('rid')
+    var instructions = $(this).data('inst')
 
     var m = $('#reestockModalView').modal();
     m.find('.modal-body h6').text(name)
     m.find('.modal-header img').attr('src', img)
     m.find('.modal-body #p-rowID').val(rid)
+    m.find('#product-instructions').text(instructions)
     
 });
 $("#SaveNewReestock").click(function(){
             var rowID = $("#p-rowID").val();
             var concurrence = $("#newReestock").val();  
-            var data = { "rowId" : rowID, "concurrence" : concurrence }; 
+            var instructions = $('#product-instructions').val();
+            var data = { "rowId" : rowID, "concurrence" : concurrence, "instructions": instructions }; 
+            console.log(data);
             $.ajaxSetup({
                 headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -612,7 +829,8 @@ $("#SaveNewReestock").click(function(){
                         },
                         success:  function (response) {   
 
-                        $( "#list" ).load(window.location.href + " #list", redo );     
+
+                        $( "#side-cart" ).load(window.location.href + " #side-cart", redo );     
                             function redo(){
                                 $('.b-number').niceNumber();
                             }
@@ -621,6 +839,16 @@ $("#SaveNewReestock").click(function(){
 });
         });
 </script>
+{{-- <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116577026-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116577026-1');
+</script> --}}
+
 	    @yield('scripts_unicos') 
 
 	   @endsection     

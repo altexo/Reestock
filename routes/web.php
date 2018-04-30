@@ -43,7 +43,7 @@ Route::prefix('admin')->group( function() {
 	//ProductController
 	Route::get('/products', 'ProductsController@index')->name('Ver Productos');
 	Route::post('/create/product/save', 'ProductsController@create')->name('product.create');
-	Route::post('/create/product/import', 'ProductsController@importProducts')->name('import.products');
+	Route::post('/create/product/import', 'ProductsController@importProductsWalmart')->name('import.products');
 	Route::get('/edit/product/{id}', 'ProductsController@getEditProduct')->name('Editar Producto');
 	Route::post('/edit/product/{id}/update', 'ProductsController@updateProduct')->name('product.update');
 	Route::post('/edit/product/{id}/IMGupdate', 'ProductsController@updateProductImg')->name('product.img');
@@ -82,23 +82,24 @@ Route::post('list/deleteItem', 'HomeController@deleteItem')->name('delete.item')
 Route::post('list/addNewProduct', 'ListController@addNewProduct')->name('add.product');
 Route::post('list/condirmList', 'HomeController@confirm_list')->name('confirm.list');
 });
-Route::get('/tienda2','store2Controller@index');
+Route::get('/tienda','Store2Controller@index');
 //pruebas con busquedas dinamicas
-// Route::get('/tienda2/{department}','store2Controller@findByDepartment')->name('find.department');
-// Route::get('/tienda2/{department}/{categorie}', 'store2Controller@findByDepartmentCategorie')->name('find.DepCat');
-// Route::get('/tienda2/{department}/{categorie}/{sub_cateogire}', 'store2Controller@findByDepartmentCategorieSubC')->name('find.DepCatSubC');
+// Route::get('/tienda2/{department}','Store2Controller@findByDepartment')->name('find.department');
+// Route::get('/tienda2/{department}/{categorie}', 'Store2Controller@findByDepartmentCategorie')->name('find.DepCat');
+// Route::get('/tienda2/{department}/{categorie}/{sub_cateogire}', 'Store2Controller@findByDepartmentCategorieSubC')->name('find.DepCatSubC');
 //End
 
 //pruebas de busqueda seccionada
-Route::get('/tienda2/searchby/{department}', 'store2Controller@findByDepartment')->name('search.categorie');
-Route::get('/tienda2/searchby/{department}/{category}', 'store2Controller@findByDepartmentCat')->name('search.subCat');
-Route::get('/tienda2/searchby/{department}/{category}/{sub_category}', 'store2Controller@findBySubCategory')->name('search.results');
+Route::get('/tienda/searchby/{department}', 'Store2Controller@findByDepartment')->name('search.categorie');
+Route::get('/tienda/searchby/{department}/{category}', 'Store2Controller@findByDepartmentCat')->name('search.subCat');
+Route::get('/tienda/searchby/{department}/{category}/{sub_category}', 'Store2Controller@findBySubCategory')->name('search.results');
 
-// Route::get('tienda2/{department}/','store2Controller@findByDepartment')->name('dep');
-// Route::get('tienda2/{department}/{subcat}','store2Controller@findByDepartment')->name('dep');
-// Route::get('tienda2/{department}/{}','store2Controller@findByDepartment')->name('dep');
-Route::get('/tienda', 'StoreController@index')->name('store');
+// Route::get('tienda2/{department}/','Store2Controller@findByDepartment')->name('dep');
+// Route::get('tienda2/{department}/{subcat}','Store2Controller@findByDepartment')->name('dep');
+// Route::get('tienda2/{department}/{}','Store2Controller@findByDepartment')->name('dep');
+// Route::get('/tienda', 'StoreController@index')->name('store');
 Route::get('/search','StoreController@search')->name('search');
+Route::get('/search','Store2Controller@search')->name('search2');
 Route::resource('/lista', 'StoreController');
 Route::post('/lista/addToCart', 'StoreController@addToCart');
 Route::post('/lista/updateCart', 'StoreController@updateCart');

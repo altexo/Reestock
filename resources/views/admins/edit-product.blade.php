@@ -95,7 +95,7 @@
 			</div>
 			<div class="col-md-6 mt-1">
 				<div class="md-form">
-				    <input id="input-char-counter" type="text" length="20" id="bar_code" name="bar_code" value="{{$p->bar_code}}">
+				    <input id="input-char-counter" type="text" length="20" id="bar_code" name="bar_code" value="{{$p->barcode}}">
 				    <label for="input-char-counter">Codigo de barras</label>
 				</div>
 			</div>
@@ -110,12 +110,11 @@
 			</div> -->
 			<div class="col-md-3 mt-3">
 				<select class="mdb-select colorful-select dropdown-primary" id="department" name="department">
-				    <option value="{{$p->department_id}}" selected>{{ $p->department_name }}</option>
-				    <option value="1">ABARROTES</option>
-				    <option value="2">LIMPIEZA</option>
-				    <option value="3">FUTA Y VERDURA</option>
-				    <option value="4">REFRIGERADOS</option>
-				    <option value="5">HIGIÉNE PERSONAL</option>
+				   	<option value="{{$p->departments_id}}" selected>{{ $p->department_name }}</option>
+				   		@forelse($departments as $department)
+				   			 <option value="{{$department->id}}">{{$department->department_name}}</option>
+				   		@empty
+				   		@endforelse
 				</select>
 				<label>Departamento</label>
 			</div>
@@ -123,11 +122,11 @@
 			<div class="col-md-3 mt-3">
 				<select class="mdb-select colorful-select dropdown-primary" id="brand" name="brand">
 				    <option value="{{ $p->brand }}" selected>{{ $p->brand }}</option>
-				    <option value="KELLOGS">KELLOGS</option>
-				    <option value="KIRKLAND">KIRKLAND</option>
-				    <option value="NESTLE">NESTLE</option>
-				    <option value="LALA">LALA</option>
-				    <option value="NESCAFÉ">NESCAFÉ</option>
+				    	@forelse($brands as $brand)
+				    		<option value="{{$brand->brand}}">{{$brand->brand}}</option>
+				    	@empty
+				    	@endforelse
+				   
 				</select>
 				<label>Marca</label>
            		
@@ -193,200 +192,7 @@
 @section('scripts_unicos')
 <script type="text/javascript">
 	$(document).ready(function() {
-				var marcas = ["ABUELA CONCHA", 
-"ACE", 
-"ACT II", 
-"AIRES DEL CAMPO", 
-"AJAX", 
-"ALADINO", 
-"ALMOND BREEZE", 
-"ALPURA", 
-"ANSERA", 
-"AQUANET", 
-"ARIEL", 
-"ARM & HAMMER", 
-"AUNT JEMIMA", 
-"AURRERA", 
-"AVEENO", 
-"AXION", 
-"BACHOCO", 
-"BAKERS & CHEF", 
-"BAR KEEPERS FRIEND", 
-"BARBARIA", 
-"BARILLA", 
-"BENEFUD", 
-"BEST FOODS", 
-"BETTY CROCKER", 
-"BIMBO", 
-"BIO BABY", 
-"BLANCA NIEVES", 
-"BLANCAS", 
-"BOVE", 
-"CADEROL", 
-"CAL C TOSE", 
-"CAPERUCITA", 
-"CAPRICE", 
-"CAPULLO", 
-"CARAPELLI", 
-"CASA MADERO", 
-"CAZARES", 
-"CHAM", 
-"CHATA", 
-"CHEEZ WHIZ", 
-"CLORALEX", 
-"COLGATE", 
-"COSTALITO", 
-"CUTEX", 
-"DANUP", 
-"DEL FUERTE", 
-"DEL HOGAR", 
-"DEL MONTE", 
-"DIAL", 
-"DOG CHOW", 
-"DOLORES", 
-"DOVE", 
-"DRYHOOK", 
-"DULSWEET", 
-"ELITE", 
-"ESPUMA DE CHAPALA", 
-"FABULOSO", 
-"FLY OUT", 
-"FOCA", 
-"FRENCH CLASSIC", 
-"GAMESA", 
-"GARNIER FRUCTIS", 
-"GHIRARDELLI", 
-"GILLETTE", 
-"GLORIA", 
-"GOODY", 
-"GREAT VALUE", 
-"GRISSI", 
-"GUACAMAYA", 
-"HAWAIIAN TROPIC", 
-"HEINZ", 
-"HELLMAN'S", 
-"HERBAL ESSENCES", 
-"HERDEZ", 
-"HOISIN", 
-"HUGGIES", 
-"HUICHOL", 
-"HUNTS", 
-"JELLO", 
-"JOHNSON Y JOHNSON", 
-"KARO", 
-"KELLOGS", 
-"KIKKOMAN", 
-"KIPAN", 
-"KIRKLAND", 
-"KLEENEX", 
-"KRUSTEAZ", 
-"LA COSTEÑA", 
-"LA CUARTA", 
-"LA HUERTA", 
-"LA VAQUITA", 
-"LACTACYD", 
-"LACTOVIT", 
-"LALA", 
-"LEROI", 
-"LEY", 
-"LIRIO", 
-"LOG CABIN", 
-"MAGGI", 
-"MAR DE CORTÉS", 
-"MARBÚ", 
-"MARCA", 
-"MARINELA", 
-"MAS COLOR", 
-"MAZATÚN", 
-"MCCORMICK", 
-"MEDIMART", 
-"MEMBER'S MARK", 
-"METCO", 
-"MODELO", 
-"MOLINA", 
-"MR LUCKY", 
-"MR MUSCULO", 
-"NATURAL", 
-"NATURE VALLEY", 
-"NEOLIA", 
-"NESTLE", 
-"NEUTROGENA", 
-"NOROESTE", 
-"NUTELLA", 
-"NUTRIOLI", 
-"OCÉANOS SALVAJES", 
-"OGX", 
-"OIKOS", 
-"ORAL B", 
-"OREO", 
-"OROWEAT", 
-"PALMOLIVE", 
-"PALOMA", 
-"PÉTALO", 
-"PIKOCHAS", 
-"PINOL", 
-"PLEDGE", 
-"PREGO", 
-"PROGRESO", 
-"PRONTO", 
-"PROTEC", 
-"QUAKER", 
-"REXONA", 
-"REYNOLDS", 
-"SABA", 
-"SAN LORENZO", 
-"SAN RAFAEL", 
-"SANISSIMO", 
-"SANTA CLARA", 
-"SANTA CLARITA", 
-"SCOTCH BRITE", 
-"SIDECLEAN", 
-"SILK ALMOND", 
-"SKIPPY", 
-"SONORA", 
-"SORIANA", 
-"TAJÍN", 
-"TASTY", 
-"THERBAL", 
-"TOPOCHICO", 
-"TOSTADAS", 
-"TRADICIONAL", 
-"TRAUB", 
-"TRIZALET", 
-"TWININGS", 
-"UMI", 
-"VANART", 
-"VAPORUB", 
-"VERDEVALLE", 
-"VILEDA", 
-"VOGUE", 
-"WONDER", 
-"XTREME", 
-"YEMINA", 
-"YOPLAIT", 
-"ZEST", 
-"ZIPLOC", 
-"ZOTE", 
-"ZULKA", 
-"ZUUM", 
-"ZWAN"
-];
-var supplier = ['WALMART', 'LEY', 'COSTCO', 'SAMS', 'SORIANA', 'FRUTERIA OLIVAS', 'FRUTERIA LOS COMPADRES','FRUTERIA EL CANARIO', 'LA MERA', 'FARMACIO MODERNA', 'TRAUB', 'CHATA','LA CUARTA','VINOTECA','TODO ORGANIKO'];
-$.each(marcas, function(val, text) {
-            $('#brand').append( $('<option></option>').val(text).html(text) )
-            }); 
 
-$.each(supplier, function(val, text) {
-            $('#supplier').append( $('<option></option>').val(val+1).html(text) )
-            }); 
-
-
-	// 	$(function(){
-	// 	setTimeout(function() {
-	// 	    $('.alert').fadeOut('fast');
-	// 	}, 5000); // <-- time in milliseconds
-
-	// });
 
 		$('.mdb-select').material_select();
 var n = <?php echo $number.';';?>
@@ -395,13 +201,18 @@ var n = <?php echo $number.';';?>
 
 			e.preventDefault();
 			
-				var numbers = ['WALMART', 'LEY', 'COSTCO', 'SAMS', 'SORIANA', 'FRUTERIA OLIVAS', 'FRUTERIA LOS COMPADRES','FRUTERIA EL CANARIO', 'LA MERA', 'FARMACIO MODERNA', 'TRAUB', 'CHATA','LA CUARTA','VINOTECA','TODO ORGANIKO'];
+				var suppliers = [];
+				@forelse($suppliers as $s)
+					suppliers.push('{{$s->name}}');
+				@empty
+				@endforelse
+				//['WALMART', 'LEY', 'COSTCO', 'SAMS', 'SORIANA', 'FRUTERIA OLIVAS', 'FRUTERIA LOS COMPADRES','FRUTERIA EL CANARIO', 'LA MERA', 'FARMACIO MODERNA', 'TRAUB', 'CHATA','LA CUARTA','VINOTECA','TODO ORGANIKO'];
 			//var value = [1, 2, 3, 4, 5];
 
 			var addSupplier = ('<div class="col-md-12 row mt-0"><div class="col-md-3 mt-2"><select class="add-caret browser-default colorful-select dropdown-primary" id="supplier'+n+'" name="supplier['+n+'][supplier_id]"><option value="" disabled selected>Selecciona una Tienda</option></select><div class="md-form form-sm mt-2"></div></div><div class="col-md-3"><div class="md-form form-sm mt-2"><input type="number" id="form1" class="form-control" min="0.00" step="0.01" max="99999.99" id="purchase_price" name="supplier['+n+'][purchase_price]"><label for="form1" class="">Precio de compra</label></div></div><div class="col-md-3 mt-2 "><i class="fa fa-close fa-2x remove-store" style="color:red"></i></div></div><hr>');
 				$('div[id="supplier-cont"]').append(addSupplier);
 
-				$.each(numbers, function(val, text) {
+				$.each(suppliers, function(val, text) {
 	            	$('#supplier'+n+'').append( $('<option></option>').val(val+1).html(text) )
 	            }); 
 	            n++;

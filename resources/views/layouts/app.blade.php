@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" class="@yield('html_class')">
 <head>
-    <meta charset="utf-8">
-    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('titulo')</title>
@@ -12,10 +11,7 @@
     <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}" type="image/x-icon">
     <link rel="icon" href="{{asset('img/favicon.ico')}}" type="image/x-icon">
     @yield('estilos')
-    <style>
-        
 
-    </style>
 </head>
 <body class="@yield('body_class')">
     <header>

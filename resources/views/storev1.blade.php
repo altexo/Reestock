@@ -1,26 +1,28 @@
 @extends('layouts.clients')
 @section('titulo', 'tienda')
 @section('estilos_unicos')
+
+<link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
 <style type="text/css">
-	.margin10
-	{
-		margin-top: 0 !important;
-		padding: 0px;
-	}
-	.no-shadow {
-    	box-shadow: 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
-	}
-	.card-title
-	{
-		font-size: 14px !important;
-	}
-	.card-body{
-		padding-top: 10px !important;
-	}
-	.price
-	{
-		font-size: 16px !important;
-	}
+    .margin10
+    {
+        margin-top: 0 !important;
+        padding: 0px;
+    }
+    .no-shadow {
+        box-shadow: 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+    }
+    .card-title
+    {
+        font-size: 14px !important;
+    }
+    .card-body{
+        padding-top: 10px !important;
+    }
+    .price
+    {
+        font-size: 16px !important;
+    }
     .err label
     {
         color: red;
@@ -35,7 +37,13 @@
   .file-field.big .file-path-wrapper .file-path {
     height: 3rem; }
                 
-
+.center-img{
+       margin-left: auto;
+    margin-right: auto;
+}
+.red-reestock{
+    background-color: #f4452c;
+}
 </style>
 @endsection
 @section('navbar')
@@ -80,7 +88,7 @@
             <!--Second slide-->
             <div class="carousel-item h-100 active">
                 <div class="view h-100">
-                    <img class="d-block h-100 w-lg-100" src="http://www.delimera.com.vn/media/stef/home/offer.jpg" alt="Second slide">
+                    <img id="first-banner" class="d-block h-100 w-lg-100 img-fluid" src="{{url('img/Untitled-1.jpg')}}" alt="Second slide">
                     <div class="mask waves-effect waves-light">
                       
                     </div>
@@ -123,7 +131,7 @@
         </a>
         <!--/.Controls-->
     </div>
-    <div class="container-fluid mx-0 px-0">
+    <div class="container-fluid mx-0 px-0 red-reestock">
         <!--Navbar-->
       {{--   <nav class="navbar navbar-expand-lg navbar-dark primary-color mb-5 navbar-toggleable-md " id="search-nav">
             <div class="container">
@@ -138,11 +146,22 @@
 
             </div>
         </nav> --}}
-          @include('components.search-store')
+      {{--   <div class="row">
+            <div class="col-xs-4 ml-3"> --}}
+                @include('components.search-store')
+    {{--         </div>
+            <div class="col-xs-8 ">
+               <form action="{{route('search2')}}" class="form-inline justify-content-end col-md-12">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                    <input class="form-control form-control-md ml-3 w-75" value="{{request()->search}}" name="search" type="text" placeholder="Buscar" aria-label="Search">
+                </form> 
+            </div>
+        </div> --}}
     </div>
-	<div class="container mt-5 pt-1">
+    <div class="container mt-5 pt-1">
 
-
+{{-- {{dd(Cart::content())}} --}}
 
         <div class="row pt-1">
             <div class="col-lg-3">
@@ -154,78 +173,30 @@
                         </div>
 
                         <div class="col-md-6 col-lg-12 mb-5">
-                            <h5 class="font-bold dark-grey-text"><strong>Marcas</strong></h5>
+                           {{--  <h5 class="font-bold dark-grey-text"><strong>Marcas</strong></h5>
                                 <div class="divider"></div>
 
                            
                                 <div class="form-group">
-
-	                                   <input name="group100" type="radio" id="radio100" onclick="window.location='/tienda/';" 
-	                                    @if( app('request')->input('department') == '' )  
-              						 	{{'checked'}}
-	                                    @endif
-	                                 	 >
-	                                    <label for="radio100" class="dark-grey-text">Todos</label>
-           
-                                </div>
-
-                                <div class="form-group">
-                           
-	                                    <input name="group100" type="radio" id="radio101" onclick="window.location='/tienda/?department=FRUTA+Y+VERDURA';" 
-	                                    @if( app('request')->input('department') == 'FRUTA Y VERDURA' )  
-              						 	{{'checked'}}
-	                                    @endif
-	                                 	 >
-	                                    <label for="radio101" class="dark-grey-text">Fruta Y Verdura</label>
-           
-                                </div>
-
-                                <div class="form-group">
-                                    <input name="group100" type="radio" id="radio102" onclick="window.location='/tienda/?department=REFRIGERADO';" @if( app('request')->input('department') == 'REFRIGERADO' )  
-                                        {{'checked'}}
+                                       <input name="group100" type="radio" id="radio100" onclick="window.location='';" 
+                                        @if( app('request')->input('brand') == '' )  
+                                            {{'checked'}}
                                         @endif
+                                         >
+                                        <label for="radio100" class="dark-grey-text">Todas</label>
+                                </div> --}}
+                       {{--          @forelse($brands as $brand)
+                                    <div class="form-group">
+                                        <input name="group100" type="radio" id="radio100" onclick="window.location='/tienda/';" 
+                                            @if( app('request')->input('brand') == $brand )  
+                                                {{'checked'}}
+                                            @endif
                                         >
-                                    <label for="radio102" class="dark-grey-text">Refrigerados</label>
-                                </div>
+                                        <label for="radio100" class="dark-grey-text">{{$brand}}</label>
+                                    </div>    
+                                @empty
+                                @endforelse --}}
 
-                                <div class="form-group">
-                                    <input name="group100" type="radio" id="radio103" onclick="window.location='/tienda/?department=ABARROTES';"@if( app('request')->input('department') == 'ABARROTES' )  
-                                        {{'checked'}}
-                                        @endif>
-                                    <label for="radio103" class="dark-grey-text">Abarrotes</label>
-                                </div>
-
-                                <div class="form-group">
-                                    <input name="group100" type="radio" id="radio104" onclick="window.location='/tienda/?department=2';"@if( app('request')->input('department') == '2' )  
-                                        {{'checked'}}
-                                        @endif>
-                                    <label for="radio104" class="dark-grey-text">Cárnicos</label>
-                                </div>
-                                 <div class="form-group">
-                                    <input name="group100" type="radio" id="radio105" onclick="window.location='/tienda/?department=HIGIENE+PERSONAL';"@if( app('request')->input('department') == 'HIGIENE PERSONAL' )  
-                                        {{'checked'}}
-                                        @endif>
-                                    <label for="radio105" class="dark-grey-text">Higiene Personal</label>
-                                </div>
-                                 <div class="form-group">
-                                    <input name="group100" type="radio" id="radio106" onclick="window.location='/tienda/?department=LIMPIEZA';
-                                    "@if( app('request')->input('department') == 'LIMPIEZA' )  
-                                        {{'checked'}}
-                                        @endif>
-                                    <label for="radio106" class="dark-grey-text">Limpieza</label>
-                                </div>
-                                 <div class="form-group">
-                                    <input name="group100" type="radio" id="radio107" onclick="window.location='/tienda/?department=DESECHABLES';"@if( app('request')->input('department') == 'DESECHABLES' )  
-                                        {{'checked'}}
-                                        @endif>
-                                    <label for="radio107" class="dark-grey-text">Desechables</label>
-                                </div>
-                                 <div class="form-group">
-                                    <input name="group100" type="radio" id="radio108" onclick="window.location='/tienda/?department=OTRO';"@if( app('request')->input('department') == 'OTRO' )  
-                                        {{'checked'}}
-                                        @endif>
-                                    <label for="radio108" class="dark-grey-text">Otro</label>
-                                </div>
 
                         </div>
              
@@ -257,7 +228,7 @@
                  
                 </div>
 
-
+          
                 <!-- Products Grid -->
                 <section class="section pt-4"> 
                     <div class="row">
@@ -273,7 +244,7 @@
                             @endif
                         </div>
                         <?php $count = 0; ?>
-                    	@forelse($products as $product)
+                        @forelse($products as $product)
                         <?php $count++; ?>
                         
                             <!-- Modal -->
@@ -318,13 +289,13 @@
                                                                 <div class="col-md-6 mt-1"> 
                                                                     <div class="md-form">
                                                                             <select class="mdb-select colorful-select dropdown-primary" id="addToListFrec-{{$product->id}}">
-                                                                                        <option selected value="0">Unica vez</option>
-                                                                                        <option value="7">Cada 7 días</option>
-                                                                                        <option value="15">Cada 15 días</option>
-                                                                                        <option value="30">Cada 30 dīas</option>
-                                                                                        <option value="45">Cada 6 semanas</option>
-                                                                                        <option value="60">Cada 2 meses</option>
-                                                                                        <option value="180">Cada 6 meses</option>
+                                                                                <option  value="0">Unica vez</option>
+                                                                                <option  value="7">Cada 7 días</option>
+                                                                                <option value="14">Quincenal</option> 
+                                                                                <option value="28">Mensual</option>
+                                                                                <option value="42">Cada 6 semanas</option>
+                                                                                <option value="56">Cada 2 meses</option>
+                                                                                <option value="182">Cada 6 meses</option>
 
                                                                             </select>
                                                                             <label>Reestock Cada: </label>
@@ -354,7 +325,7 @@
                                     <div class="modal-content">
                                         {{-- <form method="post" action=""> --}}
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel"><p class="heading lead"><i class="fa fa-shopping-basket white-i"></i>Añadir este producto</p></h5>
+                                                <h5 class="modal-title" id="exampleModalLabel"><p class="heading lead"><i class="fa fa-shopping-cart white-i"></i>Añadir este producto</p></h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true" class="white-text">&times;</span>
                                                 </button>
@@ -396,13 +367,13 @@
                                                                 <div class="col-md-6 mt-1"> 
                                                                     <div class="md-form">
                                                                             <select class="mdb-select colorful-select dropdown-primary" id="frecuency-{{$product->id}}">
-                                                                                        <option  value="0">Unica vez</option>
-                                                                                        <option selected value="7">Cada 7 días</option>
-                                                                                        <option value="15">Cada 15 días</option>
-                                                                                        <option value="30">Cada 30 días</option>
-                                                                                        <option value="45">Cada 6 semanas</option>
-                                                                                        <option value="60">Cada 2 meses</option>
-                                                                                        <option value="180">Cada 6 meses</option>
+                                                                                <option  value="0">Unica vez</option>
+                                                                                <option  value="7">Cada 7 días</option>
+                                                                                <option value="14">Quincenal</option> 
+                                                                                <option value="28">Mensual</option>
+                                                                                <option value="42">Cada 6 semanas</option>
+                                                                                <option value="56">Cada 2 meses</option>
+                                                                                <option value="182">Cada 6 meses</option>
 
                                                                             </select>
                                                                             <label>Reestock Cada: </label>
@@ -416,7 +387,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal" id="CancelToBasketModal-{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">Cancelar</button>
-                                                <button type="button" class="btn btn-default btn-md" id="addToBasketProduct-{{$product->id}}">Añadir a mi canasta
+                                                <button type="button" class="btn btn-default btn-md" id="addToBasketProduct-{{$product->id}}">Añadir a mi carrito
                                                         
                                                 </button>
                                             </div>
@@ -425,27 +396,28 @@
                                 </div>
                             </div>
                             <!--End Modal-->    
-                            
+                            <!-- Full Height Modal Right -->
 
-					        <div class="col-lg-4 col-md-6 mb-r">
-					            <div class="card no-shadow"><a href=""></a>
-					                <div class="view overlay hm-white-slight no-shadow">
-					                   <a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>"> @if($product->product_img)
-                                                            <img src="{{url($product->product_img)}}" class="img-fluid no-shadow"  alt="">
+
+                            <div class="col-lg-4 col-md-6 mb-r">
+                                <div class="card no-shadow"><a href=""></a>
+                                    <div class="view overlay hm-white-slight no-shadow">
+                                       <a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>"> @if($product->product_img)
+                                                            <img src="{{url($product->product_img)}}" class="img-fluid no-shadow center-img"  alt="">
                                                         @else
                                                             <img src="{{url('img/no-img.jpg')}}" class="img-fluid no-shadow"  alt="">
                                                         @endif</a>
-					                    <a data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>" >
-					                        <div class="mask"></div>
-					                    </a>
-					                </div>
-					                <div class="card-body text-center no-padding">
-					                    <a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>" class="text-muted"><h6>{{ $product->brand }}</h6></a>
-					                      <a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>"  class="text-muted"><h6>{{ $product->unity }}</h6></a>
-					                    <h4 class="card-title"><strong><a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>" >{{$product->product_name}}</a></strong></h4>
-					                    <div class="card-footer">
-					                        <span class="center price align-middle font-weight-bold blue-text">{{$product->sale_price}} MXN <!-- <span class="discount">299$</span> --></span>
-					                    </div>
+                                        <a data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>" >
+                                            <div class="mask"></div>
+                                        </a>
+                                    </div>
+                                    <div class="card-body text-center no-padding">
+                                        <a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>" class="text-muted">{{-- <h6>{{ $product->brand }}</h6> --}}</a>
+                                          <a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>"  class="text-muted">{{-- <h6>{{ $product->unity }}</h6> --}}</a>
+                                        <h4 class="card-title"><strong><a href="" data-toggle="modal" data-target="#modalQuickView<?php echo $count; ?>" >{{$product->product_name}}</a></strong></h4>
+                                        <div class="card-footer">
+                                            <span class="center price align-middle font-weight-bold blue-text">{{$product->sale_price}} MXN <!-- <span class="discount">299$</span> --></span>
+                                        </div>
                                         @if(count($lists))
                                             <div class="md-form">
                                             
@@ -460,13 +432,13 @@
                                             </select>                 
                                         </div>
                                         @else
-					                     
+                                         
                                         @endif
-					                    <button class="btn btn-danger btn-sm" id="Modal-product-{{$product->id}}">Añadir a canasta</button>
-					                </div>
-					            </div>
-					        </div>
-                   		@empty
+                                        <button class="btn btn-danger btn-sm" id="Modal-product-{{$product->id}}">Añadir a carrito</button>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
                         <div class="col-md-12 alert alert-warning" role="alert">
                             No se encontraron resultados.
                         </div>
@@ -568,10 +540,11 @@
                     </div>
 
                 
-				        @endforelse
+                        @endforelse
                     </div>
                   
                     <div class="row justify-content-center mb-4">
+                        
                        {{ $products->links() }}
                     </div>
                 </section>
@@ -599,6 +572,19 @@
 
 
 
+});
+    $(window).resize(function(e){
+   if($(window).width() < 568) {
+  
+        $("#first-banner").each(function() {
+            $(this).attr("src", "{{url('img/Untitled-3.jpg')}}");
+        });
+        } else if ($(window).width() >= 568) 
+        {
+                $("#first-banner").each(function() {
+                $(this).attr("src","{{url('img/Untitled-1.jpg')}}");
+                });                        
+    }         
 });
     
     
@@ -712,7 +698,6 @@
                             }
                            
                             var concurrence = $("#frecuency-{{$product->id}}").val();
-                            
                             var qty = $("#addBasketQty-{{$product->id}}").val();
                             
                             var parametros = { "product_id" : {{$product->id}}, "concurrence" : concurrence, "qty": qty };
@@ -740,7 +725,7 @@
                                                     console.log(concurrence);
                                             },
                                             success:  function (response) {
-                                                $( "#list" ).load(window.location.href + " #list", redo );
+                                                $( "#side-cart" ).load(window.location.href + " #side-cart", redo );
                                                
                                                
 
@@ -751,7 +736,7 @@
                                                     $('.b-number').niceNumber();
                                                 }
                                                 $("#CancelToBasketModal-{{$product->id}}").text("Seguir comprando");
-                                                 $("#addToBasketProduct-{{$product->id}}").html("Se añadio a la canasta <i class='fa fa-check'></i>")    
+                                                 $("#addToBasketProduct-{{$product->id}}").html("Se añadio al carrito <i class='fa fa-check'></i>")    
                                                         $("#addToBasketProduct-{{$product->id}}").addClass("btn-success");
                                                          var modal = $("#AddToBasketModal-{{$product->id}}").find('div'); 
                                                         $(modal).removeClass("modal-danger");

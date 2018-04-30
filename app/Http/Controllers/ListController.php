@@ -49,6 +49,7 @@ class ListController extends Controller
 
     public function create(Request $r)
     {   
+        //return Cart::content();
         $date = $r->first_date_submit;
         $tdate = DateTime::createFromFormat('Y-m-d', $date);  
 
@@ -65,6 +66,9 @@ class ListController extends Controller
                         $list->products_id = $p->id;
                         $list->quantity = $p->qty;  
                         $list->reestock_concurrence = $p->options->reestock;
+                        if ($p->options->instructions != null) {
+                            $list->instructions = $p->options->instructions;
+                        }
                         $current_date =  new \DateTime();
                         //fecha de reestock
                         $reestock_date = $tdate;
@@ -118,6 +122,9 @@ class ListController extends Controller
                         $list->products_id = $p->id;
                         $list->quantity = $p->qty;  
                         $list->reestock_concurrence = $p->options->reestock;
+                        if ($p->options->instructions != null) {
+                            $list->instructions = $p->options->instructions;
+                        }
                         $current_date =  new \DateTime();
                         //fecha de reestock
                         $reestock_date = $tdate;

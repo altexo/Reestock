@@ -50,94 +50,64 @@ body, html {
 @section('navbar')
 
 @section('contenido')
-{{-- <div class="full-height bg">
-    Contenido sobre banner
-</div> --}}
-<div id="carousel-example-1z" class="carousel slide carousel-fade " data-ride="carousel">
-        <!--Indicators-->
-        <ol class="carousel-indicators">
-            <li data-target="#carousel-example-1z" data-slide-to="0" class=""></li>
-            <li data-target="#carousel-example-1z" data-slide-to="1" class="active"></li>
-            <li data-target="#carousel-example-1z" data-slide-to="2" class=""></li>
-        </ol>
-        <!--/.Indicators-->
-        <!--Slides-->
-        <div class="carousel-inner" role="listbox">
-            <!--First slide-->
-            <div class="carousel-item">
-                <div class="view full-height">
-                    <img class="d-block h-100 w-lg-100 img-fluid" src="img/banner_1.jpg" alt="First slide">
-                    <div class="mask waves-effect waves-light">
-                        <!-- Caption --
-                        <div class="full-bg-img flex-center white-text ">
-                            <ul class="animated fadeIn col-10">
-                                <li>
-                                    <p class="h1 red-text mb-4 mt-5">
-                                        <strong>Sale off 30% on every saturday!</strong>
-                                    </p>
-                                </li>
-                                <li>
-                                    <h5 class="h5-responsive dark-grey-text font-bold mb-5">Tempora incidunt ut labore et dolore veritatis et quasi architecto beatae</h5>
-                                </li>
-                                <li>
-                                    <a target="_blank" href="https://mdbootstrap.com/getting-started/" class="btn btn-danger btn-rounded waves-effect waves-light" rel="nofollow">See more!</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.Caption -->
-                    </div>
-                </div>
+<!--Carousel Wrapper-->
+<div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
+    <!--Indicators-->
+    <ol class="carousel-indicators">
+        <li data-target="#carousel-example-2" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-example-2" data-slide-to="1"></li>
+        <li data-target="#carousel-example-2" data-slide-to="2"></li>
+    </ol>
+    <!--/.Indicators-->
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+            <div class="view">
+                <img class="d-block w-100" src="{{url('img/lumiares-wine-offers-2.png')}}" alt="First slide">
+                <div class="mask rgba-black-light"></div>
             </div>
-            <!--/First slide-->
-            <!--Second slide-->
-            <div class="carousel-item h-100 active">
-                <div class="view  full-height">
-                    <img class="d-block h-100 w-lg-100 img-fluid" src="img/sin_filas.jpg" alt="Second slide">
-                    <div class="mask waves-effect waves-light">
-                        <!-- Caption -->
-                       {{--  <div class="full-bg-img flex-center white-text">
-                            <ul class="animated fadeIn col-10">
-                                <li>
-                                    <p class="h1 dark-grey-text mb-4">
-                                        <strong>Nemo enim ipsam voluptatem quia voluptas sit</strong>
-                                    </p>
-                                </li>
-                                <li>
-                                    <h5 class="h5-responsive dark-grey-text font-bold mb-5">Tempora incidunt ut labore et dolore veritatis et quasi architecto beatae</h5>
-                                </li>
-                                <li>
-                                    <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-primary btn-rounded waves-effect waves-light" rel="nofollow">Read more</a>
-                                </li>
-                            </ul>
-                        </div> --}}
-                        <!-- /.Caption -->
-                    </div>
-                </div>
+            <div class="carousel-caption">
+                <h1 class="h1-responsive">Los productos mas frescos hasta la puerta de tu casa</h1>
+               {{--  <p>First text</p> --}}
             </div>
-            <!--/Second slide-->
-            <!--Third slide-->
-            <div class="carousel-item">
-                <div class="view full-height">
-                    <img class="d-block h-100 w-lg-100 img-fluid" src="img/Productos2.jpg" alt="Third slide">
-                    <div class="mask waves-effect waves-light">
-                      
-                    </div>
-                </div>
-            </div>
-            <!--/Third slide-->
         </div>
-        <!--/.Slides-->
-        <!--Controls-->
-        <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-        <!--/.Controls-->
+      {{--   <div class="carousel-item">
+           
+
+            <div class="view">
+
+                <img class="d-block w-100" src="{{url('img/pretty-girl-bag.jpg')}}" alt="Second slide">
+                <div class="mask rgba-black-light"></div>
+            </div>
+            <div class="carousel-caption">
+                <h1 class="h1-responsive">Sin filas y en tu casa</h1>
+               
+            </div>
+        </div>
+        <div class="carousel-item">
+          
+            <div class="view">
+                <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg" alt="Third slide">
+                <div class="mask rgba-black-slight"></div>
+            </div>
+            <div class="carousel-caption">
+                <h3 class="h3-responsive">Slight mask</h3>
+                <p>Third text</p>
+            </div>
+        </div> --}}
     </div>
+    <!--/.Slides-->
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
+</div>
 
  <section class="section1">
         
@@ -287,9 +257,10 @@ body, html {
             </div>
 
             <div class="col-md-4">
-              <a class="btn-floating blue accent-1">
-                <i class="fa fa-phone"></i>
-              </a>
+             {{--  <a class="btn-floating blue accent-1"> --}}
+               {{--  <i class="fa fa-phone"></i> --}}
+               <img src="{{url('img/whatsapp.png')}}">
+              {{-- </a> --}}
               <p>(667) 189 3640</p>
               <p>Atención a Clientes, 9:00 am - 7:00 pm</p>
             </div>
