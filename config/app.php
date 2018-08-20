@@ -182,6 +182,11 @@ return [
 
         //Lang Package SP
         Laraveles\Spanish\SpanishServiceProvider::class,
+        
+        //Full text search
+      
+
+
 
     ],
 
@@ -232,6 +237,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+
 
     ],
 

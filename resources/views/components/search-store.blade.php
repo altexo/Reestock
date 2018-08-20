@@ -123,7 +123,7 @@
             
             </div>
 
-            <form action="{{route('search2')}}" class="form-inline justify-content-end col-md-4">
+            <form action="{{route('search2')}}" class="form-inline justify-content-end col-md-4" method="GET">
                 <i class="fa fa-search" aria-hidden="true"></i>
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                 <input class="form-control form-control-md ml-3 w-75" value="{{request()->search}}" name="search" type="text" placeholder="Buscar" aria-label="Search">

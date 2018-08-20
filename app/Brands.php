@@ -1,22 +1,22 @@
 <?php
 
 namespace App;
-
+use Nicolaslopezj\Searchable\SearchableTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Brands extends Model
 {
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
+    use SearchableTrait;
+    
     protected $table = 'brands';
 
-     /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
+
+       protected $searchable = [
+        'columns' => [
+            'brands.brand_name' => 10,
+            'brands.id' => 3,
+        ]
+    ];
+
     public $timestamps = false;
 }

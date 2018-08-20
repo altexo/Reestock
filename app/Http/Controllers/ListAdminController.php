@@ -5,6 +5,7 @@ use App\List_products;
 use App\Products;
 use App\Reestock_records;
 use DB;
+use App\Billing_address;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -61,22 +62,27 @@ class ListAdminController extends Controller
  	}
 
  	  public function show($date, $id, $status)
-    {	if ($status == 0) {
+    {	
+
+        if ($status == 0) {
             $user_list = List_products::join('products', 'list_products.products_id', '=', 'products.id')
             ->where(DB::raw('date(reestock_date)'), $date)
             ->where('list_products.users_id', $id)
            // ->where('list_products.active', $status)
             ->get();
          }else{
-        	$user_list = List_products::join('products', 'list_products.products_id', '=', 'products.id')
+
+        	 $user_list = List_products::join('products', 'list_products.products_id', '=', 'products.id')
             ->select('list_products.*', 'list_products.id as l_id', 'products.*')
         	->where(DB::raw('date(reestock_date)'), $date)
         	->where('list_products.users_id', $id)
         	->where('list_products.active', $status)
         	->get();
+
+             $billing_address = Billing_address::where('users_id', $id)->first();
         }
         //return $user_list;
-    	return view('admins.get-list', ['user_list' => $user_list,'status' => $status]);
+    	return view('admins.get-list', ['user_list' => $user_list,'status' => $status, 'billing_address' => $billing_address]);
         
     }
 
@@ -144,6 +150,75 @@ class ListAdminController extends Controller
             return back()->with('err', 'Ocurrio un problema, vuelvelo a intentar. Si el problema persiste pongase en contacto con soporte.');
         }
         return redirect()->route('Listas / Confirmadas')->with('success', 'La lista fue completada correctamente.');   
+    }
+    public function inovice(Request $request){
+        echo "Preparing inovice json: <br>";
+       
+       echo "Ready: <br>";
+        echo "<br> Starting curl.. <br>";
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, "http://devfactura.in/api/v3/cfdi33/create");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, '{
+        \"Receptor\": {
+            \"UID\": \"2093208989d99i3\",
+            \"ResidenciaFiscal\": \"023203d\",
+        },
+        \"TipoDocumento\":\"factura\",
+        \"Conceptos\": [{
+            \"ClaveProdServ\":\"1154544511\",
+            \"NoIdentificacion\": \"SKU-12122\",
+            \"Cantidad\":10,
+            \"ClaveUnidad\":\"E48\",
+            \"Unidad\":\"Unidad de servicio\",
+            \"ValorUnitario\":1500,
+            \"Descripcion\":\"Diseño de interfaces para sitio web\",
+            \"Descuento\":0,
+            \"Impuestos\":{
+                \"Traslados\":[{\"Base\" : 15000, \"Impuesto\": \"002\", \"TipoFactor\": \"Tasa\", \"TasaOCuota\": 0.16, \"Importe\": 2400}],
+                \"Retenidos\":[{\"Base\" : 15000, \"Impuesto\": \"001\", \"TipoFactor\": \"Tasa\", \"TasaOCuota\": 0.10, \"Importe\": 1500}],
+                \"Locales\":[{\"Impuesto\": \"ISH\", \"TasaOCuota\": 0.03}]
+            },
+            \"Aduana\":\"15 48 3009 0001234\",
+            \"Predial\":\"487842327ee\",
+            \"Partes\":{}
+        }],
+        \"UsoCFDI\": \"G02\",
+        \"Serie\":\"2093208989d99i3\",
+        \"FormaPago\":\"03\",
+        \"MetodoPago\": \"PUE\",
+        \"CondicionesDePago\": \"Pago en 10 dias\",
+        \"CfdiRelacionados\": {
+            \"TipoRelacion\": \"04\",
+            \"UUID\": [
+              \"UUID\",
+              \"UUD\"
+            ]
+        },
+        \"Moneda\": \"MXN\",
+        \"TipoCambio\": 19.89,
+        \"NumOrder\": \"MY-Order-10\",
+        \"FechaFromAPI\": \"2015-05-10T10:05:51\",
+        \"Comentarios\": \"Comentarios para agregar a la factura PDF\",
+        \"EnviarCorreo\": true
+
+
+        }');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          "Content-Type: application/json",
+          "F-API-KEY: ".ENV('FACTURA_API_KEY')."",
+          "F-SECRET-KEY: ".ENV('FACTURA_SECRET_KEY').""
+        ));
+        echo "Executing..";
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return response()->json($response);
     }
 
     private function queryOrderLists($date){

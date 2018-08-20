@@ -1,6 +1,7 @@
 @extends('layouts.admins')
 @section('navbar')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
 @section('contenido')
 <div class="row">
 	<div class="col-md-8"></div>
@@ -74,18 +75,11 @@
 			</div> -->
 			<div class="col-md-3 mt-3">
 				<select class="mdb-select colorful-select dropdown-primary" id="department" name="department">
-				    <option value="" disabled selected>Selecciona un departamento</option>
-				    <option value="1">ABARROTES</option>
-				    <option value="2">CÁRNICOS</option>
-				    <option value="3">FRUTA Y VERDURA</option>
-				    <option value="4">REFRIGERADO</option>
-				    <option value="5">HIGIÉNE PERSONAL</option>
-				    <option value="6">LIMPIEZA</option>
-				    <option value="7">DESECHABLES</option>
-				    <option value="8">OTRO</option>
-				    
-				    
-
+				   	<option disabled selected>Departamento</option>
+				   		@forelse($departments as $department)
+				   			 <option value="{{$department->id}}">{{$department->department_name}}</option>
+				   		@empty
+				   		@endforelse
 				</select>
 				<label>Departamento</label>
 			</div>
@@ -93,11 +87,10 @@
 			<div class="col-md-3 mt-3">
 				<select class="mdb-select colorful-select dropdown-primary" id="brand" name="brand">
 				    <option value="" disabled selected>Selecciona una marca</option>
-				  {{--   <option value="KELLOGS">KELLOGS</option>
-				    <option value="KIRKLAND">KIRKLAND</option>
-				    <option value="NESTLE">NESTLE</option>
-				    <option value="LALA">LALA</option>
-				    <option value="NESCAFÉ">NESCAFÉ</option> --}}
+				 @forelse($brands as $brand)
+				    		<option value="{{$brand->brand}}">{{$brand->brand}}</option>
+				    	@empty
+				    	@endforelse
 				</select>
 				<label>Marca</label>
            		
@@ -117,6 +110,17 @@
 				</select>
 				<label>Unidad</label>
 			</div>
+			<div class="col-md-3 mt-3">
+					<select class="mdb-select colorful-select dropdown-primary" id="sub_category" name="sub_category">
+				    <option value="" disabled selected>Selecciona una sub categoria</option>
+				  		 @forelse($sub_categories as $sub_category)
+				    		<option value="{{$sub_category->id}}">{{$sub_category->name}}</option>
+				    	@empty
+				    	@endforelse
+
+				</select>
+				<label>Categoria</label>
+			</div>
 
 			<div class="col-md-7 mt-1 file-field">
 		        <div class="btn btn-primary btn-sm">
@@ -132,13 +136,30 @@
 			<div class="col-md-6">
 				<img id="blah" src="#" alt="" class="img-fluid" />
 			</div>
-
+			{{-- Autocomplete vueejs --}}
+			<div class="col-md-12 mt-3 mb-2">
+					<select name="tags[]" class="mdb-select colorful-select dropdown-primary" multiple searchable="Search here..">
+					    <option value="" disabled selected>Escoge los tags del producto</option>
+					    <option value="1">COSTCO</option>
+					     <option value="2">KIRKLAND</option>
+					  {{--   <option value="2">Germany</option>
+					    <option value="3">France</option>
+					    <option value="4">Poland</option>
+					    <option value="5">Japan</option> --}}
+					</select>
+					<label>Tags</label>
+					{{-- <button class="btn-save btn btn-primary btn-sm">Save</button> --}}
+			</div>
+			{{-- End Autocomplete --}}
 			<div class="col-xl-12 row" class="supplier-cont" id="supplier-cont">
 	    		<div class="col-md-12 row mt-4">
 	    			<div class="col-md-3 mt-2">
 					<select class="add-caret browser-default colorful-select dropdown-primary" id="supplier" name="supplier[0][supplier_id]">
 					    <option value="" disabled selected>Selecciona una Tienda</option>
-					   
+					    @forelse($suppliers as $supplier)
+				    		<option value="{{$supplier->id}}">{{$supplier->name}}</option>
+				    	@empty
+				    	@endforelse
 					</select>
 					<!-- <label>Tienda</label> -->
 	           		
@@ -171,196 +192,18 @@
 @endsection
 @section('footer')
 @section('scripts_unicos')
+
 <script type="text/javascript">
 	// Material Select Initialization
 	var n = 0;
 $(document).ready(function() {
-		var marcas = ["ABUELA CONCHA", 
-"ACE", 
-"ACT II", 
-"AIRES DEL CAMPO", 
-"AJAX", 
-"ALADINO", 
-"ALMOND BREEZE", 
-"ALPURA", 
-"ANSERA", 
-"AQUANET", 
-"ARIEL", 
-"ARM & HAMMER", 
-"AUNT JEMIMA", 
-"AURRERA", 
-"AVEENO", 
-"AXION", 
-"BACHOCO", 
-"BAKERS & CHEF", 
-"BAR KEEPERS FRIEND", 
-"BARBARIA", 
-"BARILLA", 
-"BENEFUD", 
-"BEST FOODS", 
-"BETTY CROCKER", 
-"BIMBO", 
-"BIO BABY", 
-"BLANCA NIEVES", 
-"BLANCAS", 
-"BOVE", 
-"CADEROL", 
-"CAL C TOSE", 
-"CAPERUCITA", 
-"CAPRICE", 
-"CAPULLO", 
-"CARAPELLI", 
-"CASA MADERO", 
-"CAZARES", 
-"CHAM", 
-"CHATA", 
-"CHEEZ WHIZ", 
-"CLORALEX", 
-"COLGATE", 
-"COSTALITO", 
-"CUTEX", 
-"DANUP", 
-"DEL FUERTE", 
-"DEL HOGAR", 
-"DEL MONTE", 
-"DIAL", 
-"DOG CHOW", 
-"DOLORES", 
-"DOVE", 
-"DRYHOOK", 
-"DULSWEET", 
-"ELITE", 
-"ESPUMA DE CHAPALA", 
-"FABULOSO", 
-"FLY OUT", 
-"FOCA", 
-"FRENCH CLASSIC", 
-"GAMESA", 
-"GARNIER FRUCTIS", 
-"GHIRARDELLI", 
-"GILLETTE", 
-"GLORIA", 
-"GOODY", 
-"GREAT VALUE", 
-"GRISSI", 
-"GUACAMAYA", 
-"HAWAIIAN TROPIC", 
-"HEINZ", 
-"HELLMAN'S", 
-"HERBAL ESSENCES", 
-"HERDEZ", 
-"HOISIN", 
-"HUGGIES", 
-"HUICHOL", 
-"HUNTS", 
-"JELLO", 
-"JOHNSON Y JOHNSON", 
-"KARO", 
-"KELLOGS", 
-"KIKKOMAN", 
-"KIPAN", 
-"KIRKLAND", 
-"KLEENEX", 
-"KRUSTEAZ", 
-"LA COSTEÑA", 
-"LA CUARTA", 
-"LA HUERTA", 
-"LA VAQUITA", 
-"LACTACYD", 
-"LACTOVIT", 
-"LALA", 
-"LEROI", 
-"LEY", 
-"LIRIO", 
-"LOG CABIN", 
-"MAGGI", 
-"MAR DE CORTÉS", 
-"MARBÚ", 
-"MARCA", 
-"MARINELA", 
-"MAS COLOR", 
-"MAZATÚN", 
-"MCCORMICK", 
-"MEDIMART", 
-"MEMBER'S MARK", 
-"METCO", 
-"MODELO", 
-"MOLINA", 
-"MR LUCKY", 
-"MR MUSCULO", 
-"NATURAL", 
-"NATURE VALLEY", 
-"NEOLIA", 
-"NESTLE", 
-"NEUTROGENA", 
-"NOROESTE", 
-"NUTELLA", 
-"NUTRIOLI", 
-"OCÉANOS SALVAJES", 
-"OGX", 
-"OIKOS", 
-"ORAL B", 
-"OREO", 
-"OROWEAT", 
-"PALMOLIVE", 
-"PALOMA", 
-"PÉTALO", 
-"PIKOCHAS", 
-"PINOL", 
-"PLEDGE", 
-"PREGO", 
-"PROGRESO", 
-"PRONTO", 
-"PROTEC", 
-"QUAKER", 
-"REXONA", 
-"REYNOLDS", 
-"SABA", 
-"SAN LORENZO", 
-"SAN RAFAEL", 
-"SANISSIMO", 
-"SANTA CLARA", 
-"SANTA CLARITA", 
-"SCOTCH BRITE", 
-"SIDECLEAN", 
-"SILK ALMOND", 
-"SKIPPY", 
-"SONORA", 
-"SORIANA", 
-"TAJÍN", 
-"TASTY", 
-"THERBAL", 
-"TOPOCHICO", 
-"TOSTADAS", 
-"TRADICIONAL", 
-"TRAUB", 
-"TRIZALET", 
-"TWININGS", 
-"UMI", 
-"VANART", 
-"VAPORUB", 
-"VERDEVALLE", 
-"VILEDA", 
-"VOGUE", 
-"WONDER", 
-"XTREME", 
-"YEMINA", 
-"YOPLAIT", 
-"ZEST", 
-"ZIPLOC", 
-"ZOTE", 
-"ZULKA", 
-"ZUUM", 
-"ZWAN"
-];
-var supplier = ['WALMART', 'LEY', 'COSTCO', 'SAMS', 'SORIANA', 'FRUTERIA OLIVAS', 'FRUTERIA LOS COMPADRES','FRUTERIA EL CANARIO', 'LA MERA', 'FARMACIO MODERNA', 'TRAUB', 'CHATA','LA CUARTA','VINOTECA','TODO ORGANIKO'];
-$.each(marcas, function(val, text) {
-            $('#brand').append( $('<option></option>').val(text).html(text) )
-            }); 
+		
+// var supplier = ['WALMART', 'LEY', 'COSTCO', 'SAMS', 'SORIANA', 'FRUTERIA OLIVAS', 'FRUTERIA LOS COMPADRES','FRUTERIA EL CANARIO', 'LA MERA', 'FARMACIO MODERNA', 'TRAUB', 'CHATA','LA CUARTA','VINOTECA','TODO ORGANIKO'];
 
-$.each(supplier, function(val, text) {
-            $('#supplier').append( $('<option></option>').val(val+1).html(text) )
-            }); 
+
+// $.each(supplier, function(val, text) {
+//             $('#supplier').append( $('<option></option>').val(val+1).html(text) )
+//             }); 
 
 
 
@@ -373,22 +216,31 @@ $.each(supplier, function(val, text) {
 	});
     $('.mdb-select').material_select();
 
+var n = 1;
+		$('#add-supplier').click(function (e){
+			
+
+			e.preventDefault();
+			
+				var suppliers = [];
+				@forelse($suppliers as $s)
+					suppliers.push('{{$s->name}}');
+				@empty
+				@endforelse
+				//['WALMART', 'LEY', 'COSTCO', 'SAMS', 'SORIANA', 'FRUTERIA OLIVAS', 'FRUTERIA LOS COMPADRES','FRUTERIA EL CANARIO', 'LA MERA', 'FARMACIO MODERNA', 'TRAUB', 'CHATA','LA CUARTA','VINOTECA','TODO ORGANIKO'];
+			//var value = [1, 2, 3, 4, 5];
+
+			var addSupplier = ('<div class="col-md-12 row mt-0"><div class="col-md-3 mt-2"><select class="add-caret browser-default colorful-select dropdown-primary" id="supplier'+n+'" name="supplier['+n+'][supplier_id]"><option value="" disabled selected>Selecciona una Tienda</option></select><div class="md-form form-sm mt-2"></div></div><div class="col-md-3"><div class="md-form form-sm mt-2"><input type="number" id="form1" class="form-control" min="0.00" step="0.01" max="99999.99" id="purchase_price" name="supplier['+n+'][purchase_price]"><label for="form1" class="">Precio de compra</label></div></div><div class="col-md-3 mt-2 "><i class="fa fa-close fa-2x remove-store" style="color:red"></i></div></div><hr>');
+				$('div[id="supplier-cont"]').append(addSupplier);
+
+				$.each(suppliers, function(val, text) {
+	            	$('#supplier'+n+'').append( $('<option></option>').val(val+1).html(text) )
+	            }); 
+	            n++;
+	            
+		});
 
 
-    $('#add-supplier').click(function (e){
-	e.preventDefault();
-	n++;
-	var numbers = ['WALMART', 'LEY', 'COSTCO', 'SAMS', 'SORIANA', 'FRUTERIA OLIVAS', 'FRUTERIA LOS COMPADRES','FRUTERIA EL CANARIO', 'LA MERA', 'FARMACIO MODERNA', 'TRAUB', 'CHATA','LA CUARTA','VINOTECA','TODO ORGANIKO'];
-	
-	//var value = [1, 2, 3, 4, 5];
-
-	var addSupplier = ('<div class="col-md-12 row mt-0"><div class="col-md-3 mt-2"><select class="add-caret browser-default colorful-select dropdown-primary" id="supplier'+n+'" name="supplier['+n+'][supplier_id]"><option value="" disabled selected>Selecciona una Tienda</option></select><div class="md-form form-sm mt-2"></div></div><div class="md-form form-sm mt-2 col-md-3"><input type="number" id="form1" class="form-control" min="0.00" step="0.01" max="99999.99" id="purchase_price" name="supplier['+n+'][purchase_price]"><label for="form1" class="">Precio de compra</label></div><div class="col-md-3 mt-2 "><i class="fa fa-close fa-2x remove-store"></i></div></div><hr>');
-		$('div[id="supplier-cont"]').append(addSupplier);
-
-		$.each(numbers, function(val, text) {
-            $('#supplier'+n+'').append( $('<option></option>').val(val+1).html(text) )
-            }); 
-	});
 
 	
 });
@@ -474,4 +326,5 @@ $.each(supplier, function(val, text) {
 
 
 </script>
+ {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 @endsection

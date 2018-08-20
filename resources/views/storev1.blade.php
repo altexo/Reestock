@@ -3,6 +3,7 @@
 @section('estilos_unicos')
 
 <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
+
 <style type="text/css">
     .margin10
     {
@@ -17,7 +18,7 @@
         font-size: 14px !important;
     }
     .card-body{
-        padding-top: 10px !important;
+      /*  padding-top: 10px !important;*/
     }
     .price
     {
@@ -44,12 +45,17 @@
 .red-reestock{
     background-color: #f4452c;
 }
+.brands-box{
+        height: 300px;
+    border: black;
+    overflow: scroll;
+}
 </style>
 @endsection
 @section('navbar')
 
 @section('contenido')
-<div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel">
+<div id="carousel-example-1z" class="carousel slide carousel-slide" data-ride="carousel">
         <!--Indicators-->
         <ol class="carousel-indicators">
             <li data-target="#carousel-example-1z" data-slide-to="0" class=""></li>
@@ -88,7 +94,12 @@
             <!--Second slide-->
             <div class="carousel-item h-100 active">
                 <div class="view h-100">
-                    <img id="first-banner" class="d-block h-100 w-lg-100 img-fluid" src="{{url('img/Untitled-1.jpg')}}" alt="Second slide">
+                    <picture>
+                        <source media="(max-width: 700px)" srcset="{{url('img/Banner_Tienda_Carne_Artesanal_(340x420).jpg')}}">
+                        <source media="(max-width: 800px)" srcset="{{url('img/Banner_Tienda_Carne_Artesanal_(340x768).jpg')}}">
+                        <img id="first-banner" class="d-block h-100 w-lg-100 img-fluid" src="{{url('img/Banner_Tienda_Carne_Artesanal_340x1600.jpg')}}" alt="Second slide">
+                    </picture>
+                   
                     <div class="mask waves-effect waves-light">
                       
                     </div>
@@ -96,11 +107,14 @@
             </div>
             <!--/Second slide-->
             <!--Third slide-->
-          {{--   <div class="carousel-item">
+            <div class="carousel-item">
                 <div class="view h-100">
-                    <img class="d-block h-100 w-lg-100" src="https://mdbootstrap.com/img/Photos/Others/ecommerce3.jpg" alt="Third slide">
-                    <div class="mask waves-effect waves-light">
-                        <!-- Caption -->
+                   <picture>
+                        <source media="(max-width: 700px)" srcset="{{url('img/Banner_Tienda_Adios_Hola_(340x420).jpg')}}">
+                        <source media="(max-width: 800px)" srcset="{{url('img/Banner_Tienda_Adios_Hola_(340x768).jpg')}}">
+                        <img id="first-banner" class="d-block h-100 w-lg-100 img-fluid" src="{{url('img/Banner_Tienda_Ads_Hola_(340x1600).jpg')}}" alt="Second slide">
+                    </picture>
+               {{--      <div class="mask waves-effect waves-light">
                         <div class="full-bg-img flex-center white-text">
                             <ul class="animated fadeIn col-md-10 align-items-right">
                                 <li>
@@ -113,14 +127,24 @@
                                 </li>
                             </ul>
                         </div>
-                        <!-- /.Caption -->
-                    </div>
+                        
+                    </div> --}}
                 </div>
             </div>
-            <!--/Third slide--> --}}
+             <div class="carousel-item h-100">
+                <div class="view h-100">
+                    <picture>
+                        <source media="(max-width: 700px)" srcset="{{url('img/Banner_Tienda_Recetas_Favoritas_340x420.jpg')}}">
+                        <source media="(max-width: 800px)" srcset="{{url('img/Banner_Tienda_Recetas_Favoritas_(340x768).jpg')}}">
+                        <img id="first-banner" class="d-block h-100 w-lg-100 img-fluid" src="{{url('img/Banner_Tienda_Recetas_Favoritas_(340x1600).jpg')}}" alt="Second slide">
+                    </picture>
+                   
+                  <a href="{{route('recipe.view')}}">  <div class="mask waves-effect waves-light">
+                      
+                    </div></a>
+                </div>
+            </div>
         </div>
-        <!--/.Slides-->
-        <!--Controls-->
         <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
@@ -159,7 +183,7 @@
             </div>
         </div> --}}
     </div>
-    <div class="container mt-5 pt-1">
+    <div class="container mt-3 pt-1">
 
 {{-- {{dd(Cart::content())}} --}}
 
@@ -168,67 +192,91 @@
                 <div class="">
                     <div class="row">
 
-                        <div class="col-md-6 col-lg-12 mb-5">
-
-                        </div>
-
-                        <div class="col-md-6 col-lg-12 mb-5">
-                           {{--  <h5 class="font-bold dark-grey-text"><strong>Marcas</strong></h5>
-                                <div class="divider"></div>
-
-                           
-                                <div class="form-group">
-                                       <input name="group100" type="radio" id="radio100" onclick="window.location='';" 
-                                        @if( app('request')->input('brand') == '' )  
-                                            {{'checked'}}
-                                        @endif
-                                         >
-                                        <label for="radio100" class="dark-grey-text">Todas</label>
-                                </div> --}}
-                       {{--          @forelse($brands as $brand)
-                                    <div class="form-group">
-                                        <input name="group100" type="radio" id="radio100" onclick="window.location='/tienda/';" 
-                                            @if( app('request')->input('brand') == $brand )  
-                                                {{'checked'}}
-                                            @endif
-                                        >
-                                        <label for="radio100" class="dark-grey-text">{{$brand}}</label>
-                                    </div>    
-                                @empty
-                                @endforelse --}}
-
-
+                      
+                        
+                        <div class="col-md-6 col-lg-12 mb-2">    
+                              <!--Sub Categories-->
+                            <div class="divider"></div>
+                            @if(request()->has('sub_cat'))
+                            <h5 class="font-bold dark-grey-text"><strong>Categorias</strong></h5>
+                                <div id="category-remove" class="chip chip-xs teal lighten-2 white-text">
+                                    {{request()->sub_cat}}
+                                    <i class="close fa fa-times"></i>
+                                </div>
+                            @else
+                                @isset($sub_cats)
+                                    <?php $n=0 ?>
+                                    <div class="accordion" id="accordionExt" role="tablist" aria-multiselectable="false">
+                                        <div class="card">
+                                            <div class="card-header" role="tab" id="headingOne">
+                                                <a data-toggle="collapse" href="#collapseCategories" aria-expanded="false" aria-controls="collapseOne">
+                                                    <h5 class="mb-0">
+                                                        Categorias <i class="fa fa-angle-up rotate-icon"></i>
+                                                    </h5>
+                                                </a>
+                                            </div>
+                                            <div id="collapseCategories" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordionExt" >
+                                            @forelse($sub_cats as $cat)
+                                                <?php $n++ ?>
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <input name="group100" type="checkbox" id="cat{{$n}}" name="cat" value="{{$cat}}" onclick="window.location='{{Request::fullUrl().'&sub_cat='.$cat}}'">
+                                                        <label for="cat{{$n}}" class="dark-grey-text">{{$cat}}</label>
+                                                    </div>
+                                                </div>
+                                            @empty
+                                            @endforelse
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endisset
+                            @endif
+            
                         </div>
              
                     </div>
-
-                    <div class="row">
-
-                     
-                        <div class="col-md-6 col-lg-12 mb-5">
-          
-                        </div>
-
-                    </div>
+                            <div class="divider"></div>
+                            @if(request()->has('brand'))
+                            <h5 class="font-bold dark-grey-text"><strong>Marcas</strong></h5>
+                                <div id="brand-remove" class="chip chip-xs teal lighten-2 white-text">
+                                    {{request()->brand}}
+                                    <i class="close fa fa-times"></i>
+                                </div>
+                            @else
+                                @isset($brands)
+                                    <?php $n=0 ?>
+                                    <div class="accordion" id="accordionEx" role="tablist" aria-multiselectable="false">
+                                        <div class="card">
+                                            <div class="card-header" role="tab" id="headingOne">
+                                                <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                    <h5 class="mb-0">
+                                                        Marcas <i class="fa fa-angle-up rotate-icon"></i>
+                                                    </h5>
+                                                </a>
+                                            </div>
+                                            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordionEx" >
+                                            @forelse($brands as $brand)
+                                                <?php $n++ ?>
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <input name="group100" type="checkbox" id="brand{{$n}}" name="brand" value="{{$brand}}" onclick="window.location='{{Request::fullUrl().'&brand='.$brand}}'">
+                                                        <label for="brand{{$n}}" class="dark-grey-text">{{$brand}}</label>
+                                                    </div>
+                                                </div>
+                                            @empty
+                                            @endforelse
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endisset
+                            @endif
+                          
 
                 </div>
 
             </div>
 
             <div class="col-lg-9">
-
-                <!-- Filter Area -->
-                <div class="row">
-
-                    <div class="col-md-4 mt-3">
-
-                      
-
-                    </div>
-                 
-                </div>
-
-          
                 <!-- Products Grid -->
                 <section class="section pt-4"> 
                     <div class="row">
@@ -557,37 +605,51 @@
 @endsection
 @section('footer')
 @section('scripts_unicos')
+
  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
+//             $(window).resize(function(e){
+//    if($(window).width() < 568) {
+  
+//         $("#first-banner").each(function() {
+//             $(this).attr("src", "{{url('img/Untitled-3.jpg')}}");
+//         });
+//         } else if ($(window).width() >= 568) 
+//         {
+//                 $("#first-banner").each(function() {
+//                 $(this).attr("src","{{url('img/Untitled-1.jpg')}}");
+//                 });                        
+//     }         
+// });
         $('.dropdown-submenu .dropdown-toggle').on("click", function(e) {
     e.stopPropagation();
     e.preventDefault();
     $(this).next('.dropdown-menu').toggle();
 });
     $('.mdb-select').material_select();
-//  $("[type='number']").keypress(function (evt) {
-//     evt.preventDefault();
-// });
 
 
 
 });
-    $(window).resize(function(e){
-   if($(window).width() < 568) {
-  
-        $("#first-banner").each(function() {
-            $(this).attr("src", "{{url('img/Untitled-3.jpg')}}");
-        });
-        } else if ($(window).width() >= 568) 
-        {
-                $("#first-banner").each(function() {
-                $(this).attr("src","{{url('img/Untitled-1.jpg')}}");
-                });                        
-    }         
-});
+
+
+    $("#brand-remove").click(function(){
+        var str = "{{Request::fullUrl()}}";
+        var res = str.replace(/brand=/g, "");
+        var decoded = res.replace(/&amp;/g, '&');
+        window.location.href = decoded;
+        //console.log(decoded);
+    });
+        $("#category-remove").click(function(){
+        var str = "{{Request::fullUrl()}}";
+        var res = str.replace(/sub_cat=/g, "");
+        var decoded = res.replace(/&amp;/g, '&');
+        window.location.href = decoded;
+        //console.log(decoded);
+    });
     
-    
+
 </script>
     @forelse($products as $product)
         <script type="text/javascript">

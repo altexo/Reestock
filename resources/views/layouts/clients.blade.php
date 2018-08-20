@@ -277,7 +277,7 @@ div.hidden {
                         <input type="hidden" id="p-rowID" class="form-control ml-0">
                         <div class="md-form ml-0 mr-0">
                             <div class="md-form">
-                                <select class="mdb-select colorful-select dropdown-primary" id="newReestock">
+                                <select class="mdb-select colorful-select dropdown-primary" id="newReestockOption">
 
                                     <option  value="0">Unica vez</option>
                                     <option  value="7">Cada 7 días</option>
@@ -552,6 +552,7 @@ div.hidden {
                                             data-dismiss="modal" 
                                             id="reesotckModal" 
                                             data-rid="{{$item->rowId}}" 
+                                            data-rc="{{$item->options->reestock}}"
                                             data-name="{{$item->name}}" 
                                             @if($item->options->instructions == '')
                                                 data-inst=""
@@ -661,13 +662,13 @@ div.hidden {
 
 <script src="{{url('js/jquery.nice-number.js')}}"></script>
 <!--Start of Zendesk Chat Script-->
-<script type="text/javascript">
+{{-- <script type="text/javascript">
 window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
 d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
 _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
 $.src="https://v2.zopim.com/?5ebqR4Eslh9R5kuvwseznyo8WxngAjTI";z.t=+new Date;$.
 type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
-</script>
+</script> --}}
 <!--End of Zendesk Chat Script-->
 <script type="text/javascript">
    
@@ -800,12 +801,15 @@ $("body").on('click', '#reesotckModal', function(){
     var img = $(this).data('img') 
     var rid = $(this).data('rid')
     var instructions = $(this).data('inst')
+    var reestockCon = $(this).data('rc')
+    
 
     var m = $('#reestockModalView').modal();
     m.find('.modal-body h6').text(name)
     m.find('.modal-header img').attr('src', img)
     m.find('.modal-body #p-rowID').val(rid)
     m.find('#product-instructions').text(instructions)
+    m.find("#newReestockOption").val(reestockCon)
     
 });
 $("#SaveNewReestock").click(function(){

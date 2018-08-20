@@ -28,6 +28,9 @@
     .align{
         width:x; height:y; text-align:right !important;   
     }
+    body{
+        font-size: 8pt;
+    }
  </style>
  @endsection
 
@@ -84,7 +87,14 @@
                     <!--Body-->
 
                     <div class="modal-body">
-                        <p><a  href="" class="" ><button  class="btn btn-warning btn-sm postpone<?php echo $n; ?>">Cambiar entrega</button></a><a  href="{{route('store')}}"><button  class="btn btn-success btn-sm add<?php echo $n; ?>">agregar productos</button></a><a  id="cancel<?php echo $n; ?>" ><button class="btn btn-danger btn-sm cancel<?php echo $n; ?>">Cancelar lista</button></a></p>
+                        <p>
+                            <a  href="" class="" >
+                                <button  class="btn btn-warning btn-sm postpone<?php echo $n; ?>">Cambiar entrega</button>
+                            </a>
+                    
+                            <a  id="cancel<?php echo $n; ?>" >
+                                <button class="btn btn-danger btn-sm cancel<?php echo $n; ?>">Cancelar lista</button>
+                            </a></p>
                          <form method="post" id="postpone<?php echo $n; ?>" >
                             <div id="datepicker<?php echo $n; ?>" class="mt-3 md-form hidden" data-toggle="tooltip" title="Debes especificar la fecha a la que deseas posponer." role="tooltip">
                                 <input placeholder="Escoger fecha" type="text" id="date-picker-example" name="postpone_date" class="form-control datepicker  datepicker<?php echo $n; ?>" readonly="readonly" required>
@@ -94,7 +104,7 @@
                             </div>
                         {{ csrf_field() }}
 
-                        <table class="table table-hover">
+                        <table class="table-responsive table table-hover">
                             <thead>
                                 <tr>
                                     <th></th>

@@ -62,6 +62,10 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
             'Psr\\Log\\' => 8,
             'PhpParser\\' => 10,
         ),
+        'N' => 
+        array (
+            'Nicolaslopezj\\Searchable\\' => 25,
+        ),
         'M' => 
         array (
             'Monolog\\' => 8,
@@ -84,6 +88,10 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         array (
             'Faker\\' => 6,
         ),
+        'E' => 
+        array (
+            'EloquentFilter\\' => 15,
+        ),
         'D' => 
         array (
             'Dotenv\\' => 7,
@@ -99,6 +107,7 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         'A' => 
         array (
             'App\\' => 4,
+            'AdvanceSearch\\AdvanceSearchProvider\\' => 36,
         ),
     );
 
@@ -193,6 +202,10 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
+        'Nicolaslopezj\\Searchable\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nicolaslopezj/searchable/src',
+        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
@@ -221,6 +234,10 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
         ),
+        'EloquentFilter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tucker-eric/eloquentfilter/src',
+        ),
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
@@ -248,6 +265,10 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
+        ),
+        'AdvanceSearch\\AdvanceSearchProvider\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/5dmatwebsearch/advancesearch/src',
         ),
     );
 
@@ -284,7 +305,12 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
     );
 
     public static $classMap = array (
+        'AdvanceSearch\\AdvanceSearchProvider\\AdvanceSearchProvider' => __DIR__ . '/..' . '/5dmatwebsearch/advancesearch/src/AdvanceSearchProvider.php',
+        'AdvanceSearch\\AdvanceSearchProvider\\Facades\\SearchFacades' => __DIR__ . '/..' . '/5dmatwebsearch/advancesearch/src/Facades/SearchFacades.php',
+        'AdvanceSearch\\AdvanceSearchProvider\\MakeIndexCommand' => __DIR__ . '/..' . '/5dmatwebsearch/advancesearch/src/MakeIndexCommand.php',
+        'AdvanceSearch\\AdvanceSearchProvider\\Search' => __DIR__ . '/..' . '/5dmatwebsearch/advancesearch/src/Search.php',
         'App\\Admin' => __DIR__ . '/../..' . '/app/Admin.php',
+        'App\\Billing_address' => __DIR__ . '/../..' . '/app/Billing_address.php',
         'App\\Brands' => __DIR__ . '/../..' . '/app/Brands.php',
         'App\\Categories' => __DIR__ . '/../..' . '/app/Categories.php',
         'App\\Console\\Commands\\ReScheduleList' => __DIR__ . '/../..' . '/app/Console/Commands/ReScheduleList.php',
@@ -294,6 +320,7 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         'App\\Departments' => __DIR__ . '/../..' . '/app/Departments.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
+        'App\\Http\\Controllers\\AdminRecipeController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminRecipeController.php',
         'App\\Http\\Controllers\\Auth\\AdminLoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AdminLoginController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -304,6 +331,7 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         'App\\Http\\Controllers\\ListAdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/ListAdminController.php',
         'App\\Http\\Controllers\\ListController' => __DIR__ . '/../..' . '/app/Http/Controllers/ListController.php',
         'App\\Http\\Controllers\\ProductsController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductsController.php',
+        'App\\Http\\Controllers\\RecipeController' => __DIR__ . '/../..' . '/app/Http/Controllers/RecipeController.php',
         'App\\Http\\Controllers\\Store2Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Store2Controller.php',
         'App\\Http\\Controllers\\StoreController' => __DIR__ . '/../..' . '/app/Http/Controllers/StoreController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
@@ -316,6 +344,7 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         'App\\List_status' => __DIR__ . '/../..' . '/app/List_status.php',
         'App\\Lists' => __DIR__ . '/../..' . '/app/Lists.php',
         'App\\Mail\\scheduleNotify' => __DIR__ . '/../..' . '/app/Mail/scheduleNotify.php',
+        'App\\ModelFilters\\ProductsFilter' => __DIR__ . '/../..' . '/app/ModelFilters/ProductsFilter.php',
         'App\\Notifications\\InovicePaid' => __DIR__ . '/../..' . '/app/Notifications/InovicePaid.php',
         'App\\Notifications\\ResetPassword' => __DIR__ . '/../..' . '/app/Notifications/ResetPassword.php',
         'App\\Order_lists' => __DIR__ . '/../..' . '/app/Order_lists.php',
@@ -329,12 +358,15 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         'App\\Shipping' => __DIR__ . '/../..' . '/app/Shipping.php',
         'App\\StandbyProducts' => __DIR__ . '/../..' . '/app/StandbyProducts.php',
         'App\\Sub_categories' => __DIR__ . '/../..' . '/app/Sub_categories.php',
+        'App\\Tag_products' => __DIR__ . '/../..' . '/app/Tag_products.php',
+        'App\\Tags' => __DIR__ . '/../..' . '/app/Tags.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'App\\supplier_products' => __DIR__ . '/../..' . '/app/supplier_products.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonInterval' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
         'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
         'CreateAdminTable' => __DIR__ . '/../..' . '/database/migrations/2017_11_15_230846_create_admin_table.php',
+        'CreateBillingAddressesTable' => __DIR__ . '/../..' . '/database/migrations/2018_07_05_163555_create_billing_addresses_table.php',
         'CreateBrandsTable' => __DIR__ . '/../..' . '/database/migrations/2018_03_05_000004_create_brands_table.php',
         'CreateCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2018_03_05_000005_create_categories_table.php',
         'CreateDepartmentsTable' => __DIR__ . '/../..' . '/database/migrations/2018_03_05_000007_create_departments_table.php',
@@ -398,6 +430,11 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         'Dotenv\\Exception\\ValidationException' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Exception/ValidationException.php',
         'Dotenv\\Loader' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Loader.php',
         'Dotenv\\Validator' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Validator.php',
+        'EloquentFilter\\Commands\\MakeEloquentFilter' => __DIR__ . '/..' . '/tucker-eric/eloquentfilter/src/Commands/MakeEloquentFilter.php',
+        'EloquentFilter\\Filterable' => __DIR__ . '/..' . '/tucker-eric/eloquentfilter/src/Filterable.php',
+        'EloquentFilter\\LumenServiceProvider' => __DIR__ . '/..' . '/tucker-eric/eloquentfilter/src/LumenServiceProvider.php',
+        'EloquentFilter\\ModelFilter' => __DIR__ . '/..' . '/tucker-eric/eloquentfilter/src/ModelFilter.php',
+        'EloquentFilter\\ServiceProvider' => __DIR__ . '/..' . '/tucker-eric/eloquentfilter/src/ServiceProvider.php',
         'Faker\\Calculator\\Iban' => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker/Calculator/Iban.php',
         'Faker\\Calculator\\Inn' => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker/Calculator/Inn.php',
         'Faker\\Calculator\\Luhn' => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker/Calculator/Luhn.php',
@@ -1820,6 +1857,7 @@ class ComposerStaticInitd9c3790ff82b4b1a233abaf3caa0c847
         'Monolog\\Processor\\UidProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/UidProcessor.php',
         'Monolog\\Processor\\WebProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/WebProcessor.php',
         'Monolog\\Registry' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Registry.php',
+        'Nicolaslopezj\\Searchable\\SearchableTrait' => __DIR__ . '/..' . '/nicolaslopezj/searchable/src/SearchableTrait.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
         'PHPUnit\\Framework\\AssertionFailedError' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/AssertionFailedError.php',
         'PHPUnit\\Framework\\BaseTestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',

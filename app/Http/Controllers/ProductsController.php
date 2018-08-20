@@ -5,7 +5,9 @@ use Illuminate\Http\Request;
 use App\Products;
 use App\supplier_products;
 use DB;
+use App\Tag_products;
 use App\Departments;
+use App\Sub_categories;
 use App\Categories;
 use Illuminate\Contracts\Validation\ValidationException;
 use Illuminate\Support\Facades\Input;
@@ -38,14 +40,49 @@ class ProductsController extends Controller
 
      public function showCreateProduct()
     {
-    	return view('admins.create-products');
+        $departments =  Departments::all();
+
+        $suppliers = DB::table('suppliers')
+            ->select('id','name')->get(); 
+
+        $brands = DB::table('products')
+            ->select('brand')
+            ->distinct()->orderBy('brand', 'asc')->get();
+
+        $sub_categories = Sub_categories::select('id', 'name')->orderBy('name', 'asc')->get();    
+    	return view('admins.create-products', ['departments' =>$departments, 'brands' => $brands, 'suppliers' => $suppliers, 'sub_categories' => $sub_categories]);
     }
 
+    public function getEditProduct($id)
+    {   
+        $departaments =  Departments::all();
 
+        $product = DB::table('products')
+            ->join('departments', 'departments.id', '=', 'products.departments_id')
+            ->join('sub_categories', 'sub_categories.id','=','products.sub_categories_id')
+            ->select('products.*', 'departments.department_name', 'Sub_categories.name as sub_category_name' , 'sub_categories.id')->where('products.id','=',$id)->get();
+         
+        $product_suppliers = supplier_products::join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
+            ->select('suppliers.*', 'supplier_products.*')
+            ->where('products_id', $id)->get();
+
+       $sub_categories = Sub_categories::select('id', 'name')->orderBy('name', 'asc')->get(); 
+
+        $suppliers = DB::table('suppliers')
+            ->select('name')->get(); 
+
+        $brands = DB::table('products')
+            ->select('brand')
+            ->distinct()->get();
+
+        return view('admins.edit-product', ['product' => $product, 'product_suppliers' => $product_suppliers, 'departments' => $departaments, 'brands' => $brands, 'suppliers' => $suppliers, 'sub_categories' =>$sub_categories ]);
+        //return ['product' => $product, 'product_suppliers' => $product_suppliers];
+    }
 
     public function create(Request $r){
+        
         $file_name = '';
-       // return dd($r);
+      // return dd($r);
          if ($r) 
          {
             if($r->hasFile('file')){
@@ -66,10 +103,11 @@ class ProductsController extends Controller
                     //Se crea un objeto del modelo Productos para crear el producto y despues obtener su id
                     $product = new Products;
                     $product->product_name = $r->product_name;
-                    $product->bar_code = $r->bar_code;
+                    $product->barcode = $r->barcode;
                     $product->brand = $r->brand;
                     $product->departments_id = $r->department;
                     $product->unity = $r->unity;
+                    $product->sub_categories_id = $r->sub_category;
                     $product->product_img = $file_name;
                     $product->save();
                     
@@ -87,6 +125,19 @@ class ProductsController extends Controller
                         $supplier_products->purchase_price = $purchase_price;
                         $supplier_products->sale_price = $sale_price;
                         $supplier_products->save();
+                    }
+                    if(isset($r->tags)){
+                        $tags = $r->tags;
+                    foreach ($tags as $tag) {
+
+                        $tag_products = new Tag_products;
+                       
+                        $tag_products->products_id = $product_id;
+                         $tag_products->tags_id = $tag;
+                        //dd($tag_products);
+                        $tag_products->save();
+                       
+                        }
                     }
                 
 
@@ -109,30 +160,7 @@ class ProductsController extends Controller
     
 
     
-    public function getEditProduct($id)
-    {   
-        $departaments =  Departments::all();
 
-        $product = DB::table('products')
-            ->join('departments', 'departments.id', '=', 'products.departments_id')
-            ->select('products.*', 'departments.department_name')->where('products.id','=',$id)->get();
-         
-        $product_suppliers = supplier_products::join('suppliers', 'suppliers.id', '=', 'supplier_products.supplier_id')
-            ->select('suppliers.*', 'supplier_products.*')
-            ->where('products_id', $id)->get();
-
-        //return $categories = Categories::with('sub_categories')->select('id','name')->get();
-
-        $suppliers = DB::table('suppliers')
-            ->select('name')->get(); 
-
-        $brands = DB::table('products')
-            ->select('brand')
-            ->distinct()->get();
-
-        return view('admins.edit-product', ['product' => $product, 'product_suppliers' => $product_suppliers, 'departments' => $departaments, 'brands' => $brands, 'suppliers' => $suppliers]);
-        //return ['product' => $product, 'product_suppliers' => $product_suppliers];
-    }
     public function updateProductImg(Request $img)
     {
          if ($img) 
@@ -172,21 +200,21 @@ class ProductsController extends Controller
          {
             try {
                 //Comienza transaccion de crear producto y agregar a suppliers.
-                DB::transaction(function () use($r) {
+              //  DB::transaction(function () use($r) {
                     
                     $prod_id = $r->route('id');
                     $delete_supplier = DB::table('supplier_products')->where('products_id', $prod_id)->delete();
-                    
                     //Se crea un objeto del modelo Productos para crear el producto y despues obtener su id
                     $product = Products::find($prod_id);
 
                     $product->product_name = $r->product_name;
-                    $product->bar_code = $r->bar_code;
+                    $product->barcode = $r->barcode;
                     $product->brand = $r->brand;
                     $product->departments_id = $r->department;
+                    $product->sub_categories_id = $r->sub_category;
                     $product->unity = $r->unity;
                     $product->save();
-                    
+                   
                     $product_id = $product->id;
 
                     $suppliers = $r->supplier;
@@ -201,15 +229,16 @@ class ProductsController extends Controller
                         $supplier_products->purchase_price = $purchase_price;
                         $supplier_products->sale_price = $sale_price;
                         $supplier_products->save();
+                       
                     }
                 
 
-                });
+            //    });
             
            
                     //return response()->json($product_name);
             } catch (\Exception $e) {
-                return $e;
+                return dd($e);
                 //return dd($r);
             }
             //session()->flash('message', '')
@@ -594,7 +623,7 @@ class ProductsController extends Controller
             ->join('departments', 'departments.id', '=', 'products.departments_id')
             ->select('products.*', \DB::raw("MIN(supplier_products.purchase_price) AS purchase_price"), \DB::raw("MIN(supplier_products.sale_price) AS sale_price"), 'departments.department_name')
              ->where('products.product_name','LIKE',"%{$search}%")
-            ->groupBy('supplier_products.products_id')->get();
+            ->groupBy('supplier_products.products_id')->limit(100)->get();
 
            return view('admins.livesearchajax')->withPosts($products);
         }

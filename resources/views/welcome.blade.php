@@ -71,12 +71,12 @@ body, html {
                {{--  <p>First text</p> --}}
             </div>
         </div>
-      {{--   <div class="carousel-item">
+        <div class="carousel-item">
            
 
             <div class="view">
 
-                <img class="d-block w-100" src="{{url('img/pretty-girl-bag.jpg')}}" alt="Second slide">
+                <img class="d-block w-100" src="{{url('img/Banner_Principal_Mesa_con_cosas_(432x1440).jpg')}}" alt="Second slide">
                 <div class="mask rgba-black-light"></div>
             </div>
             <div class="carousel-caption">
@@ -84,7 +84,7 @@ body, html {
                
             </div>
         </div>
-        <div class="carousel-item">
+        {{--<div class="carousel-item">
           
             <div class="view">
                 <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg" alt="Third slide">

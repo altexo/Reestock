@@ -1,6 +1,7 @@
 <?php
 Use App\Lists;
 USe App\List_products;
+use App\Tags;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,10 +65,18 @@ Route::prefix('admin')->group( function() {
 	Route::get('/lists/confirmed/', 'ListAdminController@confirmed')->name('Listas / Confirmadas');
 	Route::get('/lists/postponed', 'ListAdminController@postponed')->name('Listas / Pospuestas');
 	Route::get('/lists/calceled', 'ListAdminController@canceled')->name('Listas / Canceladas');
-
 	//Status de Get Lists
 	Route::post('status/changue/done','ListAdminController@deliveredDone')->name('delivered.done');
-	
+	Route::get('create/recipe/','AdminRecipeController@create')->name('recipe.create');
+	Route::get('/search',function(){
+		 $query = Input::get('query');
+		 $tags = Tags::where('tag_name','like','%'.$query.'%')->get();
+		 return response()->json($tags);
+	});
+
+	//Inovice Route
+	Route::post('inovice/dev/','ListAdminController@inovice')->name('inovice.test');
+	//Route::get('records/','')
 });
 //End
 
@@ -82,7 +91,7 @@ Route::post('list/deleteItem', 'HomeController@deleteItem')->name('delete.item')
 Route::post('list/addNewProduct', 'ListController@addNewProduct')->name('add.product');
 Route::post('list/condirmList', 'HomeController@confirm_list')->name('confirm.list');
 });
-Route::get('/tienda','Store2Controller@index');
+Route::get('/tienda','Store2Controller@index')->name('store.show');
 //pruebas con busquedas dinamicas
 // Route::get('/tienda2/{department}','Store2Controller@findByDepartment')->name('find.department');
 // Route::get('/tienda2/{department}/{categorie}', 'Store2Controller@findByDepartmentCategorie')->name('find.DepCat');
@@ -94,12 +103,14 @@ Route::get('/tienda/searchby/{department}', 'Store2Controller@findByDepartment')
 Route::get('/tienda/searchby/{department}/{category}', 'Store2Controller@findByDepartmentCat')->name('search.subCat');
 Route::get('/tienda/searchby/{department}/{category}/{sub_category}', 'Store2Controller@findBySubCategory')->name('search.results');
 
+
+Route::post('/tienda/filter/brand', 'Store2Controller@filterBrand')->name('filter.brand');
 // Route::get('tienda2/{department}/','Store2Controller@findByDepartment')->name('dep');
 // Route::get('tienda2/{department}/{subcat}','Store2Controller@findByDepartment')->name('dep');
 // Route::get('tienda2/{department}/{}','Store2Controller@findByDepartment')->name('dep');
 // Route::get('/tienda', 'StoreController@index')->name('store');
 Route::get('/search','StoreController@search')->name('search');
-Route::get('/search','Store2Controller@search')->name('search2');
+Route::get('/search','Store2Controller@mySearch')->name('search2');
 Route::resource('/lista', 'StoreController');
 Route::post('/lista/addToCart', 'StoreController@addToCart');
 Route::post('/lista/updateCart', 'StoreController@updateCart');
@@ -126,6 +137,8 @@ Route::get('/lista/{lista}', function ($id){
 //End
 Route::get('/checkout', 'ListController@index');
 //test-route
+Route::get('/recetas','RecipeController@index')->name('recipe.view');
+Route::post('/recetas/inCarrito','RecipeController@addIngredientToCart')->name('add.ingredients');
 Route::get('/test/views/index2', function(){
 	// if(DB::connection()->getDatabaseName())
  //   {

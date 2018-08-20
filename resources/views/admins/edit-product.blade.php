@@ -146,8 +146,27 @@
 				</select>
 				<label>Unidad</label>
 			</div>
+			<div class="col-md-3 mt-3">
+					<select class="mdb-select colorful-select dropdown-primary" id="sub_category" name="sub_category">
+				   {{--  <option value="" disabled selected>Selecciona una sub categoria</option> --}}
+				    	<option value="{{ $p->sub_categories_id }}" selected>{{ $p->sub_category_name }}</option>
+				  		 @forelse($sub_categories as $sub_category)
+				    		<option value="{{$sub_category->id}}">{{$sub_category->name}}</option>
+				    	@empty
+				    	@endforelse
 
-		
+				</select>
+				<label>Categoria</label>
+			</div>
+				{{-- <div class="col-md-12 mt-3 mb-2">
+					<select name="tags[]" class="mdb-select colorful-select dropdown-primary" multiple searchable="Search here..">
+					    <option value="" disabled selected>Escoge los tags del producto</option>
+					    <option value="1">COSTCO</option>
+					     <option value="2">KIRKLAND</option>
+			
+					</select>
+					<label>Tags</label>
+			</div> --}}
 			@endforeach
 			<?php $number = 0; ?>
 			
